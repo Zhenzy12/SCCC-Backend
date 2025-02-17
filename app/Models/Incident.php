@@ -13,4 +13,9 @@ class Incident extends Model
         'type',
         'assistance_id'
     ];
+
+    public function assistance()
+    {
+        return $this->belongsTo(TypeOfAssistance::class);
+    }
 }
