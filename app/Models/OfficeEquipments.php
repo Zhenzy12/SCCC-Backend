@@ -3,8 +3,25 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Categories;
 
 class OfficeEquipments extends Model
 {
     //
+
+    protected $table = 'office_equipments';
+
+    protected $fillable = [
+        'equipment_name',
+        'equipment_description',
+        'category_id'
+    ];
+
+    public function categories(){
+        return $this->belongsTo(Categories::class);
+    }
+
+    public function equipmentCopies(){
+        return $this->hasMany(EquipmentCopies::class);
+    }
 }

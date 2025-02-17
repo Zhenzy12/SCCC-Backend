@@ -3,8 +3,19 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Models\OfficeEquipments;
 
 class EquipmentCopies extends Model
 {
     //
+    protected $table = 'equipment_copies';
+
+    protected $fillable = [
+        'item_id',
+        'is_available'
+    ];
+
+    public function officeEquipments(){
+        return $this->belongsTo(OfficeEquipments::class);
+    }
 }

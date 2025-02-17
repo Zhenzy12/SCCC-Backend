@@ -13,6 +13,11 @@ class OfficeEquipmentsController extends Controller
     public function index()
     {
         //
+        try {
+            return response()->json(OfficeEquipments::all());
+        } catch (Exception $e) {
+            return response()->json(['Index Office Equipments Error' => $e->getMessage()], 500);
+        }
     }
 
     /**
@@ -29,6 +34,22 @@ class OfficeEquipmentsController extends Controller
     public function store(Request $request)
     {
         //
+        try {
+            $request->validate([
+                'equipment_name' => 'required|string|max:255',
+                'equipment_description' => 'required|string',
+                'category_id' => 'required|exists:categories,id',
+            ]);
+
+            $equipment = OfficeEquipments::create($request->all());
+
+            return response()->json([
+                'message'=>'Successfully Created',
+                'data' => $equipment
+            ],201);
+        } catch (Exception $e) {
+            return response()->json(['Store Office Equipment Error' => $e->getMessage()], 500);
+        }
     }
 
     /**
@@ -37,6 +58,11 @@ class OfficeEquipmentsController extends Controller
     public function show(OfficeEquipments $officeEquipments)
     {
         //
+        try{
+            return response()->json($officeEquipments);
+        }catch(Exception $e){
+            return response()->json(['Show Office Equipments Error' => $e->getMessage()], 500);
+        }
     }
 
     /**
@@ -53,6 +79,21 @@ class OfficeEquipmentsController extends Controller
     public function update(Request $request, OfficeEquipments $officeEquipments)
     {
         //
+        try {
+            $request->validate([
+                'equipment_name' => 'sometimes|required|string|max:255',
+                'equipment_description' => 'sometimes|required|string',
+                'category_id' => 'sometimes|required|exists:categories,id',
+            ]);
+
+            $officeEquipments->update($request->all());
+            return response()->json([
+                'message' => 'Successfully Updated',
+                'data' => $officeEquipments
+            ]);
+        }catch(Exception $e){
+            return response()->json(['Update Office Equipment Error' => $e->getMessage()], 500);
+        }
     }
 
     /**
@@ -61,5 +102,11 @@ class OfficeEquipmentsController extends Controller
     public function destroy(OfficeEquipments $officeEquipments)
     {
         //
+        try{
+            $officeEquipments->delete();
+            return response()->json(['message' => 'Deleted Successfully']);
+        }catch(Exception $e){
+            return response()->json(['Destroy Office Equipment Error' => $e->getMessage()], 500);
+        }
     }
 }

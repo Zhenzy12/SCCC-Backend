@@ -13,6 +13,12 @@ class EquipmentCopiesController extends Controller
     public function index()
     {
         //
+
+        try {
+            return response()->json(EquipmentCopies::all());
+        }catch(Exception $e){
+            return response()->json(['Index Equipment Copies Error' => $e->getMessage()], 500);
+        }
     }
 
     /**
@@ -29,6 +35,21 @@ class EquipmentCopiesController extends Controller
     public function store(Request $request)
     {
         //
+        try{
+            $request->validate([
+                'item_id' => 'required|exists:office_equipments,id',
+                'is_available' => 'required|boolean'
+            ]);
+
+            $equipmentCopy = EquipmentCopies::create($request->all());
+
+            return response()->json([
+                'message'=>'Successfully Created',
+                'data' => $equipmentCopy
+            ],201);
+        }catch(Exception $e){
+            return response()->json(['Store Equipment Copy Error' => $e->getMessage()], 500);
+        }
     }
 
     /**
@@ -37,6 +58,11 @@ class EquipmentCopiesController extends Controller
     public function show(EquipmentCopies $equipmentCopies)
     {
         //
+        try{
+            return response()->json($equipmentCopies);
+        }catch(Exception $e){
+            return response()->json(['Show Equipment Copies Error' => $e->getMessage()], 500);
+        }
     }
 
     /**
@@ -53,6 +79,20 @@ class EquipmentCopiesController extends Controller
     public function update(Request $request, EquipmentCopies $equipmentCopies)
     {
         //
+        try{
+            $request->validate([
+                'item_id' => 'sometimes|required|exists:office_equipments,id',
+                'is_available' => 'sometimes|required|boolean'
+            ]);
+            $equipmentCopies->update($request->all());
+
+            return response()->json([
+                'message' => 'Successfully Updated',
+                'data' => $equipmentCopies
+            ]);
+        }catch(Exception $e){
+            return response()->json(['Update Equipment Copies Error' => $e->getMessage()], 500);
+        }
     }
 
     /**
@@ -61,5 +101,14 @@ class EquipmentCopiesController extends Controller
     public function destroy(EquipmentCopies $equipmentCopies)
     {
         //
+        try{
+            $equipmentCopies->delete();
+            return response()->json([
+                'message' => 'Deleted Successfully',
+            ]);
+        }catch(Exception $e){
+            return response()->json(['Destroy Equipment Copies Error' => $e->getMessage()], 500);
+        }
+
     }
 }
