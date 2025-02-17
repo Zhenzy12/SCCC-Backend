@@ -56,9 +56,6 @@ Route::put('/equipment_copies/{equipmentCopies}', [EquipmentCopiesController::cl
 
 Route::delete('/equipment_copies/{equipmentCopies}', [EquipmentCopiesController::class, 'destroy']);
 
-});
-
-
 Route::prefix('911')->group(function () {
     Route::get('/users', function () {
         // Matches The "/admin/users" URL
@@ -72,7 +69,6 @@ Route::prefix('911')->group(function () {
     Route::put('/report/{id}', [ReportController::class, 'update']);
 });
 
-
 Route::prefix('911')->group(function () {
     Route::get('/users', function () {
         // Matches The "/admin/users" URL
@@ -87,3 +83,6 @@ Route::prefix('911')->group(function () {
 
 
 });
+
+});
+
