@@ -31,4 +31,6 @@ Route::prefix('911')->group(function () {
     Route::get('/report', [ReportController::class, 'index']);
     Route::post('/report', [ReportController::class, 'create']);
     Route::put('/report/{id}', [ReportController::class, 'update']);
+
+
 });
