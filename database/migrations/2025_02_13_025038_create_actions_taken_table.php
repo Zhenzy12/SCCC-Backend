@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('actions_taken', function (Blueprint $table) {
             $table->id();
-            $table->enum('actions', ['Pending','Referred','Solved'])->default('Pending');
+            $table->enum('actions', ['Pending','Referred','Solved']);
             $table->timestamps();
         });
     }

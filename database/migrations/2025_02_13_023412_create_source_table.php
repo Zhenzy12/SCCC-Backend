@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('source', function (Blueprint $table) {
             $table->id();
-            $table->enum('sources', ['911','CDRRMO','Icom Radio','EMS Hotline'])->default('911');
+            $table->enum('sources', ['911','CDRRMO','Icom Radio','EMS Hotline']);
             $table->timestamps();
         });
     }
