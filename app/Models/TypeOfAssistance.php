@@ -15,10 +15,11 @@ class TypeOfAssistance extends Model
 
     public function incidents()
     {
-        return $this->hasMany(Incident::class);
+        return $this->hasMany(Incident::class, 'assistance_id');
     }
 
-    public function report(){
-        return $this->hasOne(Report::class);
+    public function reports()
+    {
+        return $this->hasMany(Report::class, 'assistance_id');
     }
 }

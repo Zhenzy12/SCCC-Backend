@@ -8,10 +8,12 @@ class Barangay extends Model
 {
     //
     protected $table = 'barangay';
+
     protected $fillable = [
-        'name',
-        'landmark',
-        'longitude',
-        'latitude'
+        'name'
     ];
+
+    public function locations(){
+        return $this->hasMany(Location::class);
+    }
 }
