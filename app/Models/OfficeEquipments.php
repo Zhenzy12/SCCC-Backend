@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Categories;
+use App\Models\EquipmentCopies;
 
 class OfficeEquipments extends Model
 {

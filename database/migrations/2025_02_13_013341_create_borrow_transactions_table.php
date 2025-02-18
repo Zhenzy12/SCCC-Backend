@@ -17,7 +17,7 @@ return new class extends Migration
             $table->datetime('borrow_date')->nullable();
             $table->datetime('return_date')->nullable();
             $table->foreignId('lender_id')->constrained('users')->onDelete('cascade');
-            $table->integer('remarks');
+            $table->string('remarks');
             $table->timestamps();
         });
     }
