@@ -24,65 +24,51 @@ Route::get('/csrf-cookie', function () {
 
 // Office Equipment api
 Route::middleware(['api.key'])->group(function () {
-Route::get('/office_equipments', [OfficeEquipmentsController::class, 'index']);
+    Route::get('/office_equipments', [OfficeEquipmentsController::class, 'index']);
 
-Route::post('/office_equipments', [OfficeEquipmentsController::class, 'store']);
+    Route::post('/office_equipments', [OfficeEquipmentsController::class, 'store']);
 
-Route::get('/office_equipments/{officeEquipments}', [OfficeEquipmentsController::class, 'show']);
+    Route::get('/office_equipments/{officeEquipments}', [OfficeEquipmentsController::class, 'show']);
 
-Route::put('/office_equipments/{officeEquipments}', [OfficeEquipmentsController:: class, 'update']);
+    Route::put('/office_equipments/{officeEquipments}', [OfficeEquipmentsController:: class, 'update']);
 
-Route::delete('/office_equipments/{officeEquipments}', [OfficeEquipmentsController:: class, 'destroy']);
+    Route::delete('/office_equipments/{officeEquipments}', [OfficeEquipmentsController:: class, 'destroy']);
 
-// categories api
-Route::get('/categories', [CategoriesController::class, 'index']);
+    // categories api
+    Route::get('/categories', [CategoriesController::class, 'index']);
 
-Route::post('/categories', [CategoriesController::class, 'store']);
+    Route::post('/categories', [CategoriesController::class, 'store']);
 
-Route::get('/categories/{categories}', [CategoriesController::class, 'show']);
+    Route::get('/categories/{categories}', [CategoriesController::class, 'show']);
 
-Route::put('/categories/{categories}', [CategoriesController::class, 'update']);
+    Route::put('/categories/{categories}', [CategoriesController::class, 'update']);
 
-Route::delete('categories/{categories}',[CategoriesController::class, 'destroy']);
+    Route::delete('categories/{categories}',[CategoriesController::class, 'destroy']);
 
-// equipment copies api
-Route::get('/equipment_copies', [EquipmentCopiesController::class, 'index']);
+    // equipment copies api
+    Route::get('/equipment_copies', [EquipmentCopiesController::class, 'index']);
 
-Route::post('/equipment_copies', [EquipmentCopiesController::class, 'store']);
+    Route::post('/equipment_copies', [EquipmentCopiesController::class, 'store']);
 
-Route::get('/equipment_copies/{equipmentCopies}', [EquipmentCopiesController::class, 'show']);
+    Route::get('/equipment_copies/{equipmentCopies}', [EquipmentCopiesController::class, 'show']);
 
-Route::put('/equipment_copies/{equipmentCopies}', [EquipmentCopiesController::class, 'update']);
+    Route::put('/equipment_copies/{equipmentCopies}', [EquipmentCopiesController::class, 'update']);
 
-Route::delete('/equipment_copies/{equipmentCopies}', [EquipmentCopiesController::class, 'destroy']);
+    Route::delete('/equipment_copies/{equipmentCopies}', [EquipmentCopiesController::class, 'destroy']);
 
-Route::prefix('911')->group(function () {
-    Route::get('/users', function () {
-        // Matches The "/admin/users" URL
+    Route::prefix('911')->group(function () {
+        // Route::get('/users', function () {
+        //     // Matches The "/admin/users" URL
+        // });
+
+        # Barangay controller routes
+        Route::get('/barangay', [BarangayController::class, 'index']);
+        Route::post('/barangay', [BarangayController::class, 'create']);
+
+        Route::get('/report', [ReportController::class, 'index']);
+        Route::post('/report', [ReportController::class, 'create']);
+        Route::put('/report/{id}', [ReportController::class, 'update']);
     });
-
-    Route::get('/barangay', [BarangayController::class, 'index']);
-    Route::post('/barangay', [BarangayController::class, 'create']);
-
-    Route::get('/report', [ReportController::class, 'index']);
-    Route::post('/report', [ReportController::class, 'create']);
-    Route::put('/report/{id}', [ReportController::class, 'update']);
-});
-
-Route::prefix('911')->group(function () {
-    Route::get('/users', function () {
-        // Matches The "/admin/users" URL
-    });
-
-    Route::get('/barangay', [BarangayController::class, 'index']);
-    Route::post('/barangay', [BarangayController::class, 'create']);
-
-    Route::get('/report', [ReportController::class, 'index']);
-    Route::post('/report', [ReportController::class, 'create']);
-    Route::put('/report/{id}', [ReportController::class, 'update']);
-
-
-});
 
 });
 

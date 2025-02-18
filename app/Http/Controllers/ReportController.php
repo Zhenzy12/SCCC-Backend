@@ -5,14 +5,30 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Report;
+use App\Models\Source;
+use App\Models\ActionsTaken;
+use App\Models\Incident;
+use App\Models\TypeOfAssistance;
+use App\Models\Location;
 
 class ReportController extends Controller
 {
     //
     public function index()
     {
-        //
-        return response()->json('this is a test', 200);
+        $sources = Source::all();
+        $actions = ActionsTaken::all();
+        $incidents = Incident::all();
+        $assistance = TypeOfAssistance::all();
+        $locations = Location::all();
+
+        return response()->json([
+            'sources' => $sources,
+            'actions' => $actions,
+            'incidents' => $incidents,
+            'assistance' => $assistance,
+            'locations' => $locations
+        ], 200);
     }
 
     public function create(Request $request)
