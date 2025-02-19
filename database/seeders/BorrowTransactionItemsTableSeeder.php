@@ -4,6 +4,8 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 
 class BorrowTransactionItemsTableSeeder extends Seeder
 {
@@ -14,15 +16,14 @@ class BorrowTransactionItemsTableSeeder extends Seeder
     {
         //
         for ($i = 0; $i < 10; $i++) {
-            $isReturned = (bool)rand(0);
-            $returnDate = null;
+            $isReturned = (bool)rand(0, 1);
+            $itemTypes = ['Equipment Copty', 'Office Supply'];
 
             DB::table('borrow_transaction_items')->insert([
                 'transaction_id' => rand(1, 10),
                 'item_copy_id' => rand(1, 10),
                 'returned' => $isReturned,
-                'return_date' => $returnDate,
-                'item_type' => rand(0, 1) ? 'equipment' : 'supply',
+                'item_type' => $itemTypes[array_rand($itemTypes)],
             ]);
         }
     }

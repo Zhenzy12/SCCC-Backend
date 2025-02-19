@@ -23,7 +23,18 @@ class DatabaseSeeder extends Seeder
         $this->call([
             TypeOfAssistanceSeeder::class,
             ActionsTakenSeeder::class,
-            SourceSeeder::class
+            SourceSeeder::class,
+
+            // seeder for SCCC Inventory System
+            UsersTableSeeder::class,
+            OfficesTableSeeder::class,
+            BorrowerTableSeeder::class,
+            BorrowTransactionsTableSeeder::class,
+            BorrowTransactionItemsTableSeeder::class,
+            CategoriesTableSeeder::class,
+            OfficeEquipmentsTableSeeder::class,
+            OfficeSuppliesTableSeeder::class,
+            EquipmentCopiesTableSeeder::class
         ]);
     }
 }
