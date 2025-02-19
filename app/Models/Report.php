@@ -14,15 +14,18 @@ class Report extends Model
         'date_received',
         'arrival_on_site',
         'name', #this is the column for the auth user
+        'landmark',
+        'longitude',
+        'latitude',
         'source_id',
         'incident_id',
-        'location_id',
+        'barangay_id',
         'actions_id',
         'assistance_id',
     ];
 
-    public function location(){
-        return $this->belongsTo(Location::class);
+    public function barangay(){
+        return $this->belongsTo(Barangay::class);
     }
 
     public function source(){

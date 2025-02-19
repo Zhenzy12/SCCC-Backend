@@ -13,13 +13,16 @@ return new class extends Migration
     {
         Schema::create('reports', function (Blueprint $table) {
             $table->id();
-            $table->time('time');
-            $table->date('date_received')->nullable();
-            $table->time('arrival_on_site');
+            $table->string('time'); #time
+            $table->string('date_received')->nullable(); #date
+            $table->string('arrival_on_site'); #time
             $table->string('name')->nullable();
+            $table->string('landmark');
+            $table->string('longitude');
+            $table->string('latitude');
             $table->foreignId('source_id')->constrained('source')->onDelete('restrict');
             $table->foreignId('incident_id')->constrained('incident')->onDelete('restrict');
-            $table->foreignId('location_id')->constrained('locations')->onDelete('restrict');
+            $table->foreignId('barangay_id')->constrained('barangay')->onDelete('restrict');
             $table->foreignId('actions_id')->constrained('actions_taken')->onDelete('restrict'); #actions taken
             $table->foreignId('assistance_id')->constrained('type_of_assistance')->onDelete('cascade'); #type of assistance
             $table->timestamps();

@@ -24,11 +24,15 @@ class BarangayController extends Controller
     public function create(Request $request)
     {
         $request->validate([
-            'name' => 'required'
+            'name' => 'required',
+            'longitude' => 'required',
+            'latitude' => 'required',
         ]);
 
         $barangay = Barangay::create([
-            'name' => $request->name
+            'name' => $request->name,
+            'longitude' => $request->longitude,
+            'latitude' => $request->latitude,
         ]);
 
         return response()->json([

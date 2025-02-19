@@ -10,10 +10,12 @@ class Barangay extends Model
     protected $table = 'barangay';
 
     protected $fillable = [
-        'name'
+        'name',
+        'longitude',
+        'latitude',
     ];
 
-    public function locations(){
-        return $this->hasMany(Location::class);
+    public function reports(){
+        return $this->hasMany(Report::class);
     }
 }
