@@ -13,6 +13,11 @@ class BorrowTransactionItemsController extends Controller
     public function index()
     {
         //
+        try {
+            return response()->json(BorrowTransactionItems::all());
+        } catch (Exception $e) {
+            return response()->json(['Index Borrow Transaction Items Error' => $e->getMessage()], 500);
+        }
     }
 
     /**
@@ -29,6 +34,27 @@ class BorrowTransactionItemsController extends Controller
     public function store(Request $request)
     {
         //
+        try {
+            $request->validate([
+                'transaction_id' => 'required|exists:borrow_transactions,id',
+                'item_copy_id' => 'required|integer',
+                'returned' => 'required|boolean',
+                'returned_date' => 'nullable|date',
+                'item_type' => 'required|string',
+            ]);
+
+            $borrowTransactionItem = BorrowTransactionItems::create($request->all());
+
+            return response()->json(
+                [
+                    'message' => 'Successfully Created',
+                    'data' => $borrowTransactionItem,
+                ],
+                201,
+            );
+        } catch (Exception $e) {
+            return response()->json(['Store Borrow Transaction Items Error' => $e->getMessage()], 500);
+        }
     }
 
     /**
@@ -37,6 +63,11 @@ class BorrowTransactionItemsController extends Controller
     public function show(BorrowTransactionItems $borrowTransactionItems)
     {
         //
+        try{
+            return response()->json($borrowTransactionItems);
+        }catch(Exception $e){
+            return response()->json(['Show Borrow Transaction Items Error' => $e->getMessage()], 500);
+        }
     }
 
     /**
@@ -53,6 +84,23 @@ class BorrowTransactionItemsController extends Controller
     public function update(Request $request, BorrowTransactionItems $borrowTransactionItems)
     {
         //
+        try{
+            $request->validate([
+                'transaction_id' => 'sometimes|required|exists:borrow_transactions,id',
+                'item_copy_id' => 'sometimes|required|integer',
+                'returned' => 'sometimes|required|boolean',
+                'returned_date' => 'sometimes|nullable|date',
+                'item_type' => 'sometimes|required|string',
+            ]);
+            $borrowTransactionItems->update($request->all());
+
+            return response()->json([
+                'message' => 'Successfully Updated',
+                'data' => $borrowTransactionItems
+            ]);
+        }catch(Exception $e){
+            return response()->json(['Update Borrow Transaction Items Error' => $e->getMessage()], 500);
+        }
     }
 
     /**
@@ -61,5 +109,13 @@ class BorrowTransactionItemsController extends Controller
     public function destroy(BorrowTransactionItems $borrowTransactionItems)
     {
         //
+        try{
+            $borrowTransactionItems->delete();
+            return response()->json([
+                'message' => 'Deleted Successfully',
+            ]);
+        }catch(Exception $e){
+            return response()->json(['Destroy Borrow Transaction Items Error' => $e->getMessage()], 500);
+        }
     }
 }

@@ -13,6 +13,11 @@ class OfficesController extends Controller
     public function index()
     {
         //
+        try {
+            return response()->json(Offices::all());
+        } catch (Exception $e) {
+            return response()->json(['Index Offices Error' => $e->getMessage()], 500);
+        }
     }
 
     /**
@@ -29,6 +34,23 @@ class OfficesController extends Controller
     public function store(Request $request)
     {
         //
+        try {
+            $request->validate([
+                'office_name' => 'required|string|max:255',
+            ]);
+
+            $offices = Offices::create($request->all());
+
+            return response()->json(
+                [
+                    'message' => 'Successfully Created',
+                    'data' => $offices,
+                ],
+                201,
+            );
+        } catch (Exception $e) {
+            return response()->json(['Store Offices Error' => $e->getMessage()], 500);
+        }
     }
 
     /**
@@ -37,6 +59,11 @@ class OfficesController extends Controller
     public function show(Offices $offices)
     {
         //
+        try{
+            return response()->json($offices);
+        }catch(Exception $e){
+            return response()->json(['Show Offices Error' => $e->getMessage()], 500);
+        }
     }
 
     /**
@@ -53,6 +80,19 @@ class OfficesController extends Controller
     public function update(Request $request, Offices $offices)
     {
         //
+        try{
+            $request->validate([
+                'office_name' => 'sometimes|required|string|max:255',
+            ]);
+            $offices->update($request->all());
+
+            return response()->json([
+                'message' => 'Successfully Updated',
+                'data' => $offices
+            ]);
+        }catch(Exception $e){
+            return response()->json(['Update Offices Error' => $e->getMessage()], 500);
+        }
     }
 
     /**
@@ -61,5 +101,13 @@ class OfficesController extends Controller
     public function destroy(Offices $offices)
     {
         //
+        try{
+            $offices->delete();
+            return response()->json([
+                'message' => 'Deleted Successfully',
+            ]);
+        }catch(Exception $e){
+            return response()->json(['Destroy Offices Error' => $e->getMessage()], 500);
+        }
     }
 }

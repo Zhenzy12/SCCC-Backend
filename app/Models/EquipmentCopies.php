@@ -16,6 +16,6 @@ class EquipmentCopies extends Model
     ];
 
     public function officeEquipments(){
-        return $this->belongsTo(OfficeEquipments::class);
+        return $this->belongsTo(OfficeEquipments::class, 'item_id');
     }
 }

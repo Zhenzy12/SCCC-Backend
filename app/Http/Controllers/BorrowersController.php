@@ -13,6 +13,11 @@ class BorrowersController extends Controller
     public function index()
     {
         //
+        try {
+            return response()->json(Borrowers::all());
+        } catch (Exception $e) {
+            return response()->json(['Index Borrowers Error' => $e->getMessage()], 500);
+        }
     }
 
     /**
@@ -29,6 +34,25 @@ class BorrowersController extends Controller
     public function store(Request $request)
     {
         //
+        try {
+            $request->validate([
+                'borrowers_name' => 'required|string|max:255',
+                'borrowers_contact' => 'required|string',
+                'office_id' => 'required|exists:offices,id',
+            ]);
+
+            $borrower = Borrowers::create($request->all());
+
+            return response()->json(
+                [
+                    'message' => 'Successfully Created',
+                    'data' => $borrower,
+                ],
+                201,
+            );
+        } catch (Exception $e) {
+            return response()->json(['Store Borrowers Error' => $e->getMessage()], 500);
+        }
     }
 
     /**
@@ -37,6 +61,11 @@ class BorrowersController extends Controller
     public function show(Borrowers $borrowers)
     {
         //
+        try{
+            return response()->json($borrowers);
+        }catch(Exception $e){
+            return response()->json(['Show Borrowers Error' => $e->getMessage()], 500);
+        }
     }
 
     /**
@@ -53,6 +82,21 @@ class BorrowersController extends Controller
     public function update(Request $request, Borrowers $borrowers)
     {
         //
+        try{
+            $request->validate([
+                'borrowers_name' => 'sometimes|required|string|max:255',
+                'borrowers_contact' => 'sometimes|required|string',
+                'office_id' => 'sometimes|required|exists:offices,id',
+            ]);
+            $borrowers->update($request->all());
+
+            return response()->json([
+                'message' => 'Successfully Updated',
+                'data' => $borrowers
+            ]);
+        }catch(Exception $e){
+            return response()->json(['Update Borrowers Error' => $e->getMessage()], 500);
+        }
     }
 
     /**
@@ -61,5 +105,13 @@ class BorrowersController extends Controller
     public function destroy(Borrowers $borrowers)
     {
         //
+        try{
+            $borrowers->delete();
+            return response()->json([
+                'message' => 'Deleted Successfully',
+            ]);
+        }catch(Exception $e){
+            return response()->json(['Destroy Borrowers Error' => $e->getMessage()], 500);
+        }
     }
 }

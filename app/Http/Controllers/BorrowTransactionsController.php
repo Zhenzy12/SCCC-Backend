@@ -13,6 +13,11 @@ class BorrowTransactionsController extends Controller
     public function index()
     {
         //
+        try {
+            return response()->json(BorrowTransactions::all());
+        } catch (Exception $e) {
+            return response()->json(['Index Borrow Transactions Error' => $e->getMessage()], 500);
+        }
     }
 
     /**
@@ -29,6 +34,27 @@ class BorrowTransactionsController extends Controller
     public function store(Request $request)
     {
         //
+        try {
+            $request->validate([
+                'borrower_id' => 'required|exists:borrowers,id',
+                'borrow_date' => 'nullable|date',
+                'returned_date' => 'nullable|date',
+                'lender_id' => 'required|exists:users,id',
+                'remarks' => 'required|string',
+            ]);
+
+            $borrowTransaction = BorrowTransactions::create($request->all());
+
+            return response()->json(
+                [
+                    'message' => 'Successfully Created',
+                    'data' => $borrowTransaction,
+                ],
+                201,
+            );
+        } catch (Exception $e) {
+            return response()->json(['Store Borrow Transactions Error' => $e->getMessage()], 500);
+        }
     }
 
     /**
@@ -37,6 +63,11 @@ class BorrowTransactionsController extends Controller
     public function show(BorrowTransactions $borrowTransactions)
     {
         //
+        try{
+            return response()->json($borrowTransactions);
+        }catch(Exception $e){
+            return response()->json(['Show Borrow Transaction Error' => $e->getMessage()], 500);
+        }
     }
 
     /**
@@ -53,6 +84,23 @@ class BorrowTransactionsController extends Controller
     public function update(Request $request, BorrowTransactions $borrowTransactions)
     {
         //
+        try{
+            $request->validate([
+                'borrower_id' => 'sometimes|required|exists:borrowers,id',
+                'borrow_date' => 'sometimes|nullable|date',
+                'returned_date' => 'sometimes|nullable|date',
+                'lender_id' => 'sometimes|required|exists:users,id',
+                'remarks' => 'sometimes|required|string',
+            ]);
+            $borrowTransactions->update($request->all());
+
+            return response()->json([
+                'message' => 'Successfully Updated',
+                'data' => $borrowTransactions
+            ]);
+        }catch(Exception $e){
+            return response()->json(['Update Borrow Transaction Error' => $e->getMessage()], 500);
+        }
     }
 
     /**
@@ -61,5 +109,13 @@ class BorrowTransactionsController extends Controller
     public function destroy(BorrowTransactions $borrowTransactions)
     {
         //
+        try{
+            $borrowTransactions->delete();
+            return response()->json([
+                'message' => 'Deleted Successfully',
+            ]);
+        }catch(Exception $e){
+            return response()->json(['Destroy Borrow Transaction Error' => $e->getMessage()], 500);
+        }
     }
 }
