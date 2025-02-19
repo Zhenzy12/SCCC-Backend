@@ -18,6 +18,6 @@ class Borrowers extends Model
     ];
 
     public function offices(){
-        return $this->belongsTo(Offices::class, 'office_id');
+        return $this->belongsTo(Offices::class, 'office_id', 'id');
     }
 }

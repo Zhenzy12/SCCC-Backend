@@ -13,6 +13,7 @@ use App\Http\Controllers\BorrowersController;
 use App\Http\Controllers\OfficesController;
 use App\Http\Controllers\BarangayController;
 use App\Http\Controllers\ReportController;
+use App\Http\Controllers\TransactionHistoryController;
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('/user', function (Request $request) {
@@ -116,6 +117,8 @@ Route::put('/offices/{offices}', [OfficesController::class, 'update']);
 
 Route::delete('/offices/{offices}', [OfficesController::class, 'destroy']);
 
+//Transaction History
+Route::get('/transaction_history', [TransactionHistoryController::class, 'index']);
 
 
     Route::prefix('911')->group(function () {

@@ -3,12 +3,10 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use App\Models\BorrowTranactions;
+use App\Models\BorrowTransactions;
 
 class BorrowTransactionItems extends Model
 {
-    //
-
     protected $table = 'borrow_transaction_items';
 
     protected $fillable = [
@@ -20,6 +18,6 @@ class BorrowTransactionItems extends Model
     ];
 
     public function borrowTransactions(){
-        return $this->belongsTo(BorrowTranactions::class, 'transaction_id');
+        return $this->belongsTo(BorrowTransactions::class, 'transaction_id', 'id');
     }
 }
