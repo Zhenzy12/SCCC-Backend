@@ -21,7 +21,7 @@ class ReportController extends Controller
         $barangays = Barangay::all();
         $actions = ActionsTaken::all();
         $assistance = TypeOfAssistance::all();
-        dd($sources, $incidents, $barangays, $actions, $assistance);
+        // dd($sources);
 
         return response()->json([
             'sources' => $sources,
