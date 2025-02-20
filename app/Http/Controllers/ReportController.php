@@ -9,7 +9,7 @@ use App\Models\Source;
 use App\Models\ActionsTaken;
 use App\Models\Incident;
 use App\Models\TypeOfAssistance;
-use App\Models\Location;
+use App\Models\Barangay;
 
 class ReportController extends Controller
 {
@@ -17,17 +17,18 @@ class ReportController extends Controller
     public function index()
     {
         $sources = Source::all();
-        $actions = ActionsTaken::all();
         $incidents = Incident::all();
+        $barangays = Barangay::all();
+        $actions = ActionsTaken::all();
         $assistance = TypeOfAssistance::all();
-        $locations = Location::all();
+        dd($sources, $incidents, $barangays, $actions, $assistance);
 
         return response()->json([
             'sources' => $sources,
             'actions' => $actions,
             'incidents' => $incidents,
             'assistance' => $assistance,
-            'locations' => $locations
+            'barangays' => $barangays
         ], 200);
     }
 
