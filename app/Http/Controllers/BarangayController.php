@@ -15,7 +15,8 @@ class BarangayController extends Controller
     public function index()
     {
         //
-        return response()->json('this is a test', 200);
+        $barangays = Barangay::all(['id', 'name', 'longitude', 'latitude']);
+        return response()->json($barangays, 200);
     }
 
     /**
@@ -24,9 +25,9 @@ class BarangayController extends Controller
     public function create(Request $request)
     {
         $request->validate([
-            'name' => 'required',
-            'longitude' => 'required',
-            'latitude' => 'required',
+            'name' => 'required|string|max:255',
+            'longitude' => 'required|numeric',
+            'latitude' => 'required|numeric',
         ]);
 
         $barangay = Barangay::create([
@@ -63,6 +64,8 @@ class BarangayController extends Controller
     public function edit(string $id)
     {
         //
+        $barangay = Barangay::findOrFail($id);
+        return response()->json($barangay, 200);
     }
 
     /**
@@ -71,6 +74,37 @@ class BarangayController extends Controller
     public function update(Request $request, string $id)
     {
         //
+        $request->validate([
+            'name' => 'string|max:255',
+            'longitude' => 'numeric',
+            'latitude' => 'numeric',
+        ]);
+
+        // $barangay = Barangay::findOrFail($id);
+        // $barangay->update([
+        //     'name' => $request->name,
+        //     'longitude' => $request->longitude,
+        //     'latitude' => $request->latitude,
+        // ]);
+
+        // return response()->json([
+        //     'message' => 'Barangay updated successfully!',
+        //     'barangay' => $barangay,
+        // ]);
+
+        $barangay = Barangay::findOrFail($id);
+        $barangay->update($request->all());  
+
+        // $barangay->update([
+        //     'name' => $request->name,
+        //     'longitude' => $request->longitude,
+        //     'latitude' => $request->latitude
+        // ]);
+
+        return response()->json([
+            'message' => 'Barangay updated successfully!',
+            'barangay' => $barangay,
+        ]);
     }
 
     /**

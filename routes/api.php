@@ -119,13 +119,13 @@ Route::delete('/offices/{offices}', [OfficesController::class, 'destroy']);
 
 
     Route::prefix('911')->group(function () {
-        // Route::get('/users', function () {
-        //     // Matches The "/admin/users" URL
-        // });
 
         # Barangay controller routes
         Route::get('/barangay', [BarangayController::class, 'index']);
         Route::post('/barangay', [BarangayController::class, 'create']);
+        Route::get('/barangay/{id}/edit', [BarangayController::class, 'edit']);
+        Route::put('/barangay/{id}/update', [BarangayController::class, 'update']);
+        Route::delete('/barangay/{id}/destroy', [BarangayController::class, 'destroy']);
 
         Route::get('/report', [ReportController::class, 'index']);
         Route::post('/report', [ReportController::class, 'create']);

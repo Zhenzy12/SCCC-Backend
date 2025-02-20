@@ -17,13 +17,13 @@ return new class extends Migration
             $table->string('date_received')->nullable(); #date
             $table->string('arrival_on_site'); #time
             $table->string('name')->nullable();
-            $table->string('landmark');
-            $table->string('longitude');
-            $table->string('latitude');
-            $table->foreignId('source_id')->constrained('source')->onDelete('restrict');
-            $table->foreignId('incident_id')->constrained('incident')->onDelete('restrict');
-            $table->foreignId('barangay_id')->constrained('barangay')->onDelete('restrict');
-            $table->foreignId('actions_id')->constrained('actions_taken')->onDelete('restrict'); #actions taken
+            $table->string('landmark',10,6);
+            $table->float('longitude',10,6);
+            $table->float('latitude',10,6);
+            $table->foreignId('source_id')->constrained('source')->onDelete('cascade');
+            $table->foreignId('incident_id')->constrained('incident')->onDelete('cascade');
+            $table->foreignId('barangay_id')->constrained('barangay')->onDelete('cascade');
+            $table->foreignId('actions_id')->constrained('actions_taken')->onDelete('cascade'); #actions taken
             $table->foreignId('assistance_id')->constrained('type_of_assistance')->onDelete('cascade'); #type of assistance
             $table->timestamps();
         });

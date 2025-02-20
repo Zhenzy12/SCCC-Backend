@@ -14,8 +14,8 @@ return new class extends Migration
         Schema::create('barangay', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('longitude');
-            $table->string('latitude');
+            $table->float('longitude',10,6);
+            $table->float('latitude',10,6);
             $table->timestamps();
         });
     }
