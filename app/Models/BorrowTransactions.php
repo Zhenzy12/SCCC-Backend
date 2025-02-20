@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\BorrowTransactionItems;
 use App\Models\Borrowers;
+use App\Models\User;
 
 class BorrowTransactions extends Model
 {
@@ -22,5 +23,9 @@ class BorrowTransactions extends Model
     public function borrowers()
     {
         return $this->belongsTo(Borrowers::class, 'borrower_id');
+    }
+
+    public function user(){
+        return $this->belongsTo(User::class, 'lender_id');
     }
 }

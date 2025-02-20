@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Borrowers;
-use App\Models\Users;
+use App\Models\User;
 use App\Models\BorrowTransactions;
 use App\Models\Offices;
 use App\Models\BorrowTransactionItems;
@@ -18,7 +18,9 @@ class TransactionHistoryController extends Controller
     {
         $borrowers = Borrowers::with('offices')->get();
 
-        $borrow_transactions = BorrowTransactions::with(['borrowers', 'borrowTransactionItems'])->get();
+        $users = User::with('borrowers')->get();
+
+        $borrow_transactions = BorrowTransactions::with(['borrowers', 'borrowTransactionItems', 'user'])->get();
 
         $borrow_transaction_items = BorrowTransactionItems::with(['borrowTransactions'])->get();
 
@@ -31,6 +33,7 @@ class TransactionHistoryController extends Controller
         $offices = Offices::with(['borrowers'])->get();
 
         return response()->json([
+            'users' => $users,
             'borrowers' => $borrowers,
             'borrow_transactions' => $borrow_transactions,
             'borrow_transaction_items' => $borrow_transaction_items,

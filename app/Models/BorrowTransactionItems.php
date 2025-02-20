@@ -18,6 +18,6 @@ class BorrowTransactionItems extends Model
     ];
 
     public function borrowTransactions(){
-        return $this->belongsTo(BorrowTransactions::class, 'transaction_id', 'id');
+        return $this->belongsTo(BorrowTransactions::class, 'transaction_id');
     }
 }

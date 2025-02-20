@@ -16,6 +16,6 @@ class Offices extends Model
     ];
 
     public function borrowers(){
-        return $this->hasMany(Borrowers::class, 'office_id', 'id');
+        return $this->hasMany(Borrowers::class, 'office_id');
     }
 }
