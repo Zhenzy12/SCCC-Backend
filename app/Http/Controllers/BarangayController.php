@@ -75,22 +75,10 @@ class BarangayController extends Controller
     {
         //
         $request->validate([
-            'name' => 'string|max:255',
+            // 'name' => 'string|max:255',
             'longitude' => 'numeric',
             'latitude' => 'numeric',
         ]);
-
-        // $barangay = Barangay::findOrFail($id);
-        // $barangay->update([
-        //     'name' => $request->name,
-        //     'longitude' => $request->longitude,
-        //     'latitude' => $request->latitude,
-        // ]);
-
-        // return response()->json([
-        //     'message' => 'Barangay updated successfully!',
-        //     'barangay' => $barangay,
-        // ]);
 
         $barangay = Barangay::findOrFail($id);
         $barangay->update($request->all());  

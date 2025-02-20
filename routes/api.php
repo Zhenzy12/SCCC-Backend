@@ -123,8 +123,8 @@ Route::delete('/offices/{offices}', [OfficesController::class, 'destroy']);
         # Barangay controller routes
         Route::get('/barangay', [BarangayController::class, 'index']);
         Route::post('/barangay', [BarangayController::class, 'create']);
-        Route::get('/barangay/{id}/edit', [BarangayController::class, 'edit']);
-        Route::put('/barangay/{id}/update', [BarangayController::class, 'update']);
+        Route::get('/barangay-edit/{id}', [BarangayController::class, 'edit']);
+        Route::put('/barangay-update/{id}', [BarangayController::class, 'update']);
         Route::delete('/barangay/{id}/destroy', [BarangayController::class, 'destroy']);
 
         Route::get('/report', [ReportController::class, 'index']);
