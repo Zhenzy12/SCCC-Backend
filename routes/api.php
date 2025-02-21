@@ -139,7 +139,9 @@ Route::delete('/offices/{offices}', [OfficesController::class, 'destroy']);
         Route::put('/report/{id}', [ReportController::class, 'update']);
 
         Route::get('/report-display', [ReportController::class, 'display']);
-        
+
+        Route::get('/report-view/{id}', [ReportController::class, 'show']);
+     
     });
 
 });

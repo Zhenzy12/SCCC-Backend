@@ -83,9 +83,10 @@ class ReportController extends Controller
     public function show(string $id)
     {
         //
-        // $report = Report::with(['source', 'incident', 'actions', 'assistance', 'barangay'])->find($id);
-
-        // return response()->json($report, 200);
+        // $report = Report::findOrFail($id);
+        $report = Report::with(['source', 'incident', 'actions', 'assistance', 'barangay'])->findOrFail($id);
+        // dd($report);
+        return response()->json($report, 200);
     }
 
     public function display()
