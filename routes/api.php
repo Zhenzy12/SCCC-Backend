@@ -36,9 +36,9 @@ Route::middleware(['api.key'])->group(function () {
 
     Route::get('/office_equipments/{officeEquipments}', [OfficeEquipmentsController::class, 'show']);
 
-    Route::put('/office_equipments/{officeEquipments}', [OfficeEquipmentsController:: class, 'update']);
+    Route::put('/office_equipments/{officeEquipments}', [OfficeEquipmentsController::class, 'update']);
 
-    Route::delete('/office_equipments/{officeEquipments}', [OfficeEquipmentsController:: class, 'destroy']);
+    Route::delete('/office_equipments/{officeEquipments}', [OfficeEquipmentsController::class, 'destroy']);
 
     // categories api
     Route::get('/categories', [CategoriesController::class, 'index']);
@@ -49,21 +49,21 @@ Route::middleware(['api.key'])->group(function () {
 
     Route::put('/categories/{categories}', [CategoriesController::class, 'update']);
 
-    Route::delete('categories/{categories}',[CategoriesController::class, 'destroy']);
+    Route::delete('categories/{categories}', [CategoriesController::class, 'destroy']);
 
-// office supplies API
-Route::get('/office_supplies', [OfficeSuppliesController::class, 'index']);
+    // office supplies API
+    Route::get('/office_supplies', [OfficeSuppliesController::class, 'index']);
 
-Route::post('/office_supplies', [OfficeSuppliesController::class, 'store']);
+    Route::post('/office_supplies', [OfficeSuppliesController::class, 'store']);
 
-Route::get('/office_supplies/{officeSupplies}', [OfficeSuppliesController::class, 'show']);
+    Route::get('/office_supplies/{officeSupplies}', [OfficeSuppliesController::class, 'show']);
 
-Route::put('/office_supplies/{officeSupplies}', [OfficeSuppliesController::class, 'update']);
+    Route::put('/office_supplies/{officeSupplies}', [OfficeSuppliesController::class, 'update']);
 
-Route::delete('/office_supplies/{officeSupplies}', [OfficeSuppliesController::class, 'destroy']);
+    Route::delete('/office_supplies/{officeSupplies}', [OfficeSuppliesController::class, 'destroy']);
 
-// equipment copies API
-Route::get('/equipment_copies', [EquipmentCopiesController::class, 'index']);
+    // equipment copies API
+    Route::get('/equipment_copies', [EquipmentCopiesController::class, 'index']);
 
     Route::post('/equipment_copies', [EquipmentCopiesController::class, 'store']);
 
@@ -71,54 +71,54 @@ Route::get('/equipment_copies', [EquipmentCopiesController::class, 'index']);
 
     Route::put('/equipment_copies/{equipmentCopies}', [EquipmentCopiesController::class, 'update']);
 
-Route::delete('/equipment_copies/{equipmentCopies}', [EquipmentCopiesController::class, 'destroy']);
+    Route::delete('/equipment_copies/{equipmentCopies}', [EquipmentCopiesController::class, 'destroy']);
 
-//borrow transaction items API
-Route::get('/borrow_transaction_items', [BorrowTransactionItemsController::class, 'index']);
+    //borrow transaction items API
+    Route::get('/borrow_transaction_items', [BorrowTransactionItemsController::class, 'index']);
 
-Route::post('/borrow_transaction_items', [BorrowTransactionItemsController::class, 'store']);
+    Route::post('/borrow_transaction_items', [BorrowTransactionItemsController::class, 'store']);
 
-Route::get('/borrow_transaction_items/{borrowTransactionItems}', [BorrowTransactionItemsController::class, 'show']);
+    Route::get('/borrow_transaction_items/{borrowTransactionItems}', [BorrowTransactionItemsController::class, 'show']);
 
-Route::put('/borrow_transaction_items/{borrowTransactionItems}', [BorrowTransactionItemsController::class, 'update']);
+    Route::put('/borrow_transaction_items/{borrowTransactionItems}', [BorrowTransactionItemsController::class, 'update']);
 
-Route::delete('/borrow_transaction_items/{borrowTransactionItems}', [BorrowTransactionItemsController::class, 'destroy']);
+    Route::delete('/borrow_transaction_items/{borrowTransactionItems}', [BorrowTransactionItemsController::class, 'destroy']);
 
-//borrowers transactions API
-Route::get('/borrow_transactions', [BorrowTransactionsController::class, 'index']);
+    //borrowers transactions API
+    Route::get('/borrow_transactions', [BorrowTransactionsController::class, 'index']);
 
-Route::post('/borrow_transactions', [BorrowTransactionsController::class, 'store']);
+    Route::post('/borrow_transactions', [BorrowTransactionsController::class, 'store']);
 
-Route::get('/borrow_transactions/{borrowTransactions}', [BorrowTransactionsController::class, 'show']);
+    Route::get('/borrow_transactions/{borrowTransactions}', [BorrowTransactionsController::class, 'show']);
 
-Route::put('/borrow_transactions/{borrowTransactions}', [BorrowTransactionsController::class, 'update']);
+    Route::put('/borrow_transactions/{borrowTransactions}', [BorrowTransactionsController::class, 'update']);
 
-Route::delete('/borrow_transactions/{borrowTransactions}', [BorrowTransactionsController::class, 'destroy']);
+    Route::delete('/borrow_transactions/{borrowTransactions}', [BorrowTransactionsController::class, 'destroy']);
 
-// borrowers API
-Route::get('/borrowers', [BorrowersController::class, 'index']);
+    // borrowers API
+    Route::get('/borrowers', [BorrowersController::class, 'index']);
 
-Route::post('/borrowers', [BorrowersController::class, 'store']);
+    Route::post('/borrowers', [BorrowersController::class, 'store']);
 
-Route::get('/borrowers/{borrowers}', [BorrowersController::class, 'show']);
+    Route::get('/borrowers/{borrowers}', [BorrowersController::class, 'show']);
 
-Route::put('/borrowers/{borrowers}', [BorrowersController::class, 'update']);
+    Route::put('/borrowers/{borrowers}', [BorrowersController::class, 'update']);
 
-Route::delete('/borrowers/{borrowers}', [BorrowersController::class, 'destroy']);
+    Route::delete('/borrowers/{borrowers}', [BorrowersController::class, 'destroy']);
 
-//Offices API
-Route::get('/offices', [OfficesController::class, 'index']);
+    //Offices API
+    Route::get('/offices', [OfficesController::class, 'index']);
 
-Route::post('/offices', [OfficesController::class, 'store']);
+    Route::post('/offices', [OfficesController::class, 'store']);
 
-Route::get('/offices/{offices}', [OfficesController::class, 'show']);
+    Route::get('/offices/{offices}', [OfficesController::class, 'show']);
 
-Route::put('/offices/{offices}', [OfficesController::class, 'update']);
+    Route::put('/offices/{offices}', [OfficesController::class, 'update']);
 
-Route::delete('/offices/{offices}', [OfficesController::class, 'destroy']);
+    Route::delete('/offices/{offices}', [OfficesController::class, 'destroy']);
 
-//Transaction History
-Route::get('/transaction_history', [TransactionHistoryController::class, 'index']);
+    //Transaction History
+    Route::get('/transaction_history', [TransactionHistoryController::class, 'index']);
 
 
     Route::prefix('911')->group(function () {
@@ -134,6 +134,4 @@ Route::get('/transaction_history', [TransactionHistoryController::class, 'index'
         Route::post('/report', [ReportController::class, 'create']);
         Route::put('/report/{id}', [ReportController::class, 'update']);
     });
-
 });
-
