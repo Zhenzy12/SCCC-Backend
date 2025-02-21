@@ -15,6 +15,6 @@ class Source extends Model
     ];
 
     public function reports(){
-        return $this->hasMany(Report::class);
+        return $this->hasMany(Report::class, 'source_id');
     }
 }

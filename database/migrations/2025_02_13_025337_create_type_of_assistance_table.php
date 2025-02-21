@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('type_of_assistance', function (Blueprint $table) {
             $table->id();
-            $table->enum('assistance', ['Medical Assistance','Police Assistance','Fire Assistance','Rescue Assistance','General Assistance','Others']);
+            $table->string('assistance');
             $table->timestamps();
         });
     }

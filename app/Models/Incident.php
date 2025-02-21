@@ -16,11 +16,11 @@ class Incident extends Model
 
     public function typeOfAssistance()
     {
-        return $this->belongsTo(TypeOfAssistance::class);
+        return $this->belongsTo(TypeOfAssistance::class, 'assistance_id');
     }
 
     public function reports()
     {
-        return $this->hasMany(Report::class);
+        return $this->hasMany(Report::class, 'incident_id');
     }
 }
