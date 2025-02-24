@@ -19,6 +19,7 @@ class EquipmentCopiesTableSeeder extends Seeder
             DB::table('equipment_copies')->insert([
                 'item_id' => rand(1, 10),
                 'is_available' => (bool)rand(0, 1),
+                'copy_num'=> rand(1, 10)
             ]);
         }
     }
