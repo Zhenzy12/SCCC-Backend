@@ -120,6 +120,7 @@ Route::middleware(['api.key'])->group(function () {
     //Transaction History
     Route::get('/transaction_history', [TransactionHistoryController::class, 'index']);
 
+    Route::put('/transaction_history/{transactionHistory}', [TransactionHistoryController::class, 'update']);
 
     Route::prefix('911')->group(function () {
 
@@ -138,12 +139,12 @@ Route::middleware(['api.key'])->group(function () {
         Route::get('/report', [ReportController::class, 'index']);
 
         Route::post('/report', [ReportController::class, 'create']);
-        
+
         Route::put('/report/{id}', [ReportController::class, 'update']);
 
         Route::get('/report-display', [ReportController::class, 'display']);
 
         Route::get('/report-view/{id}', [ReportController::class, 'show']);
-     
+
     });
 });
