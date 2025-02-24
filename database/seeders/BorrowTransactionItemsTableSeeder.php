@@ -17,7 +17,7 @@ class BorrowTransactionItemsTableSeeder extends Seeder
         //
         for ($i = 0; $i < 10; $i++) {
             $isReturned = (bool)rand(0, 1);
-            $itemTypes = ['Equipment Copty', 'Office Supply'];
+            $itemTypes = ['Equipment Copy', 'Office Supply'];
 
             DB::table('borrow_transaction_items')->insert([
                 'transaction_id' => rand(1, 10),

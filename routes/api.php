@@ -145,6 +145,5 @@ Route::middleware(['api.key'])->group(function () {
         Route::get('/report-display', [ReportController::class, 'display']);
 
         Route::get('/report-view/{id}', [ReportController::class, 'show']);
-
     });
 });
