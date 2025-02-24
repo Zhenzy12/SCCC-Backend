@@ -125,13 +125,25 @@ Route::middleware(['api.key'])->group(function () {
 
         # Barangay controller routes
         Route::get('/barangay', [BarangayController::class, 'index']);
-        Route::post('/barangay', [BarangayController::class, 'create']);
-        Route::get('/barangay-edit/{id}', [BarangayController::class, 'edit']);
-        Route::put('/barangay-update/{id}', [BarangayController::class, 'update']);
-        Route::delete('/barangay/{id}/destroy', [BarangayController::class, 'destroy']);
 
+        Route::post('/barangay', [BarangayController::class, 'create']);
+
+        Route::get('/barangay-edit/{id}', [BarangayController::class, 'edit']);
+
+        Route::put('/barangay-update/{id}', [BarangayController::class, 'update']);
+
+        Route::delete('/barangay-delete/{id}', [BarangayController::class, 'destroy']);
+
+        # Report controller routes
         Route::get('/report', [ReportController::class, 'index']);
+
         Route::post('/report', [ReportController::class, 'create']);
+        
         Route::put('/report/{id}', [ReportController::class, 'update']);
+
+        Route::get('/report-display', [ReportController::class, 'display']);
+
+        Route::get('/report-view/{id}', [ReportController::class, 'show']);
+     
     });
 });

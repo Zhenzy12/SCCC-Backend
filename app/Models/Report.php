@@ -13,7 +13,7 @@ class Report extends Model
         'time',
         'date_received',
         'arrival_on_site',
-        'name', #this is the column for the auth user
+        'name',
         'landmark',
         'longitude',
         'latitude',
@@ -25,22 +25,22 @@ class Report extends Model
     ];
 
     public function barangay(){
-        return $this->belongsTo(Barangay::class);
+        return $this->belongsTo(Barangay::class, 'barangay_id');
     }
 
     public function source(){
-        return $this->belongsTo(Source::class);
+        return $this->belongsTo(Source::class, 'source_id');
     }
 
     public function incident(){
-        return $this->belongsTo(Incident::class);
+        return $this->belongsTo(Incident::class, 'incident_id');
     }
 
-    public function actionsTaken(){
+    public function actions(){
         return $this->belongsTo(ActionsTaken::class, 'actions_id');
     }
 
-    public function typeOfAssistance(){
+    public function assistance(){
         return $this->belongsTo(TypeOfAssistance::class, 'assistance_id');
     }
 }

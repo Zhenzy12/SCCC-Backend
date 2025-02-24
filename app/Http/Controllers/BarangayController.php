@@ -16,6 +16,8 @@ class BarangayController extends Controller
     {
         //
         $barangays = Barangay::all(['id', 'name', 'longitude', 'latitude']);
+
+        
         return response()->json($barangays, 200);
     }
 
@@ -75,7 +77,7 @@ class BarangayController extends Controller
     {
         //
         $request->validate([
-            // 'name' => 'string|max:255',
+            'name' => 'string|max:255',
             'longitude' => 'numeric',
             'latitude' => 'numeric',
         ]);
@@ -101,5 +103,11 @@ class BarangayController extends Controller
     public function destroy(string $id)
     {
         //
+        $barangay = Barangay::findOrFail($id);
+        $barangay->delete();
+        return response()->json([
+            'message' => 'Barangay deleted successfully!',
+            'barangay' => $barangay,
+        ]);
     }
 }

@@ -21,7 +21,6 @@ class ReportController extends Controller
         $barangays = Barangay::all();
         $actions = ActionsTaken::all();
         $assistance = TypeOfAssistance::all();
-        // dd($sources);
 
         return response()->json([
             'sources' => $sources,
@@ -35,6 +34,9 @@ class ReportController extends Controller
     public function create(Request $request)
     {
         $request->validate([
+            'source_id' => 'required',
+            'incident_id' => 'required',
+            'assistance_id' => 'required',
             'time' => 'required',
             'date_received' => 'required',
             'arrival_on_site' => 'required',
@@ -42,18 +44,14 @@ class ReportController extends Controller
             'landmark' => 'required',
             'longitude' => 'required',
             'latitude' => 'required',
-            'source_id' => 'required',
-            'incident_id' => 'required',
             'barangay_id' => 'required',
             'actions_id' => 'required',
-            'assistance_id' => 'required',
         ]);
 
         $report = Report::create([
             'time' => $request->time,
             'date_received' => $request->date_received,
             'arrival_on_site' => $request->arrival_on_site,
-            // 'name' => auth()->user()->name,
             'name' => $request->name,
             'landmark' => $request->landmark,
             'longitude' => $request->longitude,
@@ -85,7 +83,23 @@ class ReportController extends Controller
     public function show(string $id)
     {
         //
+        // $report = Report::findOrFail($id);
+        $report = Report::with(['source', 'incident', 'actions', 'assistance', 'barangay'])->findOrFail($id);
+        // dd($report);
+        return response()->json($report, 200);
     }
+
+    public function display()
+    {
+        //
+        $report = Report::with(['source', 'incident', 'actions', 'assistance', 'barangay'])->get();
+
+        if ($report->isEmpty()) {
+            return response()->json(['message' => 'No reports found'], 404);
+        }
+
+        return response()->json($report, 200);
+        }
 
     /**
      * Show the form for editing the specified resource.

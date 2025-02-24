@@ -16,6 +16,6 @@ class Barangay extends Model
     ];
 
     public function reports(){
-        return $this->hasMany(Report::class);
+        return $this->hasMany(Report::class, 'barangay_id');
     }
 }
