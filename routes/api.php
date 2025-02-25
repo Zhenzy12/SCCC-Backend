@@ -13,6 +13,8 @@ use App\Http\Controllers\BorrowersController;
 use App\Http\Controllers\OfficesController;
 use App\Http\Controllers\BarangayController;
 use App\Http\Controllers\ReportController;
+use App\Http\Controllers\IncidentController;
+use App\Http\Controllers\DashboardController;
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('/user', function (Request $request) {
@@ -120,7 +122,10 @@ Route::delete('/offices/{offices}', [OfficesController::class, 'destroy']);
 
     Route::prefix('911')->group(function () {
 
-        # Barangay controller routes
+        # Dashboard Controlller Routes
+        Route::get('/dashboard', [DashboardController::class, 'index']);
+
+        # Barangay Controller Routes
         Route::get('/barangay', [BarangayController::class, 'index']);
 
         Route::post('/barangay', [BarangayController::class, 'create']);
@@ -131,7 +136,7 @@ Route::delete('/offices/{offices}', [OfficesController::class, 'destroy']);
 
         Route::delete('/barangay-delete/{id}', [BarangayController::class, 'destroy']);
 
-        # Report controller routes
+        # Report Controller Routes
         Route::get('/report', [ReportController::class, 'index']);
 
         Route::post('/report', [ReportController::class, 'create']);
@@ -143,6 +148,13 @@ Route::delete('/offices/{offices}', [OfficesController::class, 'destroy']);
         Route::get('/report-view/{id}', [ReportController::class, 'show']);
 
         Route::get('/report-edit/{id}', [ReportController::class, 'edit']);
+
+        Route::delete('/report-delete/{id}', [ReportController::class, 'destroy']);
+
+        # Incident Controller Routes
+        Route::get('/incident-display', [IncidentController::class, 'index']);
+
+
      
     });
 
