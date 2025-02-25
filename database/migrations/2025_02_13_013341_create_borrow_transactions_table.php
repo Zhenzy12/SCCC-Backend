@@ -18,6 +18,7 @@ return new class extends Migration
             $table->datetime('return_date')->nullable();
             $table->foreignId('lender_id')->constrained('users')->onDelete('cascade');
             $table->string('remarks');
+            $table->boolean('is_deleted')->default(false);
             $table->timestamps();
         });
     }
