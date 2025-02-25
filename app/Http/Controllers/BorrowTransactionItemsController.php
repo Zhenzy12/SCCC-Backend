@@ -41,6 +41,7 @@ class BorrowTransactionItemsController extends Controller
                 'returned' => 'required|boolean',
                 'returned_date' => 'nullable|date',
                 'item_type' => 'required|string',
+                'quantity' => 'required|integer'
             ]);
 
             $borrowTransactionItem = BorrowTransactionItems::create($request->all());
@@ -91,6 +92,7 @@ class BorrowTransactionItemsController extends Controller
                 'returned' => 'sometimes|required|boolean',
                 'returned_date' => 'sometimes|nullable|date',
                 'item_type' => 'sometimes|required|string',
+                'quantity' => 'sometimes|required|integer'
             ]);
             $borrowTransactionItems->update($request->all());
 

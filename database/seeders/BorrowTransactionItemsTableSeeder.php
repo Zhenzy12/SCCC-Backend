@@ -24,6 +24,7 @@ class BorrowTransactionItemsTableSeeder extends Seeder
                 'item_copy_id' => rand(1, 10),
                 'returned' => $isReturned,
                 'item_type' => $itemTypes[array_rand($itemTypes)],
+                'quantity' => 1,
             ]);
         }
     }

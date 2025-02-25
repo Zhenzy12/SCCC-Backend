@@ -18,6 +18,7 @@ return new class extends Migration
             $table->boolean('returned')->default(false);
             $table->datetime('returned_date')->nullable();
             $table->string('item_type');
+            $table->integer('quantity')->default(1);
             $table->timestamps();
         });
     }
