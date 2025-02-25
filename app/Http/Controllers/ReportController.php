@@ -92,14 +92,17 @@ class ReportController extends Controller
     public function display()
     {
         //
-        $report = Report::with(['source', 'incident', 'actions', 'assistance', 'barangay'])->get();
+        $classification = TypeOfAssistance::all();
+
+        // Fetches all reports with their associated data and sort by id through descending order
+        $report = Report::with(['source', 'incident', 'actions', 'assistance', 'barangay'])->orderBy('id', 'desc')->get();
 
         if ($report->isEmpty()) {
             return response()->json(['message' => 'No reports found'], 404);
+        } else {
+           return response()->json([$report, $classification], 200); 
         }
-
-        return response()->json($report, 200);
-        }
+    }
 
     /**
      * Show the form for editing the specified resource.
@@ -107,6 +110,9 @@ class ReportController extends Controller
     public function edit(string $id)
     {
         //
+        $report = Report::with(['source', 'incident', 'actions', 'assistance', 'barangay'])->where('id', $id)->first();
+        // dd($report);
+        return response()->json($report, 200);
     }
 
     /**
