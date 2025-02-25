@@ -13,6 +13,8 @@ use App\Http\Controllers\BorrowersController;
 use App\Http\Controllers\OfficesController;
 use App\Http\Controllers\BarangayController;
 use App\Http\Controllers\ReportController;
+use App\Http\Controllers\IncidentController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\TransactionHistoryController;
 
 Route::middleware('auth:sanctum')->group(function () {
@@ -124,7 +126,10 @@ Route::middleware(['api.key'])->group(function () {
 
     Route::prefix('911')->group(function () {
 
-        # Barangay controller routes
+        # Dashboard Controlller Routes
+        Route::get('/dashboard', [DashboardController::class, 'index']);
+
+        # Barangay Controller Routes
         Route::get('/barangay', [BarangayController::class, 'index']);
 
         Route::post('/barangay', [BarangayController::class, 'create']);
@@ -135,7 +140,7 @@ Route::middleware(['api.key'])->group(function () {
 
         Route::delete('/barangay-delete/{id}', [BarangayController::class, 'destroy']);
 
-        # Report controller routes
+        # Report Controller Routes
         Route::get('/report', [ReportController::class, 'index']);
 
         Route::post('/report', [ReportController::class, 'create']);
