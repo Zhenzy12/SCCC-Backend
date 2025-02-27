@@ -16,12 +16,11 @@ class OfficeSupplies extends Model
         'serial_number',
         'category_id',
         'supply_quantity',
+        // 'image_path'
     ];
 
-    public function categories(){
+    public function categories()
+    {
         return $this->belongsTo(Categories::class, 'category_id');
     }
-
-    
-
 }

@@ -15,14 +15,17 @@ class OfficeEquipments extends Model
     protected $fillable = [
         'equipment_name',
         'equipment_description',
-        'category_id'
+        'category_id',
+        // 'image_path'
     ];
 
-    public function categories(){
+    public function categories()
+    {
         return $this->belongsTo(Categories::class);
     }
 
-    public function equipmentCopies(){
+    public function equipmentCopies()
+    {
         return $this->hasMany(EquipmentCopies::class);
     }
 }
