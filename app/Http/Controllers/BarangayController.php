@@ -91,6 +91,8 @@ class BarangayController extends Controller
         //     'latitude' => $request->latitude
         // ]);
 
+        $barangay->update($request->all());
+
         return response()->json([
             'message' => 'Barangay updated successfully!',
             'barangay' => $barangay,

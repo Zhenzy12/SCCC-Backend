@@ -84,7 +84,7 @@ class ReportController extends Controller
     {
         //
         // $report = Report::findOrFail($id);
-        $report = Report::with(['source', 'incident', 'actions', 'assistance', 'barangay'])->findOrFail($id);
+        $report = Report::with(['source:id,sources', 'incident:id,type', 'actions:id,actions', 'assistance:id,assistance', 'barangay:id,name,longitude,latitude'])->findOrFail($id);
         // dd($report);
         return response()->json($report, 200);
     }
@@ -96,7 +96,7 @@ class ReportController extends Controller
 
         // Fetches all reports with their associated data and sort by id through descending order
         $classification = TypeOfAssistance::all();
-        $report = Report::with(['source', 'incident', 'actions', 'assistance', 'barangay'])->orderBy('id', 'desc')->get();
+        $report = Report::with(['source:id,sources', 'incident:id,type', 'actions:id,actions', 'assistance:id,assistance', 'barangay:id,name,longitude,latitude'])->orderBy('id', 'desc')->get();
 
         if ($report->isEmpty()) {
             return response()->json(['message' => 'No reports found'], 404);
@@ -111,7 +111,7 @@ class ReportController extends Controller
     public function edit(string $id)
     {
         //
-        $report = Report::with(['source', 'incident', 'actions', 'assistance', 'barangay'])->where('id', $id)->first();
+        $report = Report::with(['source:id,sources', 'incident:id,type', 'actions:id,actions', 'assistance:id,assistance', 'barangay:id,name,longitude,latitude'])->where('id', $id)->first();
         // dd($report);
         return response()->json($report, 200);
     }
