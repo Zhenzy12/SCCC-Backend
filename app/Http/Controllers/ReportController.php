@@ -122,15 +122,18 @@ class ReportController extends Controller
     public function update(Request $request, string $id)
     {
         $request->validate([
+            'source_id' => 'required',
+            'incident_id' => 'required',
+            'assistance_id' => 'required',
             'time' => 'required',
             'date_received' => 'required',
             'arrival_on_site' => 'required',
-            'user_id' => 'required',
-            'source_id' => 'required',
-            'incident_id' => 'required',
+            'name' => 'required',
+            'landmark' => 'required',
+            'longitude' => 'required',
+            'latitude' => 'required',
             'barangay_id' => 'required',
             'actions_id' => 'required',
-            'assistance_id' => 'required',
         ]);
 
         $report = Report::find($id);
@@ -145,7 +148,10 @@ class ReportController extends Controller
             'time' => $request->time,
             'date_received' => $request->date_received,
             'arrival_on_site' => $request->arrival_on_site,
-            'user_id' => $request->user_id,
+            'name' => $request->name,
+            'landmark' => $request->landmark,
+            'longitude' => $request->longitude,
+            'latitude' => $request->latitude,
             'source_id' => $request->source_id,
             'incident_id' => $request->incident_id,
             'barangay_id' => $request->barangay_id,
