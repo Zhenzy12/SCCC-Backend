@@ -82,22 +82,45 @@ class BarangayController extends Controller
             'latitude' => 'numeric',
         ]);
 
+        
+
         $barangay = Barangay::findOrFail($id);
         $barangay->update($request->all());  
+        // dd($barangay);
+        $barangay->update([
+            'name' => $request->name,
+            'longitude' => $request->longitude,
+            'latitude' => $request->latitude
+        ]);
 
-        // $barangay->update([
-        //     'name' => $request->name,
-        //     'longitude' => $request->longitude,
-        //     'latitude' => $request->latitude
-        // ]);
-
-        $barangay->update($request->all());
+        // $barangay->update($request->all());
 
         return response()->json([
             'message' => 'Barangay updated successfully!',
             'barangay' => $barangay,
         ]);
     }
+    // public function update(Request $request, string $id)
+    // {
+    //     // Validate the request
+    //     $validated = $request->validate([
+    //         'name' => 'required|string|max:255',
+    //         'longitude' => 'required|numeric',
+    //         'latitude' => 'required|numeric',
+    //     ]);
+        
+    //     // Find the barangay
+    //     $barangay = Barangay::findOrFail($id);
+        
+    //     // Update with validated data (only once!)
+    //     $barangay->update($validated);
+        
+    //     // Return response
+    //     return response()->json([
+    //         'message' => 'Barangay updated successfully!',
+    //         'barangay' => $barangay,
+    //     ]);
+    // }
 
     /**
      * Remove the specified resource from storage.

@@ -103,7 +103,7 @@ class ReportController extends Controller
         } else {
            return response()->json([$report, $classification], 200); 
         }
-    }
+    } 
 
     /**
      * Show the form for editing the specified resource.
