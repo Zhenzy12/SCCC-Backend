@@ -49,7 +49,8 @@ class User extends Authenticatable
         ];
     }
 
-    public function borrowers(){
-        return $this -> hasMany(BorrowTransactions::class, 'lender_id');
+    public function borrowers()
+    {
+        return $this->hasMany(BorrowTransactions::class, 'lender_id');
     }
 }

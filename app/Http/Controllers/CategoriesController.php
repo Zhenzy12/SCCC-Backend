@@ -13,9 +13,9 @@ class CategoriesController extends Controller
     public function index()
     {
         //
-        try{
-           return response()->json(Categories::all());
-        }catch(Exception $e){
+        try {
+            return response()->json(Categories::all());
+        } catch (Exception $e) {
             return response()->json(['Index Categories Error' => $e->getMessage()], 500);
         }
     }
@@ -42,10 +42,10 @@ class CategoriesController extends Controller
             $category = Categories::create($request->all());
 
             return response()->json([
-                'message'=>'Successfully Created',
-                'data'=> $category
-            ],201);
-        }catch(Exception $e){
+                'message' => 'Successfully Created',
+                'data' => $category
+            ], 201);
+        } catch (Exception $e) {
             return response()->json(['Store Categories Error' => $e->getMessage()], 500);
         }
     }
@@ -58,7 +58,7 @@ class CategoriesController extends Controller
         //
         try {
             return response()->json($categories);
-        }catch(Exception $e){
+        } catch (Exception $e) {
             return response()->json(['Show Categories Error' => $e->getMessage()], 500);
         }
     }
@@ -79,7 +79,7 @@ class CategoriesController extends Controller
         //
         try {
             $request->validate([
-                'category_name'=> 'sometimes|required|string|max:255',
+                'category_name' => 'sometimes|required|string|max:255',
             ]);
 
             $categories->update($request->all());
@@ -87,7 +87,7 @@ class CategoriesController extends Controller
                 'message' => 'Successfully Updated',
                 'data' => $categories
             ]);
-        }catch(Exception $e){
+        } catch (Exception $e) {
             return response()->json(['Update Categories Error' => $e->getMessage()], 500);
         }
     }
@@ -98,10 +98,10 @@ class CategoriesController extends Controller
     public function destroy(Categories $categories)
     {
         //
-        try{
+        try {
             $categories->delete();
             return response()->json(['message' => 'Deleted Successfully']);
-        }catch(Exception $e){
+        } catch (Exception $e) {
             return response()->json(['Destroy Categories Error' => $e->getMessage()], 500);
         }
     }

@@ -14,6 +14,7 @@ use App\Http\Controllers\OfficesController;
 use App\Http\Controllers\BarangayController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\IncidentController;
+use App\Http\Controllers\UserController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\TransactionHistoryController;
 
@@ -30,8 +31,12 @@ Route::get('/csrf-cookie', function () {
     return response()->json(['message' => 'CSRF cookie set']);
 });
 
-// Office Equipment api
+
+
 Route::middleware(['api.key'])->group(function () {
+    // user api
+    Route::get('/users', [UserController::class, 'index']);
+    // Office Equipment api
     Route::get('/office_equipments', [OfficeEquipmentsController::class, 'index']);
 
     Route::post('/office_equipments', [OfficeEquipmentsController::class, 'store']);
