@@ -27,9 +27,9 @@ class BarangayController extends Controller
     public function create(Request $request)
     {
         $request->validate([
-            'name' => 'required|string|max:255',
-            'longitude' => 'required|numeric',
-            'latitude' => 'required|numeric',
+            'name' => 'string|max:255',
+            'longitude' => 'nullable|numeric',
+            'latitude' => 'nullable|numeric',
         ]);
 
         $barangay = Barangay::create([

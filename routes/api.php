@@ -156,7 +156,6 @@ Route::delete('/offices/{offices}', [OfficesController::class, 'destroy']);
         Route::get('/incident-display', [IncidentController::class, 'index']);
 
 
-     
     });
 
 });

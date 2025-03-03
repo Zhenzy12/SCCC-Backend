@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('date_received')->nullable(); #date
             $table->string('arrival_on_site'); #time
             $table->string('name')->nullable();
-            $table->string('landmark',10,6);
+            $table->string('landmark',255);
             $table->float('longitude',10,6);
             $table->float('latitude',10,6);
             $table->foreignId('source_id')->constrained('source')->onDelete('cascade');
