@@ -16,7 +16,17 @@ class UsersTableSeeder extends Seeder
      */
     public function run(): void
     {
-        //
+        DB::table('users')->insert([
+            'firstName' => 'User',
+            'middleName' => 'Example',
+            'lastName' => 'Example',
+            'email' => 'user@example.com',
+            'email_verified_at' => Carbon::now(),
+            'password' => Hash::make('password123'),
+            'for_911' => 1,
+            'for_inventory' => 1,
+        ]);
+
         for ($i = 0; $i < 10; $i++) {
             $email_verified = rand(0, 1);
 

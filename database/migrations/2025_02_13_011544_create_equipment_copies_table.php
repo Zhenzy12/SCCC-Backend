@@ -16,7 +16,6 @@ return new class extends Migration
             $table->foreignId('item_id')->constrained('office_equipments')->onDelete('cascade');
             $table->boolean('is_available')->default(true);
             $table->integer('copy_num');
-            $table->string('path', 2000);
             $table->timestamps();
         });
     }
