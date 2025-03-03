@@ -12,7 +12,8 @@ class EquipmentCopies extends Model
 
     protected $fillable = [
         'item_id',
-        'is_available'
+        'is_available',
+        'copy_num',
     ];
 
     public function officeEquipments(){
