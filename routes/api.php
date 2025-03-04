@@ -141,7 +141,7 @@ Route::middleware(['api.key'])->group(function () {
 
         Route::get('/barangay-edit/{id}', [BarangayController::class, 'edit']);
 
-        Route::put('/barangay-update/{id}', [BarangayController::class, 'update']);
+        Route::put('/barangay/{id}', [BarangayController::class, 'update']);
 
         Route::delete('/barangay-delete/{id}', [BarangayController::class, 'destroy']);
 
@@ -156,6 +156,14 @@ Route::middleware(['api.key'])->group(function () {
 
         Route::get('/report-view/{id}', [ReportController::class, 'show']);
         Route::get('/report-edit/{id}', [ReportController::class, 'edit']);
+
+
+        Route::delete('/report-delete/{id}', [ReportController::class, 'destroy']);
+
+        # Incident Controller Routes
+        Route::get('/incident-display', [IncidentController::class, 'index']);
+
+
 
     });
 });

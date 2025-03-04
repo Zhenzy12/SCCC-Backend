@@ -10,63 +10,70 @@ use App\Models\ActionsTaken;
 use App\Models\Incident;
 use App\Models\TypeOfAssistance;
 use App\Models\Barangay;
+use App\Http\Resources\ReportCollection;
+use App\Http\Resources\SourceCollection;
+use App\Http\Requests\ReportRequest;
+use Exception;
 
 class ReportController extends Controller
 {
     //
     public function index()
     {
-        $sources = Source::all();
-        $incidents = Incident::all();
-        $barangays = Barangay::all();
-        $actions = ActionsTaken::all();
-        $assistance = TypeOfAssistance::all();
+        //
+        try {
+            $sources = Source::all();
+            $incidents = Incident::all();
+            $barangays = Barangay::all();
+            $actions = ActionsTaken::all();
+            $assistance = TypeOfAssistance::all();
 
-        return response()->json([
-            'sources' => $sources,
-            'actions' => $actions,
-            'incidents' => $incidents,
-            'assistance' => $assistance,
-            'barangays' => $barangays
-        ], 200);
+            return response()->json([
+                'sources' => $sources,
+                'actions' => $actions,
+                'incidents' => $incidents,
+                'assistance' => $assistance,
+                'barangays' => $barangays,
+            ], 200);
+        } catch (Exception $e) {
+            return response()->json([
+                'message' => 'Fetch failed, please try again later',
+                'error' => $e->getMessage()
+            ], 500);
+        }
     }
 
-    public function create(Request $request)
+    public function create(Request $request, ReportRequest $reportRequest)
     {
-        $request->validate([
-            'source_id' => 'required',
-            'incident_id' => 'required',
-            'assistance_id' => 'required',
-            'time' => 'required',
-            'date_received' => 'required',
-            'arrival_on_site' => 'required',
-            'name' => 'required',
-            'landmark' => 'required',
-            'longitude' => 'required',
-            'latitude' => 'required',
-            'barangay_id' => 'required',
-            'actions_id' => 'required',
-        ]);
+        //
+        try {
+            $reportRequest->validated();
 
-        $report = Report::create([
-            'time' => $request->time,
-            'date_received' => $request->date_received,
-            'arrival_on_site' => $request->arrival_on_site,
-            'name' => $request->name,
-            'landmark' => $request->landmark,
-            'longitude' => $request->longitude,
-            'latitude' => $request->latitude,
-            'source_id' => $request->source_id,
-            'incident_id' => $request->incident_id,
-            'barangay_id' => $request->barangay_id,
-            'actions_id' => $request->actions_id,
-            'assistance_id' => $request->assistance_id,
-        ]);
+            $report = Report::create([
+                'time' => $reportRequest->time,
+                'date_received' => $reportRequest->date_received,
+                'arrival_on_site' => $reportRequest->arrival_on_site,
+                'name' => $reportRequest->name,
+                'landmark' => $reportRequest->landmark,
+                'longitude' => $reportRequest->longitude,
+                'latitude' => $reportRequest->latitude,
+                'source_id' => $reportRequest->source_id,
+                'incident_id' => $reportRequest->incident_id,
+                'barangay_id' => $reportRequest->barangay_id,
+                'actions_id' => $reportRequest->actions_id,
+                'assistance_id' => $reportRequest->assistance_id,
+            ]);
 
-        return response()->json([
-            'message' => 'Report created successfully!',
-            'report' => $report,
-        ]);
+            return response()->json([
+                'message' => 'Report created successfully!',
+                'report' => $report,
+            ]);
+        } catch (Exception $e) {
+            return response()->json([
+                'message' => 'Report creation failed',
+                'error' => $e->getMessage()
+            ], 500);
+        }
     }
 
     /**
@@ -83,27 +90,39 @@ class ReportController extends Controller
     public function show(string $id)
     {
         //
-        // $report = Report::findOrFail($id);
-        $report = Report::with(['source', 'incident', 'actions', 'assistance', 'barangay'])->findOrFail($id);
-        // dd($report);
-        return response()->json($report, 200);
+        try {
+            // $report = Report::findOrFail($id);
+            $report = Report::with(['source:id,sources', 'incident:id,type', 'actions:id,actions', 'assistance:id,assistance', 'barangay:id,name,longitude,latitude'])->findOrFail($id);
+            // dd($report);
+            return response()->json($report, 200);
+        } catch (Exception $e) {
+            return response()->json([
+                'message' => 'Report not found',
+                'error' => $e->getMessage()
+            ], 404);
+        }
     }
 
     public function display()
     {
         //
-        $classification = TypeOfAssistance::all();
+        try {
+            // Fetches all reports with their associated data and sort by id through descending order
+            $classification = TypeOfAssistance::all();
+            $report = Report::with(['source:id,sources', 'incident:id,type', 'actions:id,actions', 'assistance:id,assistance', 'barangay:id,name,longitude,latitude'])->orderBy('id', 'desc')->get();
 
-        // Fetches all reports with their associated data and sort by id through descending order
-        $classification = TypeOfAssistance::all();
-        $report = Report::with(['source', 'incident', 'actions', 'assistance', 'barangay'])->orderBy('id', 'desc')->get();
-
-        if ($report->isEmpty()) {
-            return response()->json(['message' => 'No reports found'], 404);
-        } else {
-           return response()->json([$report, $classification], 200); 
+            if ($report->isEmpty()) {
+                return response()->json(['message' => 'No reports found'], 404);
+            } else {
+            return response()->json([$report, $classification], 200); 
+            }
+        } catch (Exception $e) {
+            return response()->json([
+                'message' => 'Something went wrong',
+                'error' => $e->getMessage()
+            ], 500);
         }
-    }
+    } 
 
     /**
      * Show the form for editing the specified resource.
@@ -111,52 +130,67 @@ class ReportController extends Controller
     public function edit(string $id)
     {
         //
-        $report = Report::with(['source', 'incident', 'actions', 'assistance', 'barangay'])->where('id', $id)->first();
-        // dd($report);
-        return response()->json($report, 200);
+        try {
+            $report = Report::with(['source:id,sources', 'incident:id,type', 'actions:id,actions', 'assistance:id,assistance', 'barangay:id,name,longitude,latitude'])->where('id', $id)->first();
+
+            return response()->json($report, 200);
+        } catch (Exception $e) {
+            return response()->json([
+                'message' => 'Report not found'
+            ], 404);
+        }
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(string $id, ReportRequest $reportRequest)
     {
-        $request->validate([
-            'time' => 'required',
-            'date_received' => 'required',
-            'arrival_on_site' => 'required',
-            'user_id' => 'required',
-            'source_id' => 'required',
-            'incident_id' => 'required',
-            'barangay_id' => 'required',
-            'actions_id' => 'required',
-            'assistance_id' => 'required',
-        ]);
+        //
+        try {
+            // $request->validate([
+            //     'time' => 'required',
+            //     'date_received' => 'required',
+            //     'arrival_on_site' => 'required',
+            //     'user_id' => 'required',
+            //     'source_id' => 'required',
+            //     'incident_id' => 'required',
+            //     'barangay_id' => 'required',
+            //     'actions_id' => 'required',
+            //     'assistance_id' => 'required',
+            // ]);
+            $reportRequest->validated();
 
-        $report = Report::find($id);
+            $report = Report::find($id);
 
-        if (!$report) {
+            if (!$report) {
+                return response()->json([
+                    'message' => 'Report not found'
+                ], 404);
+            }
+
+            $report->update([
+                'time' => $reportRequest->time,
+                'date_received' => $reportRequest->date_received,
+                'arrival_on_site' => $reportRequest->arrival_on_site,
+                'user_id' => $reportRequest->user_id,
+                'source_id' => $reportRequest->source_id,
+                'incident_id' => $reportRequest->incident_id,
+                'barangay_id' => $reportRequest->barangay_id,
+                'actions_id' => $reportRequest->actions_id,
+                'assistance_id' => $reportRequest->assistance_id,
+            ]);
+
             return response()->json([
-                'message' => 'Report not found'
-            ], 404);
-        }
-
-        $report->update([
-            'time' => $request->time,
-            'date_received' => $request->date_received,
-            'arrival_on_site' => $request->arrival_on_site,
-            'user_id' => $request->user_id,
-            'source_id' => $request->source_id,
-            'incident_id' => $request->incident_id,
-            'barangay_id' => $request->barangay_id,
-            'actions_id' => $request->actions_id,
-            'assistance_id' => $request->assistance_id,
-        ]);
-
-        return response()->json([
-            'message' => 'Report updated successfully',
-            'report' => $report
-        ]);
+                'message' => 'Report updated successfully',
+                'report' => $report
+            ]);
+        } catch (Exception $e) {
+            return response()->json([
+                'message' => 'Report update failed',
+                'error' => $e->getMessage()
+            ], 500);
+        }  
     }
 
     /**
@@ -165,17 +199,24 @@ class ReportController extends Controller
     public function destroy(string $id)
     {
         //
-        $report = Report::find($id);
+        try {
+            $report = Report::find($id);
 
-        if (!$report) {
+            if (!$report) {
+                return response()->json([
+                    'message' => 'Report not found'
+                ], 404);
+            }
+
+            $report->delete();
             return response()->json([
-                'message' => 'Report not found'
-            ], 404);
+                'message' => 'Report deleted successfully'
+            ]);
+        } catch (Exception $e) {
+            return response()->json([
+                'message' => 'Report delete failed',
+                'error' => $e->getMessage()
+            ], 500);
         }
-
-        $report->delete();
-        return response()->json([
-            'message' => 'Report deleted successfully'
-        ]);
     }
 }
