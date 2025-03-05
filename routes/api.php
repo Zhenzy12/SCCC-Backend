@@ -132,7 +132,7 @@ Route::delete('/offices/{offices}', [OfficesController::class, 'destroy']);
 
         Route::get('/barangay-edit/{id}', [BarangayController::class, 'edit']);
 
-        Route::put('/barangay/{id}', [BarangayController::class, 'update']);
+        Route::put('/barangay-update/{id}', [BarangayController::class, 'update']);
 
         Route::delete('/barangay-delete/{id}', [BarangayController::class, 'destroy']);
 

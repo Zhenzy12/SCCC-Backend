@@ -88,8 +88,16 @@ class BarangayController extends Controller
     public function edit(string $id)
     {
         //
-        $barangay = Barangay::findOrFail($id);
+        try {
+            $barangay = Barangay::findOrFail($id);
         return response()->json($barangay, 200);
+        } catch (Exception $e) {
+            return response()->json([
+                'message' => 'Barangay not found',
+                'error' => $e->getMessage()
+            ], 404);
+        }
+        
     }
 
     /**
@@ -98,23 +106,31 @@ class BarangayController extends Controller
     public function update(Request $request, string $id, BarangayRequest $barangayRequest)
     {
         //
-        $barangayRequest->validated();
+        try {
+            $barangayRequest->validated();
 
-        $barangay = Barangay::findOrFail($id);
-        $barangay->update($request->all());  
+            $barangay = Barangay::findOrFail($id);
+            $barangay->update($request->all());  
+            
+            $barangay->update([
+                'name' => $barangayRequest->name,
+                'longitude' => $barangayRequest->longitude,
+                'latitude' => $barangayRequest->latitude
+            ]);
+
+            // $barangay->update($request->all());
+
+            return response()->json([
+                'message' => 'Barangay updated successfully!',
+                'barangay' => $barangay,
+            ]);
+        } catch (Exception $e) {
+            return response()->json([
+                'message' => 'Failed to update barangay',
+                'error' => $e->getMessage()
+            ], 500);
+        }
         
-        $barangay->update([
-            'name' => $barangayRequest->name,
-            'longitude' => $barangayRequest->longitude,
-            'latitude' => $barangayRequest->latitude
-        ]);
-
-        // $barangay->update($request->all());
-
-        return response()->json([
-            'message' => 'Barangay updated successfully!',
-            'barangay' => $barangay,
-        ]);
     }
 
     /**
