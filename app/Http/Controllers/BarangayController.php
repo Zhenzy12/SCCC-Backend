@@ -5,7 +5,8 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Barangay;
-
+use Exception;
+use App\Http\Requests\BarangayRequest;
 
 class BarangayController extends Controller
 {
@@ -24,24 +25,45 @@ class BarangayController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create(Request $request)
+    public function create(Request $request, BarangayRequest $barangayRequest)
     {
-        $request->validate([
-            'name' => 'string|max:255',
-            'longitude' => 'nullable|numeric',
-            'latitude' => 'nullable|numeric',
-        ]);
+        //
+        try {
+            $barangayRequest->validated();
 
-        $barangay = Barangay::create([
-            'name' => $request->name,
-            'longitude' => $request->longitude,
-            'latitude' => $request->latitude,
-        ]);
+            $barangay = Barangay::create([
+                'name' => $barangayRequest->name,
+                'longitude' => $barangayRequest->longitude,
+                'latitude' => $barangayRequest->latitude,
+            ]);
 
-        return response()->json([
-            'message' => 'Barangay created successfully!',
-            'barangay' => $barangay,
-        ]);
+            return response()->json([
+                'message' => 'Barangay created successfully!',
+                'barangay' => $barangay,
+            ]);
+            
+        } catch (Exception $e) {
+            return response()->json([
+                'message' => 'Failed to create barangay',
+                'error' => $e->getMessage(),
+            ], 500);
+        }
+        // $request->validate([
+        //     'name' => 'string|max:255',
+        //     'longitude' => 'nullable|numeric',
+        //     'latitude' => 'nullable|numeric',
+        // ]);
+
+        // $barangay = Barangay::create([
+        //     'name' => $request->name,
+        //     'longitude' => $request->longitude,
+        //     'latitude' => $request->latitude,
+        // ]);
+
+        // return response()->json([
+        //     'message' => 'Barangay created successfully!',
+        //     'barangay' => $barangay,
+        // ]);
     }
 
     /**
@@ -73,24 +95,18 @@ class BarangayController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, string $id, BarangayRequest $barangayRequest)
     {
         //
-        $request->validate([
-            'name' => 'string|max:255',
-            'longitude' => 'numeric',
-            'latitude' => 'numeric',
-        ]);
-
-        
+        $barangayRequest->validated();
 
         $barangay = Barangay::findOrFail($id);
         $barangay->update($request->all());  
-        // dd($barangay);
+        
         $barangay->update([
-            'name' => $request->name,
-            'longitude' => $request->longitude,
-            'latitude' => $request->latitude
+            'name' => $barangayRequest->name,
+            'longitude' => $barangayRequest->longitude,
+            'latitude' => $barangayRequest->latitude
         ]);
 
         // $barangay->update($request->all());
@@ -100,27 +116,6 @@ class BarangayController extends Controller
             'barangay' => $barangay,
         ]);
     }
-    // public function update(Request $request, string $id)
-    // {
-    //     // Validate the request
-    //     $validated = $request->validate([
-    //         'name' => 'required|string|max:255',
-    //         'longitude' => 'required|numeric',
-    //         'latitude' => 'required|numeric',
-    //     ]);
-        
-    //     // Find the barangay
-    //     $barangay = Barangay::findOrFail($id);
-        
-    //     // Update with validated data (only once!)
-    //     $barangay->update($validated);
-        
-    //     // Return response
-    //     return response()->json([
-    //         'message' => 'Barangay updated successfully!',
-    //         'barangay' => $barangay,
-    //     ]);
-    // }
 
     /**
      * Remove the specified resource from storage.
