@@ -137,6 +137,8 @@ Route::delete('/offices/{offices}', [OfficesController::class, 'destroy']);
 
         Route::delete('/barangay-delete/{id}', [BarangayController::class, 'destroy']);
 
+        Route::get('/barangay-reports/{id}', [BarangayController::class, 'show']);
+
         # Report Controller Routes
         Route::get('/report', [ReportController::class, 'index']);
 

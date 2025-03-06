@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\Barangay;
 use Exception;
 use App\Http\Requests\BarangayRequest;
+use App\Models\Report;
 
 class BarangayController extends Controller
 {
@@ -80,6 +81,18 @@ class BarangayController extends Controller
     public function show(string $id)
     {
         //
+        $report = Report::with([
+            'source:id,sources', 
+            'incident:id,type', 
+            'actions:id,actions', 
+            'assistance:id,assistance', 
+            'barangay:id,name,longitude,latitude'
+        ])
+        ->where('barangay_id', $id) // Use the route parameter
+        ->orderBy('id', 'desc')
+        ->get();
+
+        return response()->json($report);
     }
 
     /**
