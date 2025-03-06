@@ -15,6 +15,7 @@ use App\Http\Controllers\BarangayController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\IncidentController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\UserController;
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('/user', function (Request $request) {
@@ -155,7 +156,8 @@ Route::delete('/offices/{offices}', [OfficesController::class, 'destroy']);
         # Incident Controller Routes
         Route::get('/incident-display', [IncidentController::class, 'index']);
 
-
+        # User Controller Routes
+        Route::get('/users', [UserController::class, 'index']);
     });
 
 });
