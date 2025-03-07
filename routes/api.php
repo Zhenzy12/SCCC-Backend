@@ -160,6 +160,13 @@ Route::delete('/offices/{offices}', [OfficesController::class, 'destroy']);
 
         # User Controller Routes
         Route::get('/users', [UserController::class, 'index']);
+
+        # Update User Roles - Dashboard/Inventory
+        // Route::patch('user-dashboard-role/{id}', [UserController::class, 'inventory']);
+
+        // Route::patch('user-inventory-role/{id}', [UserController::class, 'dashboard']);
+        Route::patch('user-dashboard-role/{id}', [UserController::class, 'dashboard']);
+Route::patch('user-inventory-role/{id}', [UserController::class, 'inventory']);
     });
 
 });

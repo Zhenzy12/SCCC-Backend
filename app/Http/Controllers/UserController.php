@@ -58,9 +58,52 @@ class UserController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function dashboard(Request $request, string $id)
     {
         //
+        try {
+            // Validate the incoming request
+            $request->validate([
+                'for_911' => 'required|boolean', // Ensure for_911 is required and boolean
+            ]);
+    
+            // Find the resource (row) to update
+            $resource = User::findOrFail($id);
+    
+            // Update the specific column (for_911)
+            $resource->for_911 = $request->input('for_911');
+            $resource->save();
+    
+            // Return updated resource
+            return response()->json($resource);
+        } catch (\Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
+        
+    }
+
+    public function inventory(Request $request, string $id)
+    {
+        //
+        try {
+            // Validate the incoming request
+            $request->validate([
+                'for_inventory' => 'required|boolean', // Ensure for_inventory is required and boolean
+            ]);
+    
+            // Find the resource (row) to update
+            $inventory_role = User::findOrFail($id);
+    
+            // Update the specific column (for_inventory)
+            $inventory_role->for_inventory = $request->input('for_inventory');
+            $inventory_role->save();
+    
+            // Return updated resource
+            return response()->json($inventory_role);
+        } catch (\Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
+        
     }
 
     /**
