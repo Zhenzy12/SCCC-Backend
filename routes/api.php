@@ -16,6 +16,7 @@ use App\Http\Controllers\ReportController;
 use App\Http\Controllers\IncidentController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\UserController;
 use App\Http\Controllers\TransactionHistoryController;
 
 Route::middleware('auth:sanctum')->group(function () {
@@ -141,9 +142,11 @@ Route::middleware(['api.key'])->group(function () {
 
         Route::get('/barangay-edit/{id}', [BarangayController::class, 'edit']);
 
-        Route::put('/barangay/{id}', [BarangayController::class, 'update']);
+        Route::put('/barangay-update/{id}', [BarangayController::class, 'update']);
 
         Route::delete('/barangay-delete/{id}', [BarangayController::class, 'destroy']);
+
+        Route::get('/barangay-reports/{id}', [BarangayController::class, 'show']);
 
         # Report Controller Routes
         Route::get('/report', [ReportController::class, 'index']);
@@ -163,7 +166,15 @@ Route::middleware(['api.key'])->group(function () {
         # Incident Controller Routes
         Route::get('/incident-display', [IncidentController::class, 'index']);
 
+        # User Controller Routes
+        Route::get('/users', [UserController::class, 'index']);
+
+        # Update User Roles - Dashboard/Inventory
+        // Route::patch('user-dashboard-role/{id}', [UserController::class, 'inventory']);
 
 
+        // Route::patch('user-inventory-role/{id}', [UserController::class, 'dashboard']);
+        Route::patch('user-dashboard-role/{id}', [UserController::class, 'dashboard']);
+Route::patch('user-inventory-role/{id}', [UserController::class, 'inventory']);
     });
 });

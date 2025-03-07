@@ -148,17 +148,6 @@ class ReportController extends Controller
     {
         //
         try {
-            // $request->validate([
-            //     'time' => 'required',
-            //     'date_received' => 'required',
-            //     'arrival_on_site' => 'required',
-            //     'user_id' => 'required',
-            //     'source_id' => 'required',
-            //     'incident_id' => 'required',
-            //     'barangay_id' => 'required',
-            //     'actions_id' => 'required',
-            //     'assistance_id' => 'required',
-            // ]);
             $reportRequest->validated();
 
             $report = Report::find($id);
