@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\MobileAuthController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ImageController;
@@ -31,7 +32,10 @@ Route::get('/csrf-cookie', function () {
     return response()->json(['message' => 'CSRF cookie set']);
 });
 
-
+// auth for flutter
+Route::post('/register', [MobileAuthController::class, 'register']);
+Route::post('/login', [MobileAuthController::class, 'login']);
+Route::post('/logout', [MobileAuthController::class, 'logout']);
 
 Route::middleware(['api.key'])->group(function () {
     // user api
