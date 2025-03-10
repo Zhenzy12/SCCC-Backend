@@ -33,9 +33,11 @@ Route::get('/csrf-cookie', function () {
 });
 
 // auth for flutter
-Route::post('/register', [MobileAuthController::class, 'register']);
-Route::post('/login', [MobileAuthController::class, 'login']);
-Route::post('/logout', [MobileAuthController::class, 'logout']);
+Route::prefix('mobile')->controller(MobileAuthController::class)->group(function () {
+    Route::post('/register', 'register');
+    Route::post('/login', 'login');
+    Route::post('/logout', 'logout');
+});
 
 Route::middleware(['api.key'])->group(function () {
     // user api
