@@ -16,7 +16,6 @@ use App\Http\Controllers\ReportController;
 use App\Http\Controllers\IncidentController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\DashboardController;
-use App\Http\Controllers\UserController;
 use App\Http\Controllers\TransactionHistoryController;
 
 Route::middleware('auth:sanctum')->group(function () {
