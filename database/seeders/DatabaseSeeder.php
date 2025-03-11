@@ -24,7 +24,8 @@ class DatabaseSeeder extends Seeder
             TypeOfAssistanceSeeder::class,
             ActionsTakenSeeder::class,
             SourceSeeder::class,
-            IncidentSeeder::class
+            IncidentSeeder::class,
+            BarangaySeeder::class
         ]);
     }
 }

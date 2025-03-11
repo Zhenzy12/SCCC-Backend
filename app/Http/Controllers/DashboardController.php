@@ -16,10 +16,6 @@ class DashboardController extends Controller
     {
         $incidents = Incident::all();
         $assistance = TypeOfAssistance::all();
-        // $assistance = Incident::with('assistance')
-        // ->select('assistance_id', DB::raw('count(*) as total'))
-        // ->groupBy('assistance_id')
-        // ->get();
         $report = Report::all();
 
         return response()->json([
