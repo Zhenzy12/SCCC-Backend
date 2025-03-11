@@ -25,6 +25,7 @@ class DatabaseSeeder extends Seeder
             ActionsTakenSeeder::class,
             SourceSeeder::class,
             IncidentSeeder::class,
+            BarangaySeeder::class,
 
             // seeder for SCCC Inventory System
             UsersTableSeeder::class,
