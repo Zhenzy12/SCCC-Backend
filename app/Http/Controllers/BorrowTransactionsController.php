@@ -15,7 +15,7 @@ class BorrowTransactionsController extends Controller
         //
         try {
             return response()->json(BorrowTransactions::all());
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             return response()->json(['Index Borrow Transactions Error' => $e->getMessage()], 500);
         }
     }
@@ -52,7 +52,7 @@ class BorrowTransactionsController extends Controller
                 ],
                 201,
             );
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             return response()->json(['Store Borrow Transactions Error' => $e->getMessage()], 500);
         }
     }
@@ -65,7 +65,7 @@ class BorrowTransactionsController extends Controller
         //
         try{
             return response()->json($borrowTransactions);
-        }catch(Exception $e){
+        }catch(\Exception $e){
             return response()->json(['Show Borrow Transaction Error' => $e->getMessage()], 500);
         }
     }
@@ -98,7 +98,7 @@ class BorrowTransactionsController extends Controller
                 'message' => 'Successfully Updated',
                 'data' => $borrowTransactions
             ]);
-        }catch(Exception $e){
+        }catch(\Exception $e){
             return response()->json(['Update Borrow Transaction Error' => $e->getMessage()], 500);
         }
     }
@@ -114,7 +114,7 @@ class BorrowTransactionsController extends Controller
             return response()->json([
                 'message' => 'Deleted Successfully',
             ]);
-        }catch(Exception $e){
+        }catch(\Exception $e){
             return response()->json(['Destroy Borrow Transaction Error' => $e->getMessage()], 500);
         }
     }

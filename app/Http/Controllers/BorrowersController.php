@@ -15,7 +15,7 @@ class BorrowersController extends Controller
         //
         try {
             return response()->json(Borrowers::all());
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             return response()->json(['Index Borrowers Error' => $e->getMessage()], 500);
         }
     }
@@ -50,7 +50,7 @@ class BorrowersController extends Controller
                 ],
                 201,
             );
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             return response()->json(['Store Borrowers Error' => $e->getMessage()], 500);
         }
     }
@@ -63,7 +63,7 @@ class BorrowersController extends Controller
         //
         try{
             return response()->json($borrowers);
-        }catch(Exception $e){
+        }catch(\Exception $e){
             return response()->json(['Show Borrowers Error' => $e->getMessage()], 500);
         }
     }
@@ -94,7 +94,7 @@ class BorrowersController extends Controller
                 'message' => 'Successfully Updated',
                 'data' => $borrowers
             ]);
-        }catch(Exception $e){
+        }catch(\Exception $e){
             return response()->json(['Update Borrowers Error' => $e->getMessage()], 500);
         }
     }
@@ -110,7 +110,7 @@ class BorrowersController extends Controller
             return response()->json([
                 'message' => 'Deleted Successfully',
             ]);
-        }catch(Exception $e){
+        }catch(\Exception $e){
             return response()->json(['Destroy Borrowers Error' => $e->getMessage()], 500);
         }
     }

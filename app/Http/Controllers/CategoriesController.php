@@ -15,7 +15,7 @@ class CategoriesController extends Controller
         //
         try {
             return response()->json(Categories::all());
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             return response()->json(['Index Categories Error' => $e->getMessage()], 500);
         }
     }
@@ -45,7 +45,7 @@ class CategoriesController extends Controller
                 'message' => 'Successfully Created',
                 'data' => $category
             ], 201);
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             return response()->json(['Store Categories Error' => $e->getMessage()], 500);
         }
     }
@@ -58,7 +58,7 @@ class CategoriesController extends Controller
         //
         try {
             return response()->json($categories);
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             return response()->json(['Show Categories Error' => $e->getMessage()], 500);
         }
     }
@@ -87,7 +87,7 @@ class CategoriesController extends Controller
                 'message' => 'Successfully Updated',
                 'data' => $categories
             ]);
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             return response()->json(['Update Categories Error' => $e->getMessage()], 500);
         }
     }
@@ -101,7 +101,7 @@ class CategoriesController extends Controller
         try {
             $categories->delete();
             return response()->json(['message' => 'Deleted Successfully']);
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             return response()->json(['Destroy Categories Error' => $e->getMessage()], 500);
         }
     }
