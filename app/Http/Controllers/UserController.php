@@ -106,6 +106,32 @@ class UserController extends Controller
         
     }
 
+    public function archive(Request $request, string $id)
+    {
+        //
+        try {
+            // Validate the incoming request
+            $request->validate([
+                'for_inventory' => 'required|boolean', // Ensure for_inventory is required and boolean
+                'for_911' => 'required|boolean', // Ensure for_911 is required and boolean
+            ]);
+    
+            // Find the resource (row) to update
+            $inventory_role = User::findOrFail($id);
+    
+            // Update the specific column (for_inventory)
+            $inventory_role->for_inventory = $request->input('for_inventory');
+            $inventory_role->for_911 = $request->input('for_911');
+            $inventory_role->save();
+    
+            // Return updated resource
+            return response()->json($inventory_role);
+        } catch (\Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
+        
+    }
+
     /**
      * Remove the specified resource from storage.
      */

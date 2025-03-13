@@ -165,6 +165,8 @@ Route::delete('/offices/{offices}', [OfficesController::class, 'destroy']);
         Route::patch('user-dashboard-role/{id}', [UserController::class, 'dashboard']);
 
         Route::patch('user-inventory-role/{id}', [UserController::class, 'inventory']);
+
+        Route::patch('user-archive/{id}', [UserController::class, 'archive']);
     });
 
 });
