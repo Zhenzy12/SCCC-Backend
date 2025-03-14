@@ -166,6 +166,10 @@ class ReportController extends Controller
                 'source_id' => $reportRequest->source_id,
                 'incident_id' => $reportRequest->incident_id,
                 'barangay_id' => $reportRequest->barangay_id,
+                'name' => $reportRequest->name,
+                'latitude' => $reportRequest->latitude,
+                'longitude' => $reportRequest->longitude,
+                'landmark' => $reportRequest->landmark,
                 'actions_id' => $reportRequest->actions_id,
                 'assistance_id' => $reportRequest->assistance_id,
             ]);

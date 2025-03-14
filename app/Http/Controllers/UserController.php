@@ -18,7 +18,7 @@ class UserController extends Controller
             $users = User::all(['id', 'firstName', 'middleName', 'lastName', 'email', 'for_911', 'for_inventory']);
             return response()->json($users, 200);
         } catch (\Exception $e) {
-            return response()->json(['error' => $e->getMessage()], 500);
+            return response()->json(['message' => $e->getMessage()], 500);
         }
 
     }
@@ -75,7 +75,7 @@ class UserController extends Controller
             $resource->save();
 
             // Return updated resource
-            return response()->json($resource);
+            return response()->json(['message' => 'Role updated successfully', $resource], 200);
         } catch (\Exception $e) {
             return response()->json(['error' => $e->getMessage()], 500);
         }
@@ -99,7 +99,7 @@ class UserController extends Controller
             $inventory_role->save();
 
             // Return updated resource
-            return response()->json($inventory_role);
+            return response()->json(['message' => 'Role updated successfully', $inventory_role], 200);
         } catch (\Exception $e) {
             return response()->json(['error' => $e->getMessage()], 500);
         }
@@ -125,11 +125,10 @@ class UserController extends Controller
             $inventory_role->save();
     
             // Return updated resource
-            return response()->json($inventory_role);
+            return response()->json(['message' => 'User Access has been changed successfully', $inventory_role], 200);
         } catch (\Exception $e) {
             return response()->json(['error' => $e->getMessage()], 500);
         }
-        
     }
 
     /**

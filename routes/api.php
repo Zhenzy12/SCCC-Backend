@@ -140,6 +140,10 @@ Route::middleware(['api.key'])->group(function () {
         # Dashboard Controlller Routes
         Route::get('/dashboard', [DashboardController::class, 'index']);
 
+        Route::get('/recent', [DashboardController::class, 'recent']);
+
+        Route::get('/total-reports', [DashboardController::class, 'total_reports']);
+
         # Barangay Controller Routes
         Route::get('/barangay', [BarangayController::class, 'index']);
 
@@ -174,7 +178,6 @@ Route::middleware(['api.key'])->group(function () {
         # User Controller Routes
         Route::get('/users', [UserController::class, 'index']);
 
-        // Route::patch('user-inventory-role/{id}', [UserController::class, 'dashboard']);
         Route::patch('user-dashboard-role/{id}', [UserController::class, 'dashboard']);
 
         Route::patch('user-inventory-role/{id}', [UserController::class, 'inventory']);
