@@ -17,10 +17,15 @@ class BarangayController extends Controller
     public function index()
     {
         //
-        $barangays = Barangay::all(['id', 'name', 'longitude', 'latitude']);
-
-        
-        return response()->json($barangays, 200);
+        try {
+            $barangays = Barangay::orderBy('id', 'desc')->get(['id', 'name', 'longitude', 'latitude']);
+            return response()->json(['message' => 'successfully retrieved', 'barangays' => $barangays], 200);
+        } catch (Exception $e) {
+            return response()->json([
+                'message' => 'Failed to retrieve barangays',
+                'error' => $e->getMessage(),
+            ], 500);
+        }
     }
 
     /**

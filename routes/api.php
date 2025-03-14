@@ -126,6 +126,10 @@ Route::delete('/offices/{offices}', [OfficesController::class, 'destroy']);
         # Dashboard Controlller Routes
         Route::get('/dashboard', [DashboardController::class, 'index']);
 
+        Route::get('/recent', [DashboardController::class, 'recent']);
+
+        Route::get('/total-reports', [DashboardController::class, 'total_reports']);
+
         # Barangay Controller Routes
         Route::get('/barangay', [BarangayController::class, 'index']);
 
@@ -161,12 +165,11 @@ Route::delete('/offices/{offices}', [OfficesController::class, 'destroy']);
         # User Controller Routes
         Route::get('/users', [UserController::class, 'index']);
 
-        # Update User Roles - Dashboard/Inventory
-        // Route::patch('user-dashboard-role/{id}', [UserController::class, 'inventory']);
-
-        // Route::patch('user-inventory-role/{id}', [UserController::class, 'dashboard']);
         Route::patch('user-dashboard-role/{id}', [UserController::class, 'dashboard']);
-Route::patch('user-inventory-role/{id}', [UserController::class, 'inventory']);
+
+        Route::patch('user-inventory-role/{id}', [UserController::class, 'inventory']);
+
+        Route::patch('user-archive/{id}', [UserController::class, 'archive']);
     });
 
 });
