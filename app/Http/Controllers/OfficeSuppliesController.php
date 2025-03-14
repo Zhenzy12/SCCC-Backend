@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\OfficeSupplies;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
+
 
 class OfficeSuppliesController extends Controller
 {
@@ -15,7 +17,7 @@ class OfficeSuppliesController extends Controller
         //
         try {
             return response()->json(OfficeSupplies::all());
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             return response()->json(['Index Office Supplies Error' => $e->getMessage()], 500);
         }
     }
@@ -41,27 +43,27 @@ class OfficeSuppliesController extends Controller
                 'serial_number' => 'required|string',
                 'category_id' => 'nullable|exists:categories,id',
                 'supply_quantity' => 'required|integer',
-                // 'image_path' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048'
+                'image' => 'nullable|file|image|mimes:jpeg,png,jpg,gif|max:2048'
             ]);
 
+            $data = $request->except('image');
+
             // Handle image upload
-            // if ($request->hasFile('image')) {
-            //     $image = $request->file('image');
-            //     $imageName = time() . '.' . $image->getClientOriginalExtension();
-            //     $image->move(public_path('images/supplies'), $imageName);
-            //     $data['image_path'] = 'images/supplies/' . $imageName;
-            // }
+            if ($request->hasFile('image')) {
+                $path = $request->file('image')->store('supplies', 'public');
+                $data['image_path'] = $path;
+            }
 
-            $officeSupply = OfficeSupplies::create($request->all());
+            $officeSupply = OfficeSupplies::create($data);
 
-            return response()->json(
-                [
-                    'message' => 'Successfully Created',
-                    'data' => $officeSupply,
-                ],
-                201,
-            );
-        } catch (Exception $e) {
+            return response()->json([
+                'message' => 'Successfully Created',
+                'data' => [
+                    'supply' => $officeSupply,
+                    'image_url' => isset($path) ? asset('storage/' . $path) : null
+                ]
+            ], 201);
+        } catch (\Exception $e) {
             return response()->json(['Store Office Supply Error' => $e->getMessage()], 500);
         }
     }
@@ -74,7 +76,7 @@ class OfficeSuppliesController extends Controller
         //
         try {
             return response()->json($officeSupplies);
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             return response()->json(['Show Borrow Transaction Items Error' => $e->getMessage()], 500);
         }
     }
@@ -100,28 +102,31 @@ class OfficeSuppliesController extends Controller
                 'serial_number' => 'sometimes|required|string',
                 'category_id' => 'sometimes|nullable|exists:categories,id',
                 'supply_quantity' => 'sometimes|required|integer',
-                // 'image_path' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048'
+                'image' => 'nullable|file|image|mimes:jpeg,png,jpg,gif|max:2048'
             ]);
 
-            // if ($request->hasFile('image')) {
-            //     // Delete old image if exists
-            //     if ($officeSupplies->image_path && file_exists(public_path($officeSupplies->image_path))) {
-            //         unlink(public_path($officeSupplies->image_path));
-            //     }
+            $data = $request->except('image');
 
-            //     $image = $request->file('image');
-            //     $imageName = time() . '.' . $image->getClientOriginalExtension();
-            //     $image->move(public_path('images/supplies'), $imageName);
-            //     $data['image_path'] = 'images/supplies/' . $imageName;
-            // }
+            if ($request->hasFile('image')) {
+                // Delete old image
+                if ($officeSupplies->image_path) {
+                    Storage::disk('public')->delete($officeSupplies->image_path);
+                }
 
-            $officeSupplies->update($request->all());
+                $path = $request->file('image')->store('supplies', 'public');
+                $data['image_path'] = $path;
+            }
+
+            $officeSupplies->update($data);
 
             return response()->json([
                 'message' => 'Successfully Updated',
-                'data' => $officeSupplies
+                'data' => [
+                    'supply' => $officeSupplies,
+                    'image_url' => $officeSupplies->image_path ? asset('storage/' . $officeSupplies->image_path) : null
+                ]
             ]);
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             return response()->json(['Update Office Supplies Error' => $e->getMessage()], 500);
         }
     }
@@ -137,7 +142,7 @@ class OfficeSuppliesController extends Controller
             return response()->json([
                 'message' => 'Deleted Successfully',
             ]);
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             return response()->json(['Destroy Office Supplies Error' => $e->getMessage()], 500);
         }
     }

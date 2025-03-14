@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\OfficeEquipments;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class OfficeEquipmentsController extends Controller
 {
@@ -15,7 +16,7 @@ class OfficeEquipmentsController extends Controller
         //
         try {
             return response()->json(OfficeEquipments::all());
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             return response()->json(['Index Office Equipments Error' => $e->getMessage()], 500);
         }
     }
@@ -39,24 +40,27 @@ class OfficeEquipmentsController extends Controller
                 'equipment_name' => 'required|string|max:255',
                 'equipment_description' => 'required|string',
                 'category_id' => 'required|exists:categories,id',
-                // 'image_path' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048'
+                'image' => 'nullable|file|image|mimes:jpeg,png,jpg,gif|max:2048'
             ]);
 
-            // Handle image upload
-            // if ($request->hasFile('image')) {
-            //     $image = $request->file('image');
-            //     $imageName = time() . '.' . $image->getClientOriginalExtension();
-            //     $image->move(public_path('images/supplies'), $imageName);
-            //     $data['image_path'] = 'images/supplies/' . $imageName;
-            // }
+            $data = $request->except('image');
 
-            $equipment = OfficeEquipments::create($request->all());
+            // Handle image upload
+            if ($request->hasFile('image')) {
+                $path = $request->file('image')->store('equipments', 'public');
+                $data['image_path'] = $path;
+            }
+
+            $equipment = OfficeEquipments::create($data);
 
             return response()->json([
                 'message' => 'Successfully Created',
-                'data' => $equipment
+                'data' => [
+                    'equipment' => $equipment,
+                    'image_url' => isset($path) ? asset('storage/' . $path) : null
+                ]
             ], 201);
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             return response()->json(['Store Office Equipment Error' => $e->getMessage()], 500);
         }
     }
@@ -69,7 +73,7 @@ class OfficeEquipmentsController extends Controller
         //
         try {
             return response()->json($officeEquipments);
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             return response()->json(['Show Office Equipments Error' => $e->getMessage()], 500);
         }
     }
@@ -93,28 +97,31 @@ class OfficeEquipmentsController extends Controller
                 'equipment_name' => 'sometimes|required|string|max:255',
                 'equipment_description' => 'sometimes|required|string',
                 'category_id' => 'sometimes|required|exists:categories,id',
-                // 'image_path' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048'
+                'image' => 'nullable|file|image|mimes:jpeg,png,jpg,gif|max:2048'
             ]);
 
-            // Handle image upload
-            // if ($request->hasFile('image')) {
-            //     // Delete old image if exists
-            //     if ($officeEquipments->image_path && file_exists(public_path($officeEquipments->image_path))) {
-            //         unlink(public_path($officeEquipments->image_path));
-            //     }
+            $data = $request->except('image');
 
-            //     $image = $request->file('image');
-            //     $imageName = time() . '.' . $image->getClientOriginalExtension();
-            //     $image->move(public_path('images/supplies'), $imageName);
-            //     $data['image_path'] = 'images/supplies/' . $imageName;
-            // }
+            if ($request->hasFile('image')) {
+                // Delete old image
+                if ($officeEquipments->image_path) {
+                    Storage::disk('public')->delete($officeEquipments->image_path);
+                }
 
-            $officeEquipments->update($request->all());
+                $path = $request->file('image')->store('equipments', 'public');
+                $data['image_path'] = $path;
+            }
+
+            $officeEquipments->update($data);
+
             return response()->json([
                 'message' => 'Successfully Updated',
-                'data' => $officeEquipments
+                'data' => [
+                    'equipment' => $officeEquipments,
+                    'image_url' => $officeEquipments->image_path ? asset('storage/' . $officeEquipments->image_path) : null
+                ]
             ]);
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             return response()->json(['Update Office Equipment Error' => $e->getMessage()], 500);
         }
     }
@@ -128,7 +135,7 @@ class OfficeEquipmentsController extends Controller
         try {
             $officeEquipments->delete();
             return response()->json(['message' => 'Deleted Successfully']);
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             return response()->json(['Destroy Office Equipment Error' => $e->getMessage()], 500);
         }
     }

@@ -16,7 +16,7 @@ class EquipmentCopiesController extends Controller
 
         try {
             return response()->json(EquipmentCopies::all());
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             return response()->json(['Index Equipment Copies Error' => $e->getMessage()], 500);
         }
     }
@@ -48,7 +48,7 @@ class EquipmentCopiesController extends Controller
                 'message' => 'Successfully Created',
                 'data' => $equipmentCopy
             ], 201);
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             return response()->json(['Store Equipment Copy Error' => $e->getMessage()], 500);
         }
     }
@@ -61,7 +61,7 @@ class EquipmentCopiesController extends Controller
         //
         try {
             return response()->json($equipmentCopies);
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             return response()->json(['Show Equipment Copies Error' => $e->getMessage()], 500);
         }
     }
@@ -92,7 +92,7 @@ class EquipmentCopiesController extends Controller
                 'message' => 'Successfully Updated',
                 'data' => $equipmentCopies
             ]);
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             return response()->json(['Update Equipment Copies Error' => $e->getMessage()], 500);
         }
     }
@@ -108,7 +108,7 @@ class EquipmentCopiesController extends Controller
             return response()->json([
                 'message' => 'Deleted Successfully',
             ]);
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             return response()->json(['Destroy Equipment Copies Error' => $e->getMessage()], 500);
         }
     }

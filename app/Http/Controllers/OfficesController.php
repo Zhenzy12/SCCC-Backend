@@ -15,7 +15,7 @@ class OfficesController extends Controller
         //
         try {
             return response()->json(Offices::all());
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             return response()->json(['Index Offices Error' => $e->getMessage()], 500);
         }
     }
@@ -48,7 +48,7 @@ class OfficesController extends Controller
                 ],
                 201,
             );
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             return response()->json(['Store Offices Error' => $e->getMessage()], 500);
         }
     }
@@ -61,7 +61,7 @@ class OfficesController extends Controller
         //
         try{
             return response()->json($offices);
-        }catch(Exception $e){
+        }catch(\Exception $e){
             return response()->json(['Show Offices Error' => $e->getMessage()], 500);
         }
     }
@@ -90,7 +90,7 @@ class OfficesController extends Controller
                 'message' => 'Successfully Updated',
                 'data' => $offices
             ]);
-        }catch(Exception $e){
+        }catch(\Exception $e){
             return response()->json(['Update Offices Error' => $e->getMessage()], 500);
         }
     }
@@ -106,7 +106,7 @@ class OfficesController extends Controller
             return response()->json([
                 'message' => 'Deleted Successfully',
             ]);
-        }catch(Exception $e){
+        }catch(\Exception $e){
             return response()->json(['Destroy Offices Error' => $e->getMessage()], 500);
         }
     }

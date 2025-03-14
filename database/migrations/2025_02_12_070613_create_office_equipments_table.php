@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('equipment_name');
             $table->string('equipment_description');
             $table->foreignId('category_id')->constrained('categories')->onDelete('cascade');
-            // $table->string('image_path')->nullable();
+            $table->string('image_path')->nullable();
             $table->timestamps();
         });
     }

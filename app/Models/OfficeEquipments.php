@@ -16,7 +16,7 @@ class OfficeEquipments extends Model
         'equipment_name',
         'equipment_description',
         'category_id',
-        // 'image_path'
+        'image_path'
     ];
 
     public function categories()
