@@ -174,12 +174,11 @@ Route::middleware(['api.key'])->group(function () {
         # User Controller Routes
         Route::get('/users', [UserController::class, 'index']);
 
-        # Update User Roles - Dashboard/Inventory
-        // Route::patch('user-dashboard-role/{id}', [UserController::class, 'inventory']);
-
-
         // Route::patch('user-inventory-role/{id}', [UserController::class, 'dashboard']);
         Route::patch('user-dashboard-role/{id}', [UserController::class, 'dashboard']);
-Route::patch('user-inventory-role/{id}', [UserController::class, 'inventory']);
+
+        Route::patch('user-inventory-role/{id}', [UserController::class, 'inventory']);
+
+        Route::patch('user-archive/{id}', [UserController::class, 'archive']);
     });
 });

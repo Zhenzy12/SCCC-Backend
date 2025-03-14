@@ -17,9 +17,12 @@ class BarangayController extends Controller
     public function index()
     {
         //
-        $barangays = Barangay::all(['id', 'name', 'longitude', 'latitude']);
+        // $barangays = Barangay::or(['id', 'name', 'longitude', 'latitude'])
+        //     ->orderBy('id', 'desc')
+        //     ->get();
+        $barangays = Barangay::orderBy('id', 'desc')
+            ->get(['id', 'name', 'longitude', 'latitude']);
 
-        
         return response()->json($barangays, 200);
     }
 
