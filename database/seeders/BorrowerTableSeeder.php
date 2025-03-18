@@ -20,6 +20,7 @@ class BorrowerTableSeeder extends Seeder
                 'borrowers_name' => 'Borrower-' . Str::random(8),
                 'borrowers_contact' => rand(100, 999) . '-' . rand(100, 999) . '-' . rand(1000, 9999),
                 'office_id' => rand(1, 10),
+                'deleted_by' => rand(1, 10),
             ]);
         }
     }

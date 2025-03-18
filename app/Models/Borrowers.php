@@ -16,6 +16,8 @@ class Borrowers extends Model
         'borrowers_name',
         'borrowers_contact',
         'office_id',
+        'is_deleted',
+        'deleted_by'
     ];
 
     public function offices()

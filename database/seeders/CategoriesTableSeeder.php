@@ -18,6 +18,7 @@ class CategoriesTableSeeder extends Seeder
         for ($i = 0; $i < 10; $i++) {
             DB::table('categories')->insert([
                 'category_name' => 'Category-' . Str::random(5),
+                'deleted_by' => rand(1, 10),
             ]);
         }
     }
