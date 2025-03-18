@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use App\Models\BorrowTransactions;
+use App\Models\Categories;
+use App\Models\Borrowers;
 use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
@@ -26,6 +28,8 @@ class User extends Authenticatable
         'email',
         'password',
         'for_911',
+        'for_inventory',
+        'is_deleted'
     ];
 
     /**
@@ -55,4 +59,15 @@ class User extends Authenticatable
     {
         return $this->hasMany(BorrowTransactions::class, 'lender_id');
     }
+
+    public function categories()
+    {
+        return $this->hasMany(Categories::class, 'created_by');
+    }
+
+    public function borrowersCreatedBy()
+    {
+        return $this->hasMany(Borrowers::class, 'created_by');
+    }
+
 }

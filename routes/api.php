@@ -178,6 +178,12 @@ Route::middleware(['api.key'])->group(function () {
         # User Controller Routes
         Route::get('/users', [UserController::class, 'index']);
 
+        Route::post('/users', [UserController::class, 'store']);
+
+        Route::put('/users/{user}', [UserController::class, 'update']);
+
+        Route::delete('/users/{user}', [UserController::class, 'destroy']);
+
         Route::patch('user-dashboard-role/{id}', [UserController::class, 'dashboard']);
 
         Route::patch('user-inventory-role/{id}', [UserController::class, 'inventory']);

@@ -39,6 +39,8 @@ class BorrowersController extends Controller
                 'borrowers_name' => 'required|string|max:255',
                 'borrowers_contact' => 'required|string',
                 'office_id' => 'required|exists:offices,id',
+                'deleted_by' => 'required|exists:users,id',
+                'is_deleted' => 'required|boolean'
             ]);
 
             $borrower = Borrowers::create($request->all());
@@ -61,9 +63,9 @@ class BorrowersController extends Controller
     public function show(Borrowers $borrowers)
     {
         //
-        try{
+        try {
             return response()->json($borrowers);
-        }catch(\Exception $e){
+        } catch (\Exception $e) {
             return response()->json(['Show Borrowers Error' => $e->getMessage()], 500);
         }
     }
@@ -82,11 +84,13 @@ class BorrowersController extends Controller
     public function update(Request $request, Borrowers $borrowers)
     {
         //
-        try{
+        try {
             $request->validate([
                 'borrowers_name' => 'sometimes|required|string|max:255',
                 'borrowers_contact' => 'sometimes|required|string',
                 'office_id' => 'sometimes|required|exists:offices,id',
+                'is_deleted' => 'sometimes|required|boolean',
+                'deleted_by' => 'sometimes|required|exists:users,id',
             ]);
             $borrowers->update($request->all());
 
@@ -94,7 +98,7 @@ class BorrowersController extends Controller
                 'message' => 'Successfully Updated',
                 'data' => $borrowers
             ]);
-        }catch(\Exception $e){
+        } catch (\Exception $e) {
             return response()->json(['Update Borrowers Error' => $e->getMessage()], 500);
         }
     }
@@ -105,12 +109,12 @@ class BorrowersController extends Controller
     public function destroy(Borrowers $borrowers)
     {
         //
-        try{
+        try {
             $borrowers->delete();
             return response()->json([
                 'message' => 'Deleted Successfully',
             ]);
-        }catch(\Exception $e){
+        } catch (\Exception $e) {
             return response()->json(['Destroy Borrowers Error' => $e->getMessage()], 500);
         }
     }

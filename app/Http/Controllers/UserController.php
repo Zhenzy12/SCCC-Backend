@@ -15,12 +15,11 @@ class UserController extends Controller
     {
         //
         try {
-            $users = User::all(['id', 'firstName', 'middleName', 'lastName', 'email', 'for_911', 'for_inventory']);
+            $users = User::all(['id', 'firstName', 'middleName', 'lastName', 'email', 'for_911', 'for_inventory', 'is_deleted']);
             return response()->json($users, 200);
         } catch (\Exception $e) {
             return response()->json(['message' => $e->getMessage()], 500);
         }
-
     }
 
     /**
@@ -37,6 +36,28 @@ class UserController extends Controller
     public function store(Request $request)
     {
         //
+        try {
+            $request->validate([
+                'firstName' => 'required|string|max:255',
+                'middleName' => 'required|string|max:255',
+                'lastName' => 'required|string|max:255',
+                'email' => 'required|string|max:255',
+                'password' => 'required|string|',
+                'is_deleted' => 'required|boolean'
+            ]);
+
+            $users = User::create($request->all());
+
+            return response()->json(
+                [
+                    'message' => 'Successfully Created',
+                    'data' => $users,
+                ],
+                201,
+            );
+        } catch (\Exception $e) {
+            return response()->json(['Store User Error' => $e->getMessage()], 500);
+        }
     }
 
     /**
@@ -50,9 +71,27 @@ class UserController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function update(Request $request, User $user)
     {
         //
+        try {
+            $request->validate([
+                'firstName' => 'sometimes|required|string|max:255',
+                'middleName' => 'sometimes|required|string|max:255',
+                'lastName' => 'sometimes|required|string|max:255',
+                'email' => 'sometimes|required|string|max:255',
+                'password' => 'sometimes|required|string|',
+                'is_deleted' => 'sometimes|required|boolean'
+            ]);
+            $user->update($request->all());
+
+            return response()->json([
+                'message' => 'Successfully Updated',
+                'data' => $user
+            ]);
+        } catch (\Exception $e) {
+            return response()->json(['Update User Error' => $e->getMessage()], 500);
+        }
     }
 
     /**
@@ -79,7 +118,6 @@ class UserController extends Controller
         } catch (\Exception $e) {
             return response()->json(['error' => $e->getMessage()], 500);
         }
-
     }
 
     public function inventory(Request $request, string $id)
@@ -103,7 +141,6 @@ class UserController extends Controller
         } catch (\Exception $e) {
             return response()->json(['error' => $e->getMessage()], 500);
         }
-
     }
 
     public function archive(Request $request, string $id)
@@ -115,15 +152,15 @@ class UserController extends Controller
                 'for_inventory' => 'required|boolean', // Ensure for_inventory is required and boolean
                 'for_911' => 'required|boolean', // Ensure for_911 is required and boolean
             ]);
-    
+
             // Find the resource (row) to update
             $inventory_role = User::findOrFail($id);
-    
+
             // Update the specific column (for_inventory)
             $inventory_role->for_inventory = $request->input('for_inventory');
             $inventory_role->for_911 = $request->input('for_911');
             $inventory_role->save();
-    
+
             // Return updated resource
             return response()->json(['message' => 'User Access has been changed successfully', $inventory_role], 200);
         } catch (\Exception $e) {
@@ -134,8 +171,16 @@ class UserController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(User $user)
     {
         //
+        try {
+            $user->delete();
+            return response()->json([
+                'message' => 'Deleted Successfully',
+            ]);
+        } catch (\Exception $e) {
+            return response()->json(['Destroy User Error' => $e->getMessage()], 500);
+        }
     }
 }

@@ -37,6 +37,8 @@ class CategoriesController extends Controller
         try {
             $request->validate([
                 'category_name' => 'required|string|max:255',
+                'is_deleted' => 'required|boolean',
+                'deleted_by' => 'required|exists:users,id',
             ]);
 
             $category = Categories::create($request->all());
@@ -80,6 +82,8 @@ class CategoriesController extends Controller
         try {
             $request->validate([
                 'category_name' => 'sometimes|required|string|max:255',
+                'is_deleted' => 'sometimes|required|boolean',
+                'deleted_by' => 'sometimes|required|exists:users,id',
             ]);
 
             $categories->update($request->all());

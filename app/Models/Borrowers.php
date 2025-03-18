@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Offices;
+use App\Models\User;
 
 class Borrowers extends Model
 {
@@ -17,7 +18,13 @@ class Borrowers extends Model
         'office_id',
     ];
 
-    public function offices(){
+    public function offices()
+    {
         return $this->belongsTo(Offices::class, 'office_id', 'id');
+    }
+
+    public function createdBy()
+    {
+        return $this->belongsTo(User::class, 'created_by');
     }
 }

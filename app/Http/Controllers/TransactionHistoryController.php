@@ -11,30 +11,26 @@ use App\Models\BorrowTransactionItems;
 use App\Models\EquipmentCopies;
 use App\Models\OfficeSupplies;
 use App\Models\OfficeEquipments;
+use App\Models\Categories;
 
 class TransactionHistoryController extends Controller
 {
     public function index()
     {
-        $borrowers = Borrowers::with('offices')->get();
-
-        $users = User::with('borrowers')->get();
-
+        $borrowers = Borrowers::with('offices', 'createdBy')->get();
+        $categories = Categories::with('officeEquipments', 'officeSupplies', 'createdBy')->get();
+        $users = User::with('borrowers', 'categories', 'borrowersCreatedBy')->get();
         $borrow_transactions = BorrowTransactions::with(['borrowers', 'borrowTransactionItems', 'user'])->get();
-
         $borrow_transaction_items = BorrowTransactionItems::with(['borrowTransactions'])->get();
-
         $equipment_copies = EquipmentCopies::with(['officeEquipments'])->get();
-
         $office_supplies = OfficeSupplies::with(['categories'])->get();
-
         $office_equipments = OfficeEquipments::with(['categories'])->get();
-
         $offices = Offices::with(['borrowers'])->get();
 
         return response()->json([
             'users' => $users,
             'borrowers' => $borrowers,
+            'categories' => $categories,
             'borrow_transactions' => $borrow_transactions,
             'borrow_transaction_items' => $borrow_transaction_items,
             'equipment_copies' => $equipment_copies,
@@ -47,7 +43,6 @@ class TransactionHistoryController extends Controller
     public function update(Request $request, $transactionHistory)
     {
         try {
-            // Validate request
             $validatedData = $request->validate([
                 'borrow_date' => 'required|date',
                 'return_date' => 'nullable|date',
@@ -62,7 +57,6 @@ class TransactionHistoryController extends Controller
                 'borrow_transaction_items.*.item_type' => 'required|string',
             ]);
 
-            // Find and update the transaction
             $transaction = BorrowTransactions::findOrFail($transactionHistory);
             $transaction->update([
                 'borrow_date' => $validatedData['borrow_date'],
@@ -73,7 +67,6 @@ class TransactionHistoryController extends Controller
                 'is_deleted' => $validatedData['is_deleted'],
             ]);
 
-            // Update or create borrow transaction items
             if (isset($validatedData['borrow_transaction_items'])) {
                 foreach ($validatedData['borrow_transaction_items'] as $itemData) {
                     if (isset($itemData['id'])) {
@@ -92,8 +85,8 @@ class TransactionHistoryController extends Controller
                 }
             }
 
-            // Reload ALL relationships (matching the `index` method)
             $borrowers = Borrowers::with('offices')->get();
+            $categories = Categories::with('officeEquipments', 'officeSupplies', 'createdBy')->get();
             $users = User::with('borrowers')->get();
             $borrow_transactions = BorrowTransactions::with(['borrowers', 'borrowTransactionItems', 'user'])->get();
             $borrow_transaction_items = BorrowTransactionItems::with('borrowTransactions')->get();
@@ -108,6 +101,7 @@ class TransactionHistoryController extends Controller
                 'data' => [
                     'users' => $users,
                     'borrowers' => $borrowers,
+                    'categories' => $categories,
                     'borrow_transactions' => $borrow_transactions,
                     'borrow_transaction_items' => $borrow_transaction_items,
                     'equipment_copies' => $equipment_copies,
