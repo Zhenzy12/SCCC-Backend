@@ -27,6 +27,6 @@ class Categories extends Model
 
     public function createdBy()
     {
-        return $this->belongsTo(User::class, 'created_by');
+        return $this->belongsTo(User::class, 'deleted_by');
     }
 }

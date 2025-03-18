@@ -62,12 +62,12 @@ class User extends Authenticatable
 
     public function categories()
     {
-        return $this->hasMany(Categories::class, 'created_by');
+        return $this->hasMany(Categories::class, 'deleted_by');
     }
 
     public function borrowersCreatedBy()
     {
-        return $this->hasMany(Borrowers::class, 'created_by');
+        return $this->hasMany(Borrowers::class, 'deleted_by');
     }
 
 }
