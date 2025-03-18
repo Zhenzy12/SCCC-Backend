@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('category_name');
             $table->boolean('is_deleted')->default(false);
-            $table->foreignId('deleted_by')->constrained('users')->onDeleted('cascade');
+            $table->foreignId('deleted_by')->nullable()->constrained('users')->onDeleted('cascade');
             $table->timestamps();
         });
     }

@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('borrowers_contact');
             $table->foreignId('office_id')->constrained('offices')->onDelete('cascade');
             $table->boolean('is_deleted')->default(false);
-            $table->foreignId('deleted_by')->constrained('users')->onDeleted('cascade');
+            $table->foreignId('deleted_by')->nullable()->constrained('users')->onDeleted('cascade');
             $table->timestamps();
         });
     }

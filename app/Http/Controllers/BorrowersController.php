@@ -39,7 +39,7 @@ class BorrowersController extends Controller
                 'borrowers_name' => 'required|string|max:255',
                 'borrowers_contact' => 'required|string',
                 'office_id' => 'required|exists:offices,id',
-                'deleted_by' => 'required|exists:users,id',
+                'deleted_by' => 'nullable|exists:users,id',
                 'is_deleted' => 'required|boolean'
             ]);
 
