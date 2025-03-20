@@ -42,6 +42,13 @@ Route::prefix('mobile')->controller(MobileAuthController::class)->group(function
 Route::middleware(['api.key'])->group(function () {
     // user api
     Route::get('/users', [UserController::class, 'index']);
+
+    Route::post('/users', [UserController::class, 'store']);
+
+    Route::put('/users/{user}', [UserController::class, 'update']);
+
+    Route::delete('/users/{user}', [UserController::class, 'destroy']);
+    
     // Office Equipment api
     Route::get('/office_equipments', [OfficeEquipmentsController::class, 'index']);
 
@@ -177,12 +184,6 @@ Route::middleware(['api.key'])->group(function () {
 
         # User Controller Routes
         Route::get('/users', [UserController::class, 'index']);
-
-        Route::post('/users', [UserController::class, 'store']);
-
-        Route::put('/users/{user}', [UserController::class, 'update']);
-
-        Route::delete('/users/{user}', [UserController::class, 'destroy']);
 
         Route::patch('user-dashboard-role/{id}', [UserController::class, 'dashboard']);
 

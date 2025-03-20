@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\User;
+use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
@@ -42,11 +43,18 @@ class UserController extends Controller
                 'middleName' => 'required|string|max:255',
                 'lastName' => 'required|string|max:255',
                 'email' => 'required|string|max:255',
-                'password' => 'required|string|',
+                'password' => 'required|string|confirmed',
                 'is_deleted' => 'required|boolean'
             ]);
 
-            $users = User::create($request->all());
+            $users = User::create([
+                'firstName' => $request->input('firstName'),
+                'middleName' => $request->input('middleName'),
+                'lastName' => $request->input('lastName'),
+                'email' => $request->input('email'),
+                'password' => Hash::make($request->input('password')),
+                'is_deleted' => $request->input('is_deleted')
+            ]);
 
             return response()->json(
                 [
@@ -80,10 +88,23 @@ class UserController extends Controller
                 'middleName' => 'sometimes|required|string|max:255',
                 'lastName' => 'sometimes|required|string|max:255',
                 'email' => 'sometimes|required|string|max:255',
-                'password' => 'sometimes|required|string|',
+                'password' => 'sometimes|required|string',
                 'is_deleted' => 'sometimes|required|boolean'
             ]);
-            $user->update($request->all());
+            $user->update([
+                'firstName' => $request->input('firstName'),
+                'middleName' => $request->input('middleName'),
+                'lastName' => $request->input('lastName'),
+                'email' => $request->input('email'),
+                'is_deleted' => $request->input('is_deleted')
+            ]);
+
+            if ($request->filled('password')) {
+                if (!Hash::check($request->input('password'), $user->password)) {
+                    $user->password = Hash::make($request->input('password'));
+                    $user->save(); // Save user if password is changed
+                }
+            }
 
             return response()->json([
                 'message' => 'Successfully Updated',

@@ -21,7 +21,7 @@ return new class extends Migration
             $table->string('password');
             $table->boolean('for_911')->default(false);
             $table->boolean('for_inventory')->default(false);
-            $table->boolean('is_deleted')->default(false);
+            $table->boolean('is_deleted')->nullable()->default(false);
             $table->rememberToken();
             $table->timestamps();
         });
