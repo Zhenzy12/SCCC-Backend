@@ -35,11 +35,13 @@ class ReportController extends Controller
                 'assistance' => $assistance,
                 'barangays' => $barangays,
             ], 200);
+
         } catch (Exception $e) {
+
             return response()->json([
-                'message' => 'Fetch failed, please try again later',
                 'error' => $e->getMessage()
             ], 500);
+
         }
     }
 
@@ -70,7 +72,6 @@ class ReportController extends Controller
             ]);
         } catch (Exception $e) {
             return response()->json([
-                'message' => 'Report creation failed',
                 'error' => $e->getMessage()
             ], 500);
         }
@@ -91,15 +92,22 @@ class ReportController extends Controller
     {
         //
         try {
-            // $report = Report::findOrFail($id);
-            $report = Report::with(['source:id,sources', 'incident:id,type', 'actions:id,actions', 'assistance:id,assistance', 'barangay:id,name,longitude,latitude'])->findOrFail($id);
-            // dd($report);
+            $report = Report::with([
+                'source:id,sources', 
+                'incident:id,type', 
+                'actions:id,actions', 
+                'assistance:id,assistance', 
+                'barangay:id,name,longitude,latitude'
+            ])->findOrFail($id);
+
             return response()->json($report, 200);
+
         } catch (Exception $e) {
+
             return response()->json([
-                'message' => 'Report not found',
                 'error' => $e->getMessage()
             ], 404);
+
         }
     }
 
@@ -107,20 +115,28 @@ class ReportController extends Controller
     {
         //
         try {
-            // Fetches all reports with their associated data and sort by id through descending order
+
             $classification = TypeOfAssistance::all();
-            $report = Report::with(['source:id,sources', 'incident:id,type', 'actions:id,actions', 'assistance:id,assistance', 'barangay:id,name,longitude,latitude'])->orderBy('id', 'desc')->get();
+            $report = Report::with([
+                'source:id,sources', 
+                'incident:id,type', 
+                'actions:id,actions', 
+                'assistance:id,assistance', 
+                'barangay:id,name,longitude,latitude'
+            ])->orderBy('id', 'desc')->get();
 
             if ($report->isEmpty()) {
                 return response()->json(['message' => 'No reports found'], 404);
             } else {
-            return response()->json([$report, $classification], 200); 
+                return response()->json([$report, $classification], 200); 
             }
+
         } catch (Exception $e) {
+
             return response()->json([
-                'message' => 'Something went wrong',
                 'error' => $e->getMessage()
             ], 500);
+            
         }
     } 
 
@@ -131,13 +147,23 @@ class ReportController extends Controller
     {
         //
         try {
-            $report = Report::with(['source:id,sources', 'incident:id,type', 'actions:id,actions', 'assistance:id,assistance', 'barangay:id,name,longitude,latitude'])->where('id', $id)->first();
+
+            $report = Report::with([
+                'source:id,sources', 
+                'incident:id,type', 
+                'actions:id,actions', 
+                'assistance:id,assistance', 
+                'barangay:id,name,longitude,latitude'
+            ])->where('id', $id)->first();
 
             return response()->json($report, 200);
+
         } catch (Exception $e) {
+
             return response()->json([
-                'message' => 'Report not found'
+                'error' => $e->getMessage()
             ], 404);
+
         }
     }
 
@@ -174,11 +200,13 @@ class ReportController extends Controller
                 'message' => 'Report updated successfully',
                 'report' => $report
             ]);
+
         } catch (Exception $e) {
+
             return response()->json([
-                'message' => 'Report update failed',
                 'error' => $e->getMessage()
             ], 500);
+
         }  
     }
 
@@ -189,11 +217,12 @@ class ReportController extends Controller
     {
         //
         try {
+
             $report = Report::find($id);
 
             if (!$report) {
                 return response()->json([
-                    'message' => 'Report not found'
+                    'error' => 'Report not found'
                 ], 404);
             }
 
@@ -201,11 +230,13 @@ class ReportController extends Controller
             return response()->json([
                 'message' => 'Report deleted successfully'
             ]);
+
         } catch (Exception $e) {
+
             return response()->json([
-                'message' => 'Report delete failed',
                 'error' => $e->getMessage()
             ], 500);
+
         }
     }
 }

@@ -15,26 +15,42 @@ class DashboardController extends Controller
     //
     public function index()
     {
-        $incidents = Incident::all();
-        $assistance = TypeOfAssistance::all();
-        $report = Report::all();
+        try {
+            $incidents = Incident::all();
+            $assistance = TypeOfAssistance::all();
+            $report = Report::all();
 
-        return response()->json([
-            'incidents' => $incidents, 
-            'assistance' => $assistance,
-            'report' => $report
-        ], 200);
+            return response()->json([
+                'incidents' => $incidents, 
+                'assistance' => $assistance,
+                'report' => $report
+            ], 200);
+        } catch (Exception $e) {
+            return response()->json([
+                'error' => $e->getMessage()
+            ], 500);
+        }
     }
 
     public function recent()
     {
         try {
-        $recent = Report::with(['source:id,sources', 'incident:id,type', 'actions:id,actions', 'assistance:id,assistance', 'barangay:id,name,longitude,latitude'])->latest()->take(5)->get();
-        return response()->json([
-            'recent' => $recent
-        ], 200);
+            $recent = Report::with([
+                'source:id,sources', 
+                'incident:id,type', 
+                'actions:id,actions', 
+                'assistance:id,assistance', 
+                'barangay:id,name,longitude,latitude'])
+                ->latest()
+                ->take(5)
+                ->get();
+            return response()->json([
+                'recent' => $recent
+            ], 200);
         } catch (Exception $e) {
-            return response()->json(['message' => 'Something went wrong'], 500);
+            return response()->json([
+                'error' => $e->getMessage()
+            ], 500);
         }
     }
 
@@ -46,7 +62,9 @@ class DashboardController extends Controller
                 'total' => $total
             ], 200);
         } catch (Exception $e) {
-            return response()->json(['message' => 'Something went wrong'], 500);
+            return response()->json([
+                'error' => $e->getMessage()
+            ], 500);
         }
     }
 }
