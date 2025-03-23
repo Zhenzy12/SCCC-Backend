@@ -19,7 +19,7 @@ class UserController extends Controller
             $users = User::all(['id', 'firstName', 'middleName', 'lastName', 'email', 'for_911', 'for_inventory', 'is_deleted']);
             return response()->json($users, 200);
         } catch (\Exception $e) {
-            return response()->json(['message' => $e->getMessage()], 500);
+            return response()->json(['error' => $e->getMessage()], 500);
         }
     }
 

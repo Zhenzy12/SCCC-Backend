@@ -18,13 +18,24 @@ class BarangayController extends Controller
     {
         //
         try {
-            $barangays = Barangay::orderBy('id', 'desc')->get(['id', 'name', 'longitude', 'latitude']);
+            $barangays = Barangay::orderBy(
+                'id', 
+                'desc'
+            )->get([
+                'id', 
+                'name', 
+                'longitude', 
+                'latitude'
+            ]);
+
             return response()->json(['message' => 'successfully retrieved', 'barangays' => $barangays], 200);
+
         } catch (Exception $e) {
+
             return response()->json([
-                'message' => 'Failed to retrieve barangays',
                 'error' => $e->getMessage(),
             ], 500);
+            
         }
     }
 
@@ -50,26 +61,9 @@ class BarangayController extends Controller
             
         } catch (Exception $e) {
             return response()->json([
-                'message' => 'Failed to create barangay',
                 'error' => $e->getMessage(),
             ], 500);
         }
-        // $request->validate([
-        //     'name' => 'string|max:255',
-        //     'longitude' => 'nullable|numeric',
-        //     'latitude' => 'nullable|numeric',
-        // ]);
-
-        // $barangay = Barangay::create([
-        //     'name' => $request->name,
-        //     'longitude' => $request->longitude,
-        //     'latitude' => $request->latitude,
-        // ]);
-
-        // return response()->json([
-        //     'message' => 'Barangay created successfully!',
-        //     'barangay' => $barangay,
-        // ]);
     }
 
     /**
@@ -86,18 +80,24 @@ class BarangayController extends Controller
     public function show(string $id)
     {
         //
-        $report = Report::with([
+        try { 
+            $report = Report::with([
             'source:id,sources', 
             'incident:id,type', 
             'actions:id,actions', 
             'assistance:id,assistance', 
             'barangay:id,name,longitude,latitude'
-        ])
-        ->where('barangay_id', $id) // Use the route parameter
-        ->orderBy('id', 'desc')
-        ->get();
+            ])
+            ->where('barangay_id', $id) // Use the route parameter
+            ->orderBy('id', 'desc')
+            ->get();
 
-        return response()->json($report);
+            return response()->json($report);
+        } catch (Exception $e) {
+            return response()->json([
+                'error' => $e->getMessage()
+            ], 500);
+        }
     }
 
     /**
@@ -108,14 +108,12 @@ class BarangayController extends Controller
         //
         try {
             $barangay = Barangay::findOrFail($id);
-        return response()->json($barangay, 200);
+            return response()->json($barangay, 200);
         } catch (Exception $e) {
             return response()->json([
-                'message' => 'Barangay not found',
                 'error' => $e->getMessage()
             ], 404);
         }
-        
     }
 
     /**
@@ -128,7 +126,6 @@ class BarangayController extends Controller
             $barangayRequest->validated();
 
             $barangay = Barangay::findOrFail($id);
-            $barangay->update($request->all());  
             
             $barangay->update([
                 'name' => $barangayRequest->name,
@@ -136,19 +133,15 @@ class BarangayController extends Controller
                 'latitude' => $barangayRequest->latitude
             ]);
 
-            // $barangay->update($request->all());
-
             return response()->json([
                 'message' => 'Barangay updated successfully!',
                 'barangay' => $barangay,
             ]);
         } catch (Exception $e) {
             return response()->json([
-                'message' => 'Failed to update barangay',
                 'error' => $e->getMessage()
             ], 500);
-        }
-        
+        }   
     }
 
     /**
@@ -157,11 +150,17 @@ class BarangayController extends Controller
     public function destroy(string $id)
     {
         //
-        $barangay = Barangay::findOrFail($id);
-        $barangay->delete();
-        return response()->json([
-            'message' => 'Barangay deleted successfully!',
-            'barangay' => $barangay,
-        ]);
+        try {
+            $barangay = Barangay::findOrFail($id);
+            $barangay->delete();
+            return response()->json([
+                'message' => 'Barangay deleted successfully!',
+                'barangay' => $barangay,
+            ]);
+        } catch (Exception $e) {
+            return response()->json([
+                'error' => $e->getMessage()
+            ], 500);
+        }
     }
 }
