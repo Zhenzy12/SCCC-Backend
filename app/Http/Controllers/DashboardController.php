@@ -32,12 +32,22 @@ class DashboardController extends Controller
     public function recent()
     {
         try {
-        $recent = Report::with(['source:id,sources', 'incident:id,type', 'actions:id,actions', 'assistance:id,assistance', 'barangay:id,name,longitude,latitude'])->latest()->take(5)->get();
-        return response()->json([
-            'recent' => $recent
-        ], 200);
+            $recent = Report::with([
+                'source:id,sources', 
+                'incident:id,type', 
+                'actions:id,actions', 
+                'assistance:id,assistance', 
+                'barangay:id,name,longitude,latitude'])
+                ->latest()
+                ->take(5)
+                ->get();
+            return response()->json([
+                'recent' => $recent
+            ], 200);
         } catch (Exception $e) {
-            return response()->json(['message' => 'Something went wrong'], 500);
+            return response()->json([
+                'error' => $e->getMessage()
+            ], 500);
         }
     }
 
@@ -49,7 +59,9 @@ class DashboardController extends Controller
                 'total' => $total
             ], 200);
         } catch (Exception $e) {
-            return response()->json(['message' => 'Something went wrong'], 500);
+            return response()->json([
+                'error' => $e->getMessage()
+            ], 500);
         }
     }
 }
