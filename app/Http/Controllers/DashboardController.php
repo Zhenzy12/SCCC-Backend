@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\Incident;
 use App\Models\TypeOfAssistance;
 use App\Models\Report;
+use App\Models\Source;
 use Illuminate\Support\Facades\DB;
 use Exception;
 
@@ -17,11 +18,13 @@ class DashboardController extends Controller
     {
         $incidents = Incident::all();
         $assistance = TypeOfAssistance::all();
+        $source = Source::all();
         $report = Report::all();
 
         return response()->json([
             'incidents' => $incidents, 
             'assistance' => $assistance,
+            'source' => $source,
             'report' => $report
         ], 200);
     }
