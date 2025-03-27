@@ -41,6 +41,7 @@ class BorrowTransactionsController extends Controller
                 'returned_date' => 'nullable|date',
                 'lender_id' => 'required|exists:users,id',
                 'remarks' => 'required|string',
+                'isc' => 'required|string|max:255',
             ]);
 
             $borrowTransaction = BorrowTransactions::create($request->all());
@@ -63,9 +64,9 @@ class BorrowTransactionsController extends Controller
     public function show(BorrowTransactions $borrowTransactions)
     {
         //
-        try{
+        try {
             return response()->json($borrowTransactions);
-        }catch(\Exception $e){
+        } catch (\Exception $e) {
             return response()->json(['Show Borrow Transaction Error' => $e->getMessage()], 500);
         }
     }
@@ -84,13 +85,14 @@ class BorrowTransactionsController extends Controller
     public function update(Request $request, BorrowTransactions $borrowTransactions)
     {
         //
-        try{
+        try {
             $request->validate([
                 'borrower_id' => 'sometimes|required|exists:borrowers,id',
                 'borrow_date' => 'sometimes|nullable|date',
                 'returned_date' => 'sometimes|nullable|date',
                 'lender_id' => 'sometimes|required|exists:users,id',
                 'remarks' => 'sometimes|required|string',
+                'isc' => 'sometimes|required|string|max:255',
             ]);
             $borrowTransactions->update($request->all());
 
@@ -98,7 +100,7 @@ class BorrowTransactionsController extends Controller
                 'message' => 'Successfully Updated',
                 'data' => $borrowTransactions
             ]);
-        }catch(\Exception $e){
+        } catch (\Exception $e) {
             return response()->json(['Update Borrow Transaction Error' => $e->getMessage()], 500);
         }
     }
@@ -109,12 +111,12 @@ class BorrowTransactionsController extends Controller
     public function destroy(BorrowTransactions $borrowTransactions)
     {
         //
-        try{
+        try {
             $borrowTransactions->delete();
             return response()->json([
                 'message' => 'Deleted Successfully',
             ]);
-        }catch(\Exception $e){
+        } catch (\Exception $e) {
             return response()->json(['Destroy Borrow Transaction Error' => $e->getMessage()], 500);
         }
     }

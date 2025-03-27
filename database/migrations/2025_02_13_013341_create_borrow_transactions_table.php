@@ -19,6 +19,7 @@ return new class extends Migration
             $table->foreignId('lender_id')->constrained('users')->onDelete('cascade');
             $table->string('remarks');
             $table->boolean('is_deleted')->default(false);
+            $table->string('isc');
             $table->timestamps();
         });
     }

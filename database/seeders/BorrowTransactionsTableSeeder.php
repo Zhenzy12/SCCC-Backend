@@ -25,7 +25,8 @@ class BorrowTransactionsTableSeeder extends Seeder
                 'borrow_date' => $borrowDate,
                 'return_date' => $returnDate,
                 'lender_id' => rand(1, 10),
-                'remarks' => 'Remark-' . Str::random(15)
+                'remarks' => 'Remark-' . Str::random(15),
+                'isc' => 'ISC-' . Str::random(5),
             ]);
         }
     }
