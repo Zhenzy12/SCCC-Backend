@@ -28,7 +28,9 @@ class BarangayController extends Controller
                 'latitude'
             ]);
 
-            return response()->json(['message' => 'successfully retrieved', 'barangays' => $barangays], 200);
+            return response()->json([
+                'barangays' => $barangays
+            ], 200);
 
         } catch (Exception $e) {
 
