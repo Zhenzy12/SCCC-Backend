@@ -99,38 +99,29 @@ class BorrowTransactionItemsController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request)
+    public function update(Request $request, BorrowTransactionItems $borrowTransactionItems)
     {
+        //
         try {
             $request->validate([
-                'items' => 'required|array|min:1',
-                'items.*.id' => 'required|exists:borrow_transaction_items,id',
-                'items.*.returned' => 'sometimes|required|boolean',
-                'items.*.returned_date' => 'sometimes|nullable|date',
-                'items.*.quantity' => 'sometimes|required|integer',
+                'transaction_id' => 'sometimes|required|exists:borrow_transactions,id',
+                'item_copy_id' => 'sometimes|required|integer',
+                'returned' => 'sometimes|required|boolean',
+                'returned_date' => 'sometimes|nullable|date',
+                'item_type' => 'sometimes|required|string',
+                'quantity' => 'sometimes|required|integer'
             ]);
-
-            $updatedItems = [];
-
-            foreach ($request->items as $item) {
-                $borrowItem = BorrowTransactionItems::findOrFail($item['id']);
-                $borrowItem->update([
-                    'returned' => $item['returned'] ?? $borrowItem->returned,
-                    'returned_date' => $item['returned_date'] ?? $borrowItem->returned_date,
-                    'quantity' => $item['quantity'] ?? $borrowItem->quantity,
-                    'updated_at' => now(),
-                ]);
-                $updatedItems[] = $borrowItem;
-            }
+            $borrowTransactionItems->update($request->all());
 
             return response()->json([
                 'message' => 'Successfully Updated',
-                'data' => $updatedItems
+                'data' => $borrowTransactionItems
             ]);
         } catch (\Exception $e) {
             return response()->json(['Update Borrow Transaction Items Error' => $e->getMessage()], 500);
         }
     }
+
 
     /**
      * Remove the specified resource from storage.
