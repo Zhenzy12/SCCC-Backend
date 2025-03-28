@@ -13,9 +13,12 @@ return new class extends Migration
     {
         Schema::create('reports', function (Blueprint $table) {
             $table->id();
-            $table->string('time'); #time
-            $table->string('date_received')->nullable(); #date
-            $table->string('arrival_on_site'); #time
+            // $table->string('time'); #time
+            // $table->time('date_received')->nullable(); #date
+            // $table->string('arrival_on_site'); #time
+            $table->time('time'); #time
+            $table->date('date_received')->nullable(); #date
+            $table->time('arrival_on_site'); #time
             $table->string('name')->nullable();
             $table->string('landmark',255);
             $table->float('longitude',10,6);
