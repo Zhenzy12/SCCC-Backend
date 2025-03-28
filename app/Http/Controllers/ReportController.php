@@ -13,6 +13,7 @@ use App\Models\Barangay;
 use App\Http\Resources\ReportCollection;
 use App\Http\Resources\SourceCollection;
 use App\Http\Requests\ReportRequest;
+use App\Models\Urgency;
 use Exception;
 
 class ReportController extends Controller
@@ -27,6 +28,7 @@ class ReportController extends Controller
             $barangays = Barangay::all();
             $actions = ActionsTaken::all();
             $assistance = TypeOfAssistance::all();
+            $urgencies = Urgency::all();
 
             return response()->json([
                 'sources' => $sources,
@@ -34,6 +36,7 @@ class ReportController extends Controller
                 'incidents' => $incidents,
                 'assistance' => $assistance,
                 'barangays' => $barangays,
+                'urgencies' => $urgencies,
             ], 200);
 
         } catch (Exception $e) {
@@ -64,6 +67,7 @@ class ReportController extends Controller
                 'barangay_id' => $reportRequest->barangay_id,
                 'actions_id' => $reportRequest->actions_id,
                 'assistance_id' => $reportRequest->assistance_id,
+                'urgency_id' => $reportRequest->urgency_id,
             ]);
 
             return response()->json([
@@ -97,7 +101,8 @@ class ReportController extends Controller
                 'incident:id,type', 
                 'actions:id,actions', 
                 'assistance:id,assistance', 
-                'barangay:id,name,longitude,latitude'
+                'barangay:id,name,longitude,latitude',
+                'urgency:id,urgency'
             ])->findOrFail($id);
 
             return response()->json($report, 200);
@@ -122,7 +127,8 @@ class ReportController extends Controller
                 'incident:id,type', 
                 'actions:id,actions', 
                 'assistance:id,assistance', 
-                'barangay:id,name,longitude,latitude'
+                'barangay:id,name,longitude,latitude',
+                'urgency:id,urgency'
             ])->orderBy('id', 'desc')->get();
 
             if ($report->isEmpty()) {
@@ -153,7 +159,8 @@ class ReportController extends Controller
                 'incident:id,type', 
                 'actions:id,actions', 
                 'assistance:id,assistance', 
-                'barangay:id,name,longitude,latitude'
+                'barangay:id,name,longitude,latitude',
+                'urgency:id,urgency'
             ])->where('id', $id)->first();
 
             return response()->json($report, 200);
@@ -198,6 +205,7 @@ class ReportController extends Controller
                 'landmark' => $reportRequest->landmark,
                 'actions_id' => $reportRequest->actions_id,
                 'assistance_id' => $reportRequest->assistance_id,
+                'urgency_id' => $reportRequest->urgency_id,
             ]);
 
             return response()->json([

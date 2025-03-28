@@ -25,7 +25,12 @@ class Report extends Model
         'barangay_id',
         'actions_id',
         'assistance_id',
+        'urgency_id',
     ];
+
+    public function urgency(){
+        return $this->belongsTo(Urgency::class, 'urgency_id');
+    }
 
     public function barangay(){
         return $this->belongsTo(Barangay::class, 'barangay_id');

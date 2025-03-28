@@ -25,6 +25,7 @@ return new class extends Migration
             $table->foreignId('barangay_id')->constrained('barangay')->onDelete('cascade');
             $table->foreignId('actions_id')->constrained('actions_taken')->onDelete('cascade'); #actions taken
             $table->foreignId('assistance_id')->constrained('type_of_assistance')->onDelete('cascade'); #type of assistance
+            $table->foreignId('urgency_id')->constrained('urgency')->onDelete('cascade'); #urgency
             $table->timestamps();
         });
     }

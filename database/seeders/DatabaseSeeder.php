@@ -21,11 +21,13 @@ class DatabaseSeeder extends Seeder
         // ]);
 
         $this->call([
+            // seeder for SCCC 911 System
             TypeOfAssistanceSeeder::class,
             ActionsTakenSeeder::class,
             SourceSeeder::class,
             IncidentSeeder::class,
             BarangaySeeder::class,
+            UrgencySeeder::class,
 
             // seeder for SCCC Inventory System
             UsersTableSeeder::class,
