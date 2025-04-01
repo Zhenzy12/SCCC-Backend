@@ -14,10 +14,10 @@ use App\Http\Controllers\BorrowersController;
 use App\Http\Controllers\OfficesController;
 use App\Http\Controllers\BarangayController;
 use App\Http\Controllers\ReportController;
-use App\Http\Controllers\IncidentController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\TransactionHistoryController;
+use App\Http\Controllers\FileUploadController;
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('/user', function (Request $request) {
@@ -191,5 +191,8 @@ Route::middleware(['api.key'])->group(function () {
         Route::patch('user-inventory-role/{id}', [UserController::class, 'inventory']);
 
         Route::patch('user-archive/{id}', [UserController::class, 'archive']);
+
+        # Upload Controller Routes
+        Route::post('/upload-excel', [FileUploadController::class, 'create']);
     });
 });
