@@ -40,7 +40,7 @@ class UserController extends Controller
         try {
             $request->validate([
                 'firstName' => 'required|string|max:255',
-                'middleName' => 'required|string|max:255',
+                'middleName' => 'nullable|string|max:255',
                 'lastName' => 'required|string|max:255',
                 'email' => 'required|string|max:255',
                 'password' => 'required|string|confirmed',
@@ -85,7 +85,7 @@ class UserController extends Controller
         try {
             $request->validate([
                 'firstName' => 'sometimes|required|string|max:255',
-                'middleName' => 'sometimes|required|string|max:255',
+                'middleName' => 'sometimes|nullable|string|max:255',
                 'lastName' => 'sometimes|required|string|max:255',
                 'email' => 'sometimes|required|string|max:255',
                 'password' => 'sometimes|required|string',
