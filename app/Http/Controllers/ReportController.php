@@ -120,7 +120,7 @@ class ReportController extends Controller
     {
         //
         try {
-
+            $urgencies = Urgency::all();
             $classification = TypeOfAssistance::all();
             $report = Report::with([
                 'source:id,sources', 
@@ -134,7 +134,7 @@ class ReportController extends Controller
             if ($report->isEmpty()) {
                 return response()->json(['message' => 'No reports found'], 404);
             } else {
-                return response()->json([$report, $classification], 200); 
+                return response()->json([$report, $classification, $urgencies], 200); 
             }
 
         } catch (Exception $e) {
