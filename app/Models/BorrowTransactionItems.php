@@ -14,7 +14,8 @@ class BorrowTransactionItems extends Model
         'item_copy_id',
         'returned',
         'returned_date',
-        'item_type'
+        'item_type',
+        'quantity'
     ];
 
     public function borrowTransactions(){
