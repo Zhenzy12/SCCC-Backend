@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use App\Models\Report;
+use Illuminate\Support\Facades\DB;
 
 class FileUploadController extends Controller
 {
@@ -42,7 +43,50 @@ class FileUploadController extends Controller
 
     public function readAndUpload(Request $request)
     {
-        // Validate the request
+        try {
+            // Validate the request to ensure 'data' is present and is an array
+            $request->validate([
+                'data' => 'required|array',
+                'data.*.time' => 'required|string', // Ensure each record has a 'time' field
+            ]);
+    
+            $insertedRecords = [];
+    
+            // Iterate over the data and insert each record using the model
+            foreach ($request->input('data') as $row) {
+                // Use the Eloquent model to create the record
+                $report = Report::create([
+                    'time' => $row['time'],
+                    'date_received' => $row['date_received'] ?? null,
+                    'arrival_on_site' => $row['arrival_on_site'] ?? null,
+                    'name' => $row['name'] ?? null,
+                    'landmark' => $row['landmark'] ?? null,
+                    'longitude' => isset($row['longitude']) && is_numeric($row['longitude']) ? $row['longitude'] : 0,
+                    'latitude' => isset($row['latitude']) && is_numeric($row['latitude']) ? $row['latitude'] : 0,
+                    'source_id' => $row['source_id'] ?? null,
+                    'incident_id' => $row['incident_id'] ?? null,
+                    'barangay_id' => $row['barangay_id'] ?? null,
+                    'actions_id' => $row['actions_id'] ?? null,
+                    'assistance_id' => $row['assistance_id'] ?? null,
+                    'urgency_id' => $row['urgency_id'] ?? null,
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ]);
+            }
+    
+            return response()->json([
+                'message' => 'Data successfully imported into the database',
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => 'An error occurred during import: ' . $e->getMessage(),
+            ], 500);
+        }
+    }
+
+    public function uploadFileView(Request $request)
+    {
+        // Validate the uploaded file
         $request->validate([
             'file' => 'required|mimes:xlsx,xls|max:2048', // 2MB max file size and allowed file types
         ]);
@@ -55,48 +99,25 @@ class FileUploadController extends Controller
         $sheet = $spreadsheet->getActiveSheet();
         $data = $sheet->toArray();
 
-        // Array to store inserted records
-        $insertedRecords = [];
+        // Extract headers (first row)
+        $headers = $data[0]; 
+        $rows = array_slice($data, 1); // Get data rows
 
-        // Process each row, assuming the first row contains column headers
-        foreach ($data as $index => $row) {
-            if ($index === 0) continue; // Skip header row
-        
-            // Check if 'time' is missing or null, then skip this row
-            if (empty($row[0])) {
-                continue;
-            }
-        
-            // Insert the record
-            $report = Report::create([
-                'time' => $row[0],
-                'date_received' => $row[1] ?? null,
-                'arrival_on_site' => $row[2] ?? null,
-                'name' => $row[3] ?? null,
-                'landmark' => $row[4] ?? null,
-                'longitude' => !empty($row[5]) ? $row[5] : 0,
-                'latitude' => !empty($row[6]) ? $row[6] : 0,
-                'source_id' => $row[7] ?? null,
-                'incident_id' => $row[8] ?? null,
-                'barangay_id' => $row[9] ?? null,
-                'actions_id' => $row[10] ?? null,
-                'assistance_id' => $row[11] ?? null,
-                'urgency_id' => $row[12] ?? null,
-                'created_at' => now(),
-                'updated_at' => now(),
-            ]);
+        // Filter out empty rows (if all values are null or empty)
+        $filteredRows = array_filter($rows, function ($row) {
+            return array_filter($row); // Remove rows where all values are empty
+        });
 
-            // Store the inserted record
-            $insertedRecords[] = $report;
+        // Format the data into an array of associative arrays
+        $formattedData = [];
+        foreach ($filteredRows as $row) {
+            $formattedData[] = array_combine($headers, $row);
         }
 
-        // Free memory
-        unset($spreadsheet, $sheet, $data);
-
-        // Return a success response with inserted data
+        // Return JSON response (data is not stored in the database)
         return response()->json([
-            'message' => 'Data successfully imported into the database',
-            'inserted_records' => $insertedRecords,
+            'message' => 'Data successfully fetched from the file',
+            'data' => $formattedData,
         ]);
     }
 
