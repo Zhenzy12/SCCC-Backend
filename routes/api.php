@@ -193,6 +193,6 @@ Route::middleware(['api.key'])->group(function () {
         Route::patch('user-archive/{id}', [UserController::class, 'archive']);
 
         # Upload Controller Routes
-        Route::post('/upload-excel', [FileUploadController::class, 'create']);
+        Route::post('/upload-excel', [FileUploadController::class, 'readAndUpload']);
     });
 });
