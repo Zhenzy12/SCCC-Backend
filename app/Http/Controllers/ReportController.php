@@ -252,4 +252,25 @@ class ReportController extends Controller
 
         }
     }
+
+    public function destroyMultiple(Request $request)
+    {
+        try {
+            foreach ($request->input('data') as $id) {
+                // Find the report by ID and delete it
+                $report = Report::findOrFail($id);  // Using findOrFail to ensure the report exists
+                $report->delete();
+            }
+
+            return response()->json([
+                'message' => 'Report deleted successfully'
+            ]);
+
+        } catch (Exception $e) {
+            return response()->json([
+                'error' => $e->getMessage()
+            ], 500);
+        }
+    }
+
 }

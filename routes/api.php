@@ -177,8 +177,9 @@ Route::middleware(['api.key'])->group(function () {
         
         Route::get('/report-edit/{id}', [ReportController::class, 'edit']);
 
-
         Route::delete('/report-delete/{id}', [ReportController::class, 'destroy']);
+
+        Route::delete('/report-delete', [ReportController::class, 'destroyMultiple']);
 
         // # Incident Controller Routes
         // Route::get('/incident-display', [IncidentController::class, 'index']);
