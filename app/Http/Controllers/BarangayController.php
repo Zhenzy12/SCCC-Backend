@@ -8,6 +8,7 @@ use App\Models\Barangay;
 use Exception;
 use App\Http\Requests\BarangayRequest;
 use App\Models\Report;
+use Illuminate\Support\Facades\DB;
 
 class BarangayController extends Controller
 {
@@ -18,26 +19,22 @@ class BarangayController extends Controller
     {
         //
         try {
-            $barangays = Barangay::orderBy(
-                'id', 
-                'desc'
-            )->get([
-                'id', 
-                'name', 
-                'longitude', 
-                'latitude'
-            ]);
+            $reportsPerBarangay = Report::groupBy('barangay_id')
+                ->select('barangay_id', DB::raw('COUNT(*) as total_reports'))
+                ->get();
+
+            $barangays = Barangay::orderBy('id', 'desc')
+                ->get(['id', 'name', 'longitude', 'latitude']);
 
             return response()->json([
-                'barangays' => $barangays
+                'barangays' => $barangays,
+                'reportsPerBarangay' => $reportsPerBarangay
             ], 200);
-
         } catch (Exception $e) {
 
             return response()->json([
                 'error' => $e->getMessage(),
             ], 500);
-            
         }
     }
 
@@ -60,7 +57,6 @@ class BarangayController extends Controller
                 'message' => 'Barangay created successfully!',
                 'barangay' => $barangay,
             ]);
-            
         } catch (Exception $e) {
             return response()->json([
                 'error' => $e->getMessage(),
@@ -82,17 +78,17 @@ class BarangayController extends Controller
     public function show(string $id)
     {
         //
-        try { 
+        try {
             $report = Report::with([
-            'source:id,sources', 
-            'incident:id,type', 
-            'actions:id,actions', 
-            'assistance:id,assistance', 
-            'barangay:id,name,longitude,latitude'
+                'source:id,sources',
+                'incident:id,type',
+                'actions:id,actions',
+                'assistance:id,assistance',
+                'barangay:id,name,longitude,latitude'
             ])
-            ->where('barangay_id', $id) // Use the route parameter
-            ->orderBy('id', 'desc')
-            ->get();
+                ->where('barangay_id', $id) // Use the route parameter
+                ->orderBy('id', 'desc')
+                ->get();
 
             return response()->json($report);
         } catch (Exception $e) {
@@ -128,7 +124,7 @@ class BarangayController extends Controller
             $barangayRequest->validated();
 
             $barangay = Barangay::findOrFail($id);
-            
+
             $barangay->update([
                 'name' => $barangayRequest->name,
                 'longitude' => $barangayRequest->longitude,
@@ -143,7 +139,7 @@ class BarangayController extends Controller
             return response()->json([
                 'error' => $e->getMessage()
             ], 500);
-        }   
+        }
     }
 
     /**
