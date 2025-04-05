@@ -120,6 +120,7 @@ class ReportController extends Controller
     {
         //
         try {
+            $actions = ActionsTaken::all();
             $urgencies = Urgency::all();
             $classification = TypeOfAssistance::all();
             $report = Report::with([
@@ -134,7 +135,7 @@ class ReportController extends Controller
             if ($report->isEmpty()) {
                 return response()->json(['message' => 'No reports found'], 404);
             } else {
-                return response()->json([$report, $classification, $urgencies], 200); 
+                return response()->json([$report, $classification, $urgencies, $actions], 200); 
             }
 
         } catch (Exception $e) {
@@ -251,4 +252,25 @@ class ReportController extends Controller
 
         }
     }
+
+    public function destroyMultiple(Request $request)
+    {
+        try {
+            foreach ($request->input('data') as $id) {
+                // Find the report by ID and delete it
+                $report = Report::findOrFail($id);  // Using findOrFail to ensure the report exists
+                $report->delete();
+            }
+
+            return response()->json([
+                'message' => 'Report deleted successfully'
+            ]);
+
+        } catch (Exception $e) {
+            return response()->json([
+                'error' => $e->getMessage()
+            ], 500);
+        }
+    }
+
 }
