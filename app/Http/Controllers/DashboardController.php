@@ -8,7 +8,7 @@ use App\Models\Incident;
 use App\Models\TypeOfAssistance;
 use App\Models\Report;
 use App\Models\Source;
-use Illuminate\Support\Facades\DB;
+use App\Models\Urgency;
 use Exception;
 
 class DashboardController extends Controller
@@ -20,19 +20,21 @@ class DashboardController extends Controller
         $assistance = TypeOfAssistance::all();
         $source = Source::all();
         $report = Report::all();
+        $urgencies = Urgency::all();
 
         return response()->json([
             'incidents' => $incidents, 
             'assistance' => $assistance,
             'source' => $source,
-            'report' => $report
+            'report' => $report,
+            'urgencies' => $urgencies
         ], 200);
     }
 
     public function recent()
     {
         try {
-            $recent = Report::with([
+            $recents = Report::with([
                 'source:id,sources', 
                 'incident:id,type', 
                 'actions:id,actions', 
@@ -42,7 +44,7 @@ class DashboardController extends Controller
                 ->take(5)
                 ->get();
             return response()->json([
-                'recent' => $recent
+                'recents' => $recents
             ], 200);
         } catch (Exception $e) {
             return response()->json([

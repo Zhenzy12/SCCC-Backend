@@ -37,10 +37,29 @@ class User extends Authenticatable
      *
      * @var list<string>
      */
+    protected $guarded = [
+        'role',
+        'password',
+        'remember_token',
+    ];
+    
     protected $hidden = [
         'password',
         'remember_token',
     ];
+
+    // set the 1st registered user role for admin access
+    public static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($user) {
+            // Set default role for the first user
+            if (User::count() === 0) {
+                $user->role = true;  // Set role to true for the first user
+            }
+        });
+    }
 
     /**
      * Get the attributes that should be cast.
