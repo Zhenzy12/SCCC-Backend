@@ -9,6 +9,8 @@ use Exception;
 use App\Http\Requests\BarangayRequest;
 use App\Models\Report;
 use Illuminate\Support\Facades\DB;
+use App\Models\Tracking;
+use Illuminate\Support\Facades\Auth;
 
 class BarangayController extends Controller
 {
@@ -51,6 +53,14 @@ class BarangayController extends Controller
                 'name' => $barangayRequest->name,
                 'longitude' => $barangayRequest->longitude,
                 'latitude' => $barangayRequest->latitude,
+            ]);
+
+            Tracking::create([
+                'category' => 'Barangay',
+                'user_id' => Auth::id(),
+                'action' => 'Created',
+                'data' => json_encode($barangay->toArray()), // ✅ Important
+                'description' => 'A Barangay was created by ' . Auth::user()->firstName . ' ' . Auth::user()->lastName . '.',
             ]);
 
             return response()->json([
@@ -131,6 +141,14 @@ class BarangayController extends Controller
                 'latitude' => $barangayRequest->latitude
             ]);
 
+            Tracking::create([
+                'category' => 'Barangay',
+                'user_id' => Auth::id(),
+                'action' => 'Updated',
+                'data' => json_encode($barangay->toArray()), // ✅ Important
+                'description' => 'A Barangay was updated by ' . Auth::user()->firstName . ' ' . Auth::user()->lastName . '.',
+            ]);
+
             return response()->json([
                 'message' => 'Barangay updated successfully!',
                 'barangay' => $barangay,
@@ -151,6 +169,15 @@ class BarangayController extends Controller
         try {
             $barangay = Barangay::findOrFail($id);
             $barangay->delete();
+
+            Tracking::create([
+                'category' => 'Barangay',
+                'user_id' => Auth::id(),
+                'action' => 'Deleted',
+                'data' => json_encode($barangay->toArray()), // ✅ Important
+                'description' => 'A Barangay was deleted by ' . Auth::user()->firstName . ' ' . Auth::user()->lastName . '.',
+            ]);
+
             return response()->json([
                 'message' => 'Barangay deleted successfully!',
                 'barangay' => $barangay,
