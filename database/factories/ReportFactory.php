@@ -28,8 +28,8 @@ class ReportFactory extends Factory
     {
         return [
             'time' => $this->faker->time(),
-            'date_received' => $this->faker->date(),
-            'arrival_on_site' => $this->faker->dateTime(),
+            'date_received' => $this->faker->dateTimeBetween('2020-01-01', '2025-12-31'), // Restrict to 2020-2025
+            'arrival_on_site' => $this->faker->dateTimeBetween('2020-01-01', '2025-12-31'),
             'name' => $this->faker->name(),
             'landmark' => $this->faker->streetName(),
             
@@ -51,6 +51,7 @@ class ReportFactory extends Factory
             'incident_id' => Incident::inRandomOrder()->value('id') ?: 1,
             'actions_id' => ActionsTaken::inRandomOrder()->value('id') ?: 1,
             'assistance_id' => TypeOfAssistance::inRandomOrder()->value('id') ?: 1,
+            'urgency_id' => Urgency::inRandomOrder()->value('id') ?: 1,
         ];        
     }
 }
