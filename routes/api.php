@@ -18,6 +18,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\TransactionHistoryController;
 use App\Http\Controllers\FileUploadController;
+use App\Http\Controllers\TrackingController;
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('/user', function (Request $request) {
@@ -194,5 +195,21 @@ Route::middleware(['api.key'])->group(function () {
         Route::post('/import-excel-data', [FileUploadController::class, 'readAndUpload']);
         
         Route::post('/import-excel', [FileUploadController::class, 'uploadFileView']);
+
+        # Tracking Controller Routes
+        Route::get('/tracking', [TrackingController::class, 'index']);
+
+        # Mail Controller Routes
+        // Route::get('/test-mail', function () {
+        //     Mail::to('ccandremarin@gmail.com')->send(new TestMail());
+        //     return response()->json(['message' => 'Mail sent successfully']);
+        // });
+        Route::get('/test-mail', function () {
+            Mail::to(['vheebhee7@gmail.com', 'eehvyahj.prog@gmail.com'])->send(new TestMail()); 
+            return response()->json(['message' => 'Mail sent successfully']);
+        });
+
+        # Forgot Password Controller Routes
+
     });
 });
