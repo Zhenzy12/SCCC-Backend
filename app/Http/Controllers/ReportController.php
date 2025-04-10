@@ -10,10 +10,11 @@ use App\Models\ActionsTaken;
 use App\Models\Incident;
 use App\Models\TypeOfAssistance;
 use App\Models\Barangay;
-use App\Http\Resources\ReportCollection;
-use App\Http\Resources\SourceCollection;
 use App\Http\Requests\ReportRequest;
 use App\Models\Urgency;
+use App\Models\Tracking;
+use Illuminate\Support\Facades\Auth;
+
 use Exception;
 
 class ReportController extends Controller
@@ -68,6 +69,14 @@ class ReportController extends Controller
                 'actions_id' => $reportRequest->actions_id,
                 'assistance_id' => $reportRequest->assistance_id,
                 'urgency_id' => $reportRequest->urgency_id,
+            ]);
+
+            Tracking::create([
+                'category' => 'Report',
+                'user_id' => Auth::id(),
+                'action' => 'Created',
+                'data' => json_encode($report->toArray()), // ✅ Important
+                'description' => 'A Report was created by ' . Auth::user()->firstName . ' ' . Auth::user()->lastName . '.',
             ]);
 
             return response()->json([
@@ -209,6 +218,14 @@ class ReportController extends Controller
                 'urgency_id' => $reportRequest->urgency_id,
             ]);
 
+            Tracking::create([
+                'category' => 'Report',
+                'user_id' => Auth::id(),
+                'action' => 'Updated',
+                'data' => json_encode($report->toArray()), // ✅ Important
+                'description' => 'A Report was updated by ' . Auth::user()->firstName . ' ' . Auth::user()->lastName . '.',
+            ]);
+
             return response()->json([
                 'message' => 'Report updated successfully',
                 'report' => $report
@@ -239,10 +256,19 @@ class ReportController extends Controller
                 ], 404);
             }
 
+            Tracking::create([
+                'category' => 'Report',
+                'user_id' => Auth::id(),
+                'action' => 'Deleted',
+                'data' => json_encode($report->toArray()), // ✅ Important
+                'description' => 'A Report was deleted by ' . Auth::user()->firstName . ' ' . Auth::user()->lastName . '.',
+            ]);
+
             $report->delete();
             return response()->json([
                 'message' => 'Report deleted successfully'
             ]);
+
 
         } catch (Exception $e) {
 
@@ -256,14 +282,33 @@ class ReportController extends Controller
     public function destroyMultiple(Request $request)
     {
         try {
-            foreach ($request->input('data') as $id) {
+            // Get the selected reports from the request
+            $selectedReports = $request->input('data'); // Full report objects
+
+            // Initialize an array to store deleted report data
+            $deletedReportsData = [];
+
+            // Loop through each report in the selected reports
+            foreach ($selectedReports as $reportData) {
                 // Find the report by ID and delete it
-                $report = Report::findOrFail($id);  // Using findOrFail to ensure the report exists
+                $report = Report::findOrFail($reportData['id']);  // Using findOrFail to ensure the report exists
                 $report->delete();
+
+                // Add the deleted report data to the array for tracking
+                $deletedReportsData[] = $reportData;
             }
 
+            // Track the deletion for all reports outside the loop
+            Tracking::create([
+                'category' => 'Report',
+                'user_id' => Auth::id(),
+                'action' => 'Multiple Delete',
+                'data' => json_encode($deletedReportsData), // Pass the data of all deleted reports
+                'description' => 'Multiple reports were deleted by ' . Auth::user()->firstName . ' ' . Auth::user()->lastName . '.',
+            ]);
+
             return response()->json([
-                'message' => 'Report deleted successfully'
+                'message' => 'Reports deleted successfully'
             ]);
 
         } catch (Exception $e) {
