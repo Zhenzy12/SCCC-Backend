@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Models\Tracking;
 
 class TrackingController extends Controller
 {
@@ -13,8 +14,10 @@ class TrackingController extends Controller
     public function index()
     {
         //
+        $logs = Tracking::all();
+        return response()->json($logs);
     }
-
+    
     /**
      * Show the form for creating a new resource.
      */

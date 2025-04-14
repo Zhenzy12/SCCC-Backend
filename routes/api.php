@@ -198,5 +198,18 @@ Route::middleware(['api.key'])->group(function () {
 
         # Tracking Controller Routes
         Route::get('/tracking', [TrackingController::class, 'index']);
+
+        # Mail Controller Routes
+        // Route::get('/test-mail', function () {
+        //     Mail::to('ccandremarin@gmail.com')->send(new TestMail());
+        //     return response()->json(['message' => 'Mail sent successfully']);
+        // });
+        // Route::get('/test-mail', function () {
+        //     Mail::to(['vheebhee7@gmail.com', 'eehvyahj.prog@gmail.com'])->send(new TestMail()); 
+        //     return response()->json(['message' => 'Mail sent successfully']);
+        // });
+
+        # Forgot Password Controller Routes
+
     });
 });

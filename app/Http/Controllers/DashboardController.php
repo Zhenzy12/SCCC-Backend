@@ -39,7 +39,8 @@ class DashboardController extends Controller
                 'incident:id,type', 
                 'actions:id,actions', 
                 'assistance:id,assistance', 
-                'barangay:id,name,longitude,latitude'])
+                'barangay:id,name,longitude,latitude',
+                'urgency:id,urgency'])
                 ->latest()
                 ->take(5)
                 ->get();

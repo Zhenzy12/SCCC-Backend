@@ -170,20 +170,18 @@ class UserController extends Controller
         try {
             // Validate the incoming request
             $request->validate([
-                'for_inventory' => 'required|boolean', // Ensure for_inventory is required and boolean
-                'for_911' => 'required|boolean', // Ensure for_911 is required and boolean
+                'is_deleted' => 'required|boolean', // Ensure for_911 is required and boolean
             ]);
 
             // Find the resource (row) to update
             $inventory_role = User::findOrFail($id);
 
             // Update the specific column (for_inventory)
-            $inventory_role->for_inventory = $request->input('for_inventory');
-            $inventory_role->for_911 = $request->input('for_911');
+            $inventory_role->is_deleted = $request->input('is_deleted');
             $inventory_role->save();
 
             // Return updated resource
-            return response()->json(['message' => 'User Access has been changed successfully', $inventory_role], 200);
+            return response()->json(['message' => 'User Access Control has been modified successfully', $inventory_role], 200);
         } catch (\Exception $e) {
             return response()->json(['error' => $e->getMessage()], 500);
         }
