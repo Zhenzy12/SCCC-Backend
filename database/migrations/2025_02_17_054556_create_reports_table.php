@@ -23,6 +23,7 @@ return new class extends Migration
             $table->string('landmark',255);
             $table->float('longitude',10,6);
             $table->float('latitude',10,6);
+            $table->string('description',255)->nullable();
             $table->foreignId('source_id')->constrained('source')->onDelete('cascade');
             $table->foreignId('incident_id')->constrained('incident')->onDelete('cascade');
             $table->foreignId('barangay_id')->constrained('barangay')->onDelete('cascade');

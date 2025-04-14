@@ -34,6 +34,8 @@ class ReportRequest extends FormRequest
             'latitude' => 'required|numeric',
             'barangay_id' => 'required',
             'actions_id' => 'required',
+            'description' => 'required',
+            'urgency_id' => 'required',
         ];
     }
 }

@@ -26,6 +26,7 @@ class Report extends Model
         'actions_id',
         'assistance_id',
         'urgency_id',
+        'description',
     ];
 
     public function urgency(){
