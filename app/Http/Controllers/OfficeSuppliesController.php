@@ -43,6 +43,7 @@ class OfficeSuppliesController extends Controller
                 'serial_number' => 'required|string',
                 'category_id' => 'nullable|exists:categories,id',
                 'supply_quantity' => 'required|integer',
+                'isc' => 'required|string|max:255',
                 'image' => 'nullable|file|image|mimes:jpeg,png,jpg,gif|max:2048'
             ]);
 
@@ -102,6 +103,7 @@ class OfficeSuppliesController extends Controller
                 'serial_number' => 'sometimes|required|string',
                 'category_id' => 'sometimes|nullable|exists:categories,id',
                 'supply_quantity' => 'sometimes|required|integer',
+                'isc' => 'sometimes|required|string|max:255',
                 'image' => 'nullable|file|image|mimes:jpeg,png,jpg,gif|max:2048'
             ]);
 

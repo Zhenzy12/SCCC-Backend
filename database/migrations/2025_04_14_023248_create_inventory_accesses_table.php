@@ -11,14 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('office_equipments', function (Blueprint $table) {
+        Schema::create('inventory_accesses', function (Blueprint $table) {
             $table->id();
-            $table->string('equipment_name');
-            $table->string('equipment_description');
-            $table->foreignId('category_id')->constrained('categories')->onDelete('cascade');
-            $table->string('image_path')->nullable();
             $table->timestamps();
-            $table->string('isc');
+            $table->boolean('for_dashboard')->default(true);
+            $table->boolean('for_categories')->default(true);
+            $table->boolean('for_borrowers')->default(true);
+            $table->boolean('for_users')->default(false);
         });
     }
 
@@ -27,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('office_equipments');
+        Schema::dropIfExists('inventory_accesses');
     }
 };

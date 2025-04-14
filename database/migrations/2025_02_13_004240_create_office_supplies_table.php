@@ -19,6 +19,7 @@ return new class extends Migration
             $table->foreignId('category_id')->constrained('categories')->onDelete('cascade');
             $table->integer('supply_quantity');
             $table->string('image_path')->nullable();
+            $table->string('isc');
             $table->timestamps();
         });
     }

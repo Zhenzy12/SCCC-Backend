@@ -40,6 +40,7 @@ class OfficeEquipmentsController extends Controller
                 'equipment_name' => 'required|string|max:255',
                 'equipment_description' => 'required|string',
                 'category_id' => 'required|exists:categories,id',
+                'isc' => 'required|string|max:255',
                 'image' => 'nullable|file|image|mimes:jpeg,png,jpg,gif|max:2048'
             ]);
 
@@ -97,6 +98,7 @@ class OfficeEquipmentsController extends Controller
                 'equipment_name' => 'sometimes|required|string|max:255',
                 'equipment_description' => 'sometimes|required|string',
                 'category_id' => 'sometimes|required|exists:categories,id',
+                'isc' => 'sometimes|required|string|max:255',
                 'image' => 'nullable|file|image|mimes:jpeg,png,jpg,gif|max:2048'
             ]);
 
