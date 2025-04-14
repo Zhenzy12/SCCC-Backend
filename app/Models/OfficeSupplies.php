@@ -16,7 +16,8 @@ class OfficeSupplies extends Model
         'serial_number',
         'category_id',
         'supply_quantity',
-        'image_path'
+        'image_path',
+        'isc'
     ];
 
     public function categories()
