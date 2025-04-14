@@ -46,12 +46,27 @@ class ReportFactory extends Factory
                 Barangay::find($barangayId)->latitude + 0.002
             ),
 
-            'urgency_id' => Urgency::inRandomOrder()->value('id') ?: 1,
+            'description' => $this->faker->text(255),
+
             'source_id' => Source::inRandomOrder()->value('id') ?: 1,
-            'incident_id' => Incident::inRandomOrder()->value('id') ?: 1,
+            // 'incident_id' => Incident::inRandomOrder()->value('id') ?: 1,
             'actions_id' => ActionsTaken::inRandomOrder()->value('id') ?: 1,
-            'assistance_id' => TypeOfAssistance::inRandomOrder()->value('id') ?: 1,
+            // 'assistance_id' => TypeOfAssistance::inRandomOrder()->value('id') ?: 1,
             'urgency_id' => Urgency::inRandomOrder()->value('id') ?: 1,
+
+            'assistance_id' => TypeOfAssistance::inRandomOrder()->value('id') ?: 1,
+            'incident_id' => function (array $report) {
+                // Get all incidents related to the selected assistance_id
+                $incidents = Incident::where('assistance_id', $report['assistance_id'])->get();
+                
+                // If no incidents found, fall back to random incident
+                if ($incidents->isEmpty()) {
+                    return Incident::inRandomOrder()->value('id') ?: 1;
+                }
+                
+                // Return a random incident from the related incidents
+                return $incidents->random()->id;
+            },
         ];        
     }
 }

@@ -69,6 +69,7 @@ class ReportController extends Controller
                 'actions_id' => $reportRequest->actions_id,
                 'assistance_id' => $reportRequest->assistance_id,
                 'urgency_id' => $reportRequest->urgency_id,
+                'description' => $reportRequest->description,
             ]);
 
             Tracking::create([
@@ -216,6 +217,7 @@ class ReportController extends Controller
                 'actions_id' => $reportRequest->actions_id,
                 'assistance_id' => $reportRequest->assistance_id,
                 'urgency_id' => $reportRequest->urgency_id,
+                'description' => $reportRequest->description,
             ]);
 
             Tracking::create([
