@@ -13,11 +13,14 @@ return new class extends Migration
     {
         Schema::create('inventory_accesses', function (Blueprint $table) {
             $table->id();
-            $table->timestamps();
             $table->boolean('for_dashboard')->default(true);
+            $table->boolean('for_inventory')->default(true);
+            $table->boolean('for_offices')->default(true);
             $table->boolean('for_categories')->default(true);
             $table->boolean('for_borrowers')->default(true);
             $table->boolean('for_users')->default(false);
+            $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
+            $table->timestamps();
         });
     }
 

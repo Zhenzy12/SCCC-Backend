@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\InventoryAccess;
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -38,7 +39,8 @@ class DatabaseSeeder extends Seeder
             CategoriesTableSeeder::class,
             OfficeEquipmentsTableSeeder::class,
             OfficeSuppliesTableSeeder::class,
-            EquipmentCopiesTableSeeder::class
+            EquipmentCopiesTableSeeder::class,
+            InventoryAccessesTableSeeder:: class
         ]);
     }
 }
