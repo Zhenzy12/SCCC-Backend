@@ -25,7 +25,8 @@ class BorrowTransactions extends Model
         return $this->belongsTo(Borrowers::class, 'borrower_id');
     }
 
-    public function user(){
+    public function user()
+    {
         return $this->belongsTo(User::class, 'lender_id');
     }
 }

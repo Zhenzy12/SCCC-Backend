@@ -37,9 +37,12 @@ class InventoryAccessController extends Controller
         try {
             $request->validate([
                 'for_dashboard' => 'required|boolean',
+                'for_inventory' => 'required|boolean',
+                'for_offices' => 'required|boolean',
                 'for_categories' => 'required|boolean',
                 'for_borrowers' => 'required|boolean',
                 'for_users' => 'required|boolean',
+                'user_id' => 'required|exists:users,id',
             ]);
 
             $inventoryAccess = InventoryAccess::create($request->all());
@@ -82,10 +85,13 @@ class InventoryAccessController extends Controller
         //
         try {
             $request->validate([
-                'for_dashboard' => 'required|boolean',
-                'for_categories' => 'required|boolean',
-                'for_borrowers' => 'required|boolean',
-                'for_users' => 'required|boolean',
+                'for_dashboard' => 'sometimes|required|boolean',
+                'for_inventory' => 'sometimes|required|boolean',
+                'for_offices' => 'sometimes|required|boolean',
+                'for_categories' => 'sometimes|required|boolean',
+                'for_borrowers' => 'sometimes|required|boolean',
+                'for_users' => 'sometimes|required|boolean',
+                'user_id' => 'sometimes|required|exists:users,id',
             ]);
             $inventoryAccess->update($request->all());
 
