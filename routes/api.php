@@ -10,6 +10,7 @@ use App\Http\Controllers\EquipmentCopiesController;
 use App\Http\Controllers\OfficeSuppliesController;
 use App\Http\Controllers\BorrowTransactionItemsController;
 use App\Http\Controllers\BorrowTransactionsController;
+use App\Http\Controllers\InventoryAccessController;
 use App\Http\Controllers\BorrowersController;
 use App\Http\Controllers\OfficesController;
 use App\Http\Controllers\BarangayController;
@@ -19,6 +20,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\TransactionHistoryController;
 use App\Http\Controllers\FileUploadController;
 use App\Http\Controllers\TrackingController;
+use App\Models\InventoryAccess;
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('/user', function (Request $request) {
@@ -49,7 +51,12 @@ Route::middleware(['api.key'])->group(function () {
     Route::put('/users/{user}', [UserController::class, 'update']);
 
     Route::delete('/users/{user}', [UserController::class, 'destroy']);
-    
+
+    // inventory access api
+    Route::get('/inventory_access', [InventoryAccessController::class, 'index']);
+
+    Route::put('/users/{inventoryAccess}', [InventoryAccessController::class, 'update']);
+
     // Office Equipment api
     Route::get('/office_equipments', [OfficeEquipmentsController::class, 'index']);
 
@@ -175,7 +182,7 @@ Route::middleware(['api.key'])->group(function () {
         Route::get('/report-display', [ReportController::class, 'display']);
 
         Route::get('/report-view/{id}', [ReportController::class, 'show']);
-        
+
         Route::get('/report-edit/{id}', [ReportController::class, 'edit']);
 
         Route::delete('/report-delete/{id}', [ReportController::class, 'destroy']);
@@ -193,7 +200,7 @@ Route::middleware(['api.key'])->group(function () {
 
         # Upload Controller Routes
         Route::post('/import-excel-data', [FileUploadController::class, 'readAndUpload']);
-        
+
         Route::post('/import-excel', [FileUploadController::class, 'uploadFileView']);
 
         # Tracking Controller Routes
@@ -205,7 +212,7 @@ Route::middleware(['api.key'])->group(function () {
         //     return response()->json(['message' => 'Mail sent successfully']);
         // });
         // Route::get('/test-mail', function () {
-        //     Mail::to(['vheebhee7@gmail.com', 'eehvyahj.prog@gmail.com'])->send(new TestMail()); 
+        //     Mail::to(['vheebhee7@gmail.com', 'eehvyahj.prog@gmail.com'])->send(new TestMail());
         //     return response()->json(['message' => 'Mail sent successfully']);
         // });
 
