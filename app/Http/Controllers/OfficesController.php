@@ -37,6 +37,8 @@ class OfficesController extends Controller
         try {
             $request->validate([
                 'office_name' => 'required|string|max:255',
+                'deleted_by' => 'nullable|exists:users,id',
+                'is_deleted' => 'required|boolean'
             ]);
 
             $offices = Offices::create($request->all());
@@ -59,9 +61,9 @@ class OfficesController extends Controller
     public function show(Offices $offices)
     {
         //
-        try{
+        try {
             return response()->json($offices);
-        }catch(\Exception $e){
+        } catch (\Exception $e) {
             return response()->json(['Show Offices Error' => $e->getMessage()], 500);
         }
     }
@@ -80,9 +82,11 @@ class OfficesController extends Controller
     public function update(Request $request, Offices $offices)
     {
         //
-        try{
+        try {
             $request->validate([
                 'office_name' => 'sometimes|required|string|max:255',
+                'is_deleted' => 'sometimes|required|boolean',
+                'deleted_by' => 'sometimes|required|exists:users,id',
             ]);
             $offices->update($request->all());
 
@@ -90,7 +94,7 @@ class OfficesController extends Controller
                 'message' => 'Successfully Updated',
                 'data' => $offices
             ]);
-        }catch(\Exception $e){
+        } catch (\Exception $e) {
             return response()->json(['Update Offices Error' => $e->getMessage()], 500);
         }
     }
@@ -101,12 +105,12 @@ class OfficesController extends Controller
     public function destroy(Offices $offices)
     {
         //
-        try{
+        try {
             $offices->delete();
             return response()->json([
                 'message' => 'Deleted Successfully',
             ]);
-        }catch(\Exception $e){
+        } catch (\Exception $e) {
             return response()->json(['Destroy Offices Error' => $e->getMessage()], 500);
         }
     }

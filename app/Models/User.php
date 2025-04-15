@@ -9,6 +9,7 @@ use Illuminate\Notifications\Notifiable;
 use App\Models\BorrowTransactions;
 use App\Models\Categories;
 use App\Models\Borrowers;
+use App\Models\Offices;
 use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
@@ -42,7 +43,7 @@ class User extends Authenticatable
         'password',
         'remember_token',
     ];
-    
+
     protected $hidden = [
         'password',
         'remember_token',
@@ -89,4 +90,8 @@ class User extends Authenticatable
         return $this->hasMany(Borrowers::class, 'deleted_by');
     }
 
+    public function offices()
+    {
+        return $this->hasMany(Offices::class, 'deleted_by');
+    }
 }
