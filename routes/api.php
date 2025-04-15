@@ -170,6 +170,8 @@ Route::middleware(['api.key'])->group(function () {
 
         Route::post('/report', [ReportController::class, 'create']);
 
+        Route::post('/restore-report', [ReportController::class, 'restore']);
+
         Route::put('/report/{id}', [ReportController::class, 'update']);
 
         Route::get('/report-display', [ReportController::class, 'display']);

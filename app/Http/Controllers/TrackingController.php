@@ -13,8 +13,7 @@ class TrackingController extends Controller
      */
     public function index()
     {
-        //
-        $logs = Tracking::all();
+        $logs = Tracking::orderBy('id', 'desc')->get();
         return response()->json($logs);
     }
     
