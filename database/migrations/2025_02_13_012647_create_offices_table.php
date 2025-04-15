@@ -14,6 +14,8 @@ return new class extends Migration
         Schema::create('offices', function (Blueprint $table) {
             $table->id();
             $table->string('office_name');
+            $table->boolean('is_deleted')->default(false);
+            $table->foreignId('deleted_by')->nullable()->constrained('users')->onDeleted('cascade');
             $table->timestamps();
         });
     }

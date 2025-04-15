@@ -54,7 +54,7 @@ Route::middleware(['api.key'])->group(function () {
     // inventory access api
     Route::get('/inventory_access', [InventoryAccessController::class, 'index']);
 
-    Route::put('/users/{inventoryAccess}', [InventoryAccessController::class, 'update']);
+    Route::put('/inventory_access/{inventoryAccess}', [InventoryAccessController::class, 'update']);
 
 
     // Office Equipment api
