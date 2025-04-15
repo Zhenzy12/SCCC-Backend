@@ -80,47 +80,39 @@ class UserController extends Controller
      * Show the form for editing the specified resource.
      */
 
-    public function update(Request $request, User $user)
+     public function update(Request $request, User $user)
     {
-        // Log the incoming request data for debugging
-        \Log::info('Request Data:', $request->all());  
-
+        //
         try {
-            $validated = $request->validate([
+            $request->validate([
                 'firstName' => 'sometimes|required|string|max:255',
                 'middleName' => 'sometimes|nullable|string|max:255',
                 'lastName' => 'sometimes|required|string|max:255',
-                'email' => 'sometimes|required|email|max:255|unique:users,email,' . $user->id,
-                'old_password' => 'sometimes|required_with:password|string',
-                'password' => 'sometimes|required|string|min:8|confirmed', // also require password_confirmation
+                'email' => 'sometimes|required|string|max:255',
+                'password' => 'sometimes|required|string',
                 'is_deleted' => 'sometimes|required|boolean'
             ]);
-    
-            // Basic info update
             $user->update([
-                'firstName' => $request->input('firstName', $user->firstName),
-                'middleName' => $request->input('middleName', $user->middleName),
-                'lastName' => $request->input('lastName', $user->lastName),
-                'email' => $request->input('email', $user->email),
-                'is_deleted' => $request->input('is_deleted', $user->is_deleted)
+                'firstName' => $request->input('firstName'),
+                'middleName' => $request->input('middleName'),
+                'lastName' => $request->input('lastName'),
+                'email' => $request->input('email'),
+                'is_deleted' => $request->input('is_deleted')
             ]);
-    
-            // Handle password update only if password is being changed
+
             if ($request->filled('password')) {
-                if (!Hash::check($request->input('old_password'), $user->password)) {
-                    return response()->json(['error' => 'Old password is incorrect.'], 403);
+                if (!Hash::check($request->input('password'), $user->password)) {
+                    $user->password = Hash::make($request->input('password'));
+                    $user->save(); // Save user if password is changed
                 }
-    
-                $user->password = Hash::make($request->input('password'));
-                $user->save();
             }
-    
+
             return response()->json([
-                'message' => 'User successfully updated.',
+                'message' => 'Successfully Updated',
                 'data' => $user
             ]);
         } catch (\Exception $e) {
-            return response()->json(['error' => 'Update User Error: ' . $e->getMessage()], 500);
+            return response()->json(['Update User Error' => $e->getMessage()], 500);
         }
     }
 
@@ -193,6 +185,50 @@ class UserController extends Controller
             return response()->json(['message' => 'User Access Control has been modified successfully', $inventory_role], 200);
         } catch (\Exception $e) {
             return response()->json(['error' => $e->getMessage()], 500);
+        }
+    }
+
+    public function updateUserFor911(Request $request, User $user)
+    {
+        // Log the incoming request data for debugging
+        \Log::info('Request Data:', $request->all());
+
+        try {
+            $validated = $request->validate([
+                'firstName' => 'sometimes|required|string|max:255',
+                'middleName' => 'sometimes|nullable|string|max:255',
+                'lastName' => 'sometimes|required|string|max:255',
+                'email' => 'sometimes|required|email|max:255|unique:users,email,' . $user->id,
+                'old_password' => 'sometimes|required_with:password|string',
+                'password' => 'sometimes|required|string|min:8|confirmed', // also require password_confirmation
+                'is_deleted' => 'sometimes|required|boolean'
+            ]);
+
+            // Basic info update
+            $user->update([
+                'firstName' => $request->input('firstName', $user->firstName),
+                'middleName' => $request->input('middleName', $user->middleName),
+                'lastName' => $request->input('lastName', $user->lastName),
+                'email' => $request->input('email', $user->email),
+                'is_deleted' => $request->input('is_deleted', $user->is_deleted)
+            ]);
+
+            // Handle password update only if password is being changed
+            if ($request->filled('password')) {
+                if (!Hash::check($request->input('old_password'), $user->password)) {
+                    return response()->json(['error' => 'Old password is incorrect.'], 403);
+                }
+
+                $user->password = Hash::make($request->input('password'));
+                $user->save();
+            }
+
+            return response()->json([
+                'message' => 'User successfully updated.',
+                'data' => $user
+            ]);
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'Update User Error: ' . $e->getMessage()], 500);
         }
     }
 

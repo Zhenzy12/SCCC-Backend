@@ -48,9 +48,10 @@ Route::middleware(['api.key'])->group(function () {
 
     Route::post('/users', [UserController::class, 'store']);
 
-    Route::middleware(['auth:sanctum', 'api.key'])->put('/user/{user}', [UserController::class, 'update']);
+    Route::put('/users/{user}', [UserController::class, 'update']);
 
     Route::delete('/users/{user}', [UserController::class, 'destroy']);
+
     // inventory access api
     Route::get('/inventory_access', [InventoryAccessController::class, 'index']);
 
@@ -151,6 +152,8 @@ Route::middleware(['api.key'])->group(function () {
     Route::put('/transaction_history/{transactionHistory}', [TransactionHistoryController::class, 'update']);
 
     Route::prefix('911')->group(function () {
+
+        Route::middleware(['auth:sanctum', 'api.key'])->put('/user/{user}', [UserController::class, 'updateUserFor911']);
 
         # Dashboard Controlller Routes
         Route::get('/dashboard', [DashboardController::class, 'index']);
