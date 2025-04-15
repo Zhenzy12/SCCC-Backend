@@ -91,6 +91,54 @@ class ReportController extends Controller
         }
     }
 
+    //Restore an item
+    public function restore(ReportRequest $reportRequest)
+    {
+        //
+        try {
+            $reportRequest->validated();
+
+            // $report = Report::create([
+            //     'id' => $reportRequest->id,
+            //     'time' => $reportRequest->time,
+            //     'date_received' => $reportRequest->date_received,
+            //     'arrival_on_site' => $reportRequest->arrival_on_site,
+            //     'name' => $reportRequest->name,
+            //     'landmark' => $reportRequest->landmark,
+            //     'longitude' => $reportRequest->longitude,
+            //     'latitude' => $reportRequest->latitude,
+            //     'source_id' => $reportRequest->source_id,
+            //     'incident_id' => $reportRequest->incident_id,
+            //     'barangay_id' => $reportRequest->barangay_id,
+            //     'actions_id' => $reportRequest->actions_id,
+            //     'assistance_id' => $reportRequest->assistance_id,
+            //     'urgency_id' => $reportRequest->urgency_id,
+            //     'description' => $reportRequest->description,
+            // ]);
+            $report = new Report($reportRequest->all());
+            $report->id = $reportRequest->id;
+            $report->exists = false; // force it to treat as insert
+            $report->save();
+
+            Tracking::create([
+                'category' => 'Report',
+                'user_id' => Auth::id(),
+                'action' => 'Restored',
+                'data' => json_encode($report->toArray()), // ✅ Important
+                'description' => 'A Report was restored by ' . Auth::user()->firstName . ' ' . Auth::user()->lastName . '.',
+            ]);
+
+            return response()->json([
+                'message' => 'Report restored successfully!',
+                'report' => $report,
+            ]);
+        } catch (Exception $e) {
+            return response()->json([
+                'error' => $e->getMessage()
+            ], 500);
+        }
+    }
+
     /**
      * Store a newly created resource in storage.
      */

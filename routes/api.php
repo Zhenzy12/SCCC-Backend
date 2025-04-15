@@ -48,14 +48,14 @@ Route::middleware(['api.key'])->group(function () {
 
     Route::post('/users', [UserController::class, 'store']);
 
-    Route::put('/users/{user}', [UserController::class, 'update']);
+    Route::middleware(['auth:sanctum', 'api.key'])->put('/user/{user}', [UserController::class, 'update']);
 
     Route::delete('/users/{user}', [UserController::class, 'destroy']);
-
     // inventory access api
     Route::get('/inventory_access', [InventoryAccessController::class, 'index']);
 
     Route::put('/users/{inventoryAccess}', [InventoryAccessController::class, 'update']);
+
 
     // Office Equipment api
     Route::get('/office_equipments', [OfficeEquipmentsController::class, 'index']);
@@ -176,6 +176,8 @@ Route::middleware(['api.key'])->group(function () {
         Route::get('/report', [ReportController::class, 'index']);
 
         Route::post('/report', [ReportController::class, 'create']);
+
+        Route::post('/restore-report', [ReportController::class, 'restore']);
 
         Route::put('/report/{id}', [ReportController::class, 'update']);
 
