@@ -46,9 +46,10 @@ Route::middleware(['api.key'])->group(function () {
 
     Route::post('/users', [UserController::class, 'store']);
 
-    Route::put('/users/{user}', [UserController::class, 'update']);
+    Route::middleware(['auth:sanctum', 'api.key'])->put('/user/{user}', [UserController::class, 'update']);
 
     Route::delete('/users/{user}', [UserController::class, 'destroy']);
+
     
     // Office Equipment api
     Route::get('/office_equipments', [OfficeEquipmentsController::class, 'index']);
