@@ -57,6 +57,7 @@ Route::middleware(['api.key'])->group(function () {
 
     Route::put('/inventory_access/{inventoryAccess}', [InventoryAccessController::class, 'update']);
 
+    Route::post('/inventory_access', [InventoryAccessController::class, 'store']);
 
     // Office Equipment api
     Route::get('/office_equipments', [OfficeEquipmentsController::class, 'index']);
