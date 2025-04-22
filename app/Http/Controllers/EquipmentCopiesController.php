@@ -39,7 +39,8 @@ class EquipmentCopiesController extends Controller
             $request->validate([
                 'item_id' => 'required|exists:office_equipments,id',
                 'is_available' => 'required|boolean',
-                'copy_num' => 'required|integer'
+                'copy_num' => 'required|integer',
+                'serial_number' => 'required|string',
             ]);
 
             $equipmentCopy = EquipmentCopies::create($request->all());
@@ -84,7 +85,8 @@ class EquipmentCopiesController extends Controller
             $request->validate([
                 'item_id' => 'sometimes|required|exists:office_equipments,id',
                 'is_available' => 'sometimes|required|boolean',
-                'copy_num' => 'sometimes|required|integer'
+                'copy_num' => 'sometimes|required|integer',
+                'serial_number' => 'sometimes|required|string',
             ]);
             $equipmentCopies->update($request->all());
 
