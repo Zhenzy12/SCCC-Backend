@@ -53,12 +53,16 @@ class UserController extends Controller
                 'lastName' => $request->input('lastName'),
                 'email' => $request->input('email'),
                 'password' => Hash::make($request->input('password')),
-                'is_deleted' => $request->input('is_deleted')
+                'is_deleted' => $request->input('is_deleted'),
+                'email_verified_at' => null
             ]);
+
+            // Send verification email
+            $users->sendEmailVerificationNotification();
 
             return response()->json(
                 [
-                    'message' => 'Successfully Created',
+                    'message' => 'User created successfully. Please check your email for verification.',
                     'data' => $users,
                 ],
                 201,
@@ -80,7 +84,7 @@ class UserController extends Controller
      * Show the form for editing the specified resource.
      */
 
-     public function update(Request $request, User $user)
+    public function update(Request $request, User $user)
     {
         //
         try {

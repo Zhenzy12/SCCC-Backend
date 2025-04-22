@@ -20,7 +20,8 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\TransactionHistoryController;
 use App\Http\Controllers\FileUploadController;
 use App\Http\Controllers\TrackingController;
-use App\Models\InventoryAccess;
+use App\Http\Controllers\Auth\VerifyEmailController;
+use App\Http\Controllers\Auth\EmailVerificationNotificationController;
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('/user', function (Request $request) {
@@ -43,6 +44,8 @@ Route::prefix('mobile')->controller(MobileAuthController::class)->group(function
 });
 
 Route::middleware(['api.key'])->group(function () {
+
+
     // user api
     Route::get('/users', [UserController::class, 'index']);
 
