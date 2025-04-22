@@ -195,7 +195,6 @@ class UserController extends Controller
     public function updateUserFor911(Request $request, User $user)
     {
         // Log the incoming request data for debugging
-        \Log::info('Request Data:', $request->all());
 
         try {
             $validated = $request->validate([
