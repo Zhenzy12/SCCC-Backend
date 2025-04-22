@@ -94,14 +94,19 @@ class UserController extends Controller
                 'lastName' => 'sometimes|required|string|max:255',
                 'email' => 'sometimes|required|string|max:255',
                 'password' => 'sometimes|required|string',
-                'is_deleted' => 'sometimes|required|boolean'
+                'is_deleted' => 'sometimes|required|boolean',
+                'for_911' => 'sometimes|required|boolean',
+                'for_inventory' => 'sometimes|required|boolean',
+
             ]);
             $user->update([
                 'firstName' => $request->input('firstName'),
                 'middleName' => $request->input('middleName'),
                 'lastName' => $request->input('lastName'),
                 'email' => $request->input('email'),
-                'is_deleted' => $request->input('is_deleted')
+                'is_deleted' => $request->input('is_deleted'),
+                'for_911' => $request->input('for_911'),
+                'for_inventory' => $request->input('for_inventory'),
             ]);
 
             if ($request->filled('password')) {
