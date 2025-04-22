@@ -22,13 +22,13 @@ class VerifyEmailController extends Controller
         }
 
         if ($user->hasVerifiedEmail()) {
-            return redirect(config('app.frontend_url') . '/login?verified=1');
+            return redirect(config('app.frontend_url') . '/email_verified');
         }
 
         if (hash_equals(sha1($user->getEmailForVerification()), (string) $request->route('hash'))) {
             $user->markEmailAsVerified();
             event(new Verified($user));
-            return redirect(config('app.frontend_url') . '/login?verified=1');
+            return redirect(config('app.frontend_url') . '/email_verified');
         }
 
         return redirect(config('app.frontend_url') . '/login?error=invalid-hash');

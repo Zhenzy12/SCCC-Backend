@@ -16,7 +16,7 @@ class UserController extends Controller
     {
         //
         try {
-            $users = User::all(['id', 'firstName', 'middleName', 'lastName', 'email', 'for_911', 'for_inventory', 'is_deleted']);
+            $users = User::all(['id', 'firstName', 'middleName', 'lastName', 'email', 'email_verified_at', 'for_911', 'for_inventory', 'is_deleted']);
             return response()->json($users, 200);
         } catch (\Exception $e) {
             return response()->json(['error' => $e->getMessage()], 500);
