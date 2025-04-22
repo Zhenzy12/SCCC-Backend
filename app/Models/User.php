@@ -10,12 +10,14 @@ use App\Models\BorrowTransactions;
 use App\Models\Categories;
 use App\Models\Borrowers;
 use App\Models\Offices;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Auth\MustVerifyEmail as MustVerifyEmailTrait;
 
-class User extends Authenticatable
+class User extends Authenticatable implements MustVerifyEmail
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
-    use HasFactory, Notifiable, HasApiTokens;
+    use HasFactory, Notifiable, HasApiTokens, MustVerifyEmailTrait;
 
     /**
      * The attributes that are mass assignable.
@@ -30,7 +32,8 @@ class User extends Authenticatable
         'password',
         'for_911',
         'for_inventory',
-        'is_deleted'
+        'is_deleted',
+        'email_verified_at'
     ];
 
     /**
