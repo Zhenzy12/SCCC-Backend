@@ -165,7 +165,7 @@ Route::middleware(['api.key'])->group(function () {
         Route::get('/recent', [DashboardController::class, 'recent']);
 
         Route::get('/total-reports', [DashboardController::class, 'total_reports']);
-
+ 
         # Barangay Controller Routes
         Route::get('/barangay', [BarangayController::class, 'index']);
 
@@ -174,7 +174,7 @@ Route::middleware(['api.key'])->group(function () {
         Route::get('/barangay-edit/{id}', [BarangayController::class, 'edit']);
 
         Route::put('/barangay-update/{id}', [BarangayController::class, 'update']);
-
+      
         Route::delete('/barangay-delete/{id}', [BarangayController::class, 'destroy']);
 
         Route::get('/barangay-reports/{id}', [BarangayController::class, 'show']);
