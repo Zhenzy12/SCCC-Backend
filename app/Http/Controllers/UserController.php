@@ -199,44 +199,45 @@ class UserController extends Controller
 
     public function updateUserFor911(Request $request, User $user)
     {
-        // Log the incoming request data for debugging
-
         try {
             $validated = $request->validate([
-                'firstName' => 'sometimes|required|string|max:255',
-                'middleName' => 'sometimes|nullable|string|max:255',
-                'lastName' => 'sometimes|required|string|max:255',
-                'email' => 'sometimes|required|email|max:255|unique:users,email,' . $user->id,
-                'old_password' => 'sometimes|required_with:password|string',
-                'password' => 'sometimes|required|string|min:8|confirmed', // also require password_confirmation
-                'is_deleted' => 'sometimes|required|boolean'
+                'firstName' => 'required|string|max:255',
+                'middleName' => 'nullable|string|max:255',
+                'lastName' => 'required|string|max:255',
+                'email' => 'required|email|max:255|unique:users,email,' . $user->id,
+                'old_password' => 'nullable|string',
+                'password' => 'nullable|string|confirmed|min:8',
+                'password_confirmation' => 'nullable|string|min:8'
             ]);
 
-            // Basic info update
-            $user->update([
-                'firstName' => $request->input('firstName', $user->firstName),
-                'middleName' => $request->input('middleName', $user->middleName),
-                'lastName' => $request->input('lastName', $user->lastName),
-                'email' => $request->input('email', $user->email),
-                'is_deleted' => $request->input('is_deleted', $user->is_deleted)
-            ]);
+            // Update basic profile information
+            $user->firstName = $validated['firstName'];
+            $user->middleName = $validated['middleName'];
+            $user->lastName = $validated['lastName'];
+            $user->email = $validated['email'];
 
-            // Handle password update only if password is being changed
+            // Handle password update if provided
             if ($request->filled('password')) {
-                if (!Hash::check($request->input('old_password'), $user->password)) {
-                    return response()->json(['error' => 'Old password is incorrect.'], 403);
+                if (!Hash::check($validated['old_password'], $user->password)) {
+                    return response()->json([
+                        'error' => 'Old password is incorrect.'
+                    ], 403);
                 }
 
-                $user->password = Hash::make($request->input('password'));
-                $user->save();
+                $user->password = Hash::make($validated['password']);
             }
 
+            $user->save();
+
             return response()->json([
-                'message' => 'User successfully updated.',
+                'message' => 'Profile updated successfully',
                 'data' => $user
-            ]);
+            ], 200);
+
         } catch (\Exception $e) {
-            return response()->json(['error' => 'Update User Error: ' . $e->getMessage()], 500);
+            return response()->json([
+                'error' => 'Failed to update profile: ' . $e->getMessage()
+            ], 500);
         }
     }
 
