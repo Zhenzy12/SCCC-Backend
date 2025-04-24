@@ -23,8 +23,8 @@ class BarangayRequest extends FormRequest
     {
         return [
             'name' => 'required|string|min:3|max:255',
-            'longitude' => 'nullable|numeric',
-            'latitude' => 'nullable|numeric',
+            'longitude' => 'required',
+            'latitude' => 'required',
         ];
     }
 }
