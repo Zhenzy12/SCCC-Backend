@@ -18,27 +18,7 @@ class FileUploadController extends Controller
 
     public function create(Request $request)
     {
-        // Validate the request to ensure a file is uploaded
-        $request->validate([
-            'file' => 'required|mimes:xlsx,xls|max:2048', // 2MB max file size and allowed file types
-        ]);
-
-        // Get the uploaded file
-        $file = $request->file('file');
-
-        // Generate a unique filename to store the file
-        $fileName = time() . '_' . $file->getClientOriginalName();
-
-        // Store the file on the server (in the storage/app/public folder)
-        $filePath = $file->storeAs('uploads/excel', $fileName, 'public');
-
-        // Optionally, you can store the file path in the database if needed
-
-        // Return a success response with the file path
-        return response()->json([
-            'message' => 'File uploaded successfully',
-            'file_path' => $filePath
-        ]);
+        // 
     }
 
     public function readAndUpload(Request $request)
@@ -47,7 +27,6 @@ class FileUploadController extends Controller
             // Validate the request to ensure 'data' is present and is an array
             $request->validate([
                 'data' => 'required|array',
-                'data.*.time' => 'required|string', // Ensure each record has a 'time' field
             ]);
     
             $insertedRecords = [];
