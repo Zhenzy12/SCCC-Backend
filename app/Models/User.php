@@ -30,6 +30,7 @@ class User extends Authenticatable
         'password',
         'for_911',
         'for_inventory',
+        'for_traffic',
         'is_deleted'
     ];
 
