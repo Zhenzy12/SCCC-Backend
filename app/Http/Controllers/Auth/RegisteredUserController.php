@@ -28,6 +28,7 @@ class RegisteredUserController extends Controller
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
             'for_911' => ['nullable','boolean'],
             'for_inventory' => ['nullable','boolean'],
+            'for_traffic' => ['nullable','boolean'],
         ]);
 
         $user = User::create([
@@ -38,6 +39,7 @@ class RegisteredUserController extends Controller
             'password' => Hash::make($request->string('password')),
             'for_911' => $request->for_911,
             'for_inventory' => $request->for_inventory,
+            'for_traffic' => $request->for_traffic,
             'role' => $request->except('role'),
         ]);
 
