@@ -205,6 +205,8 @@ Route::middleware(['api.key'])->group(function () {
 
         Route::patch('user-inventory-role/{id}', [UserController::class, 'inventory']);
 
+        Route::patch('user-traffic-role/{id}', [UserController::class, 'traffic']);
+
         Route::patch('user-archive/{id}', [UserController::class, 'archive']);
 
         # Upload Controller Routes

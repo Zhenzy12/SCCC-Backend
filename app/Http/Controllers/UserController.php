@@ -138,14 +138,14 @@ class UserController extends Controller
             ]);
 
             // Find the resource (row) to update
-            $resource = User::findOrFail($id);
+            $dashboard_role = User::findOrFail($id);
 
             // Update the specific column (for_911)
-            $resource->for_911 = $request->input('for_911');
-            $resource->save();
+            $dashboard_role->for_911 = $request->input('for_911');
+            $dashboard_role->save();
 
             // Return updated resource
-            return response()->json(['message' => 'Role updated successfully', $resource], 200);
+            return response()->json(['message' => 'Role updated successfully', $dashboard_role], 200);
         } catch (\Exception $e) {
             return response()->json(['error' => $e->getMessage()], 500);
         }
@@ -174,6 +174,29 @@ class UserController extends Controller
         }
     }
 
+    public function traffic(Request $request, string $id)
+    {
+        //
+        try {
+            // Validate the incoming request
+            $request->validate([
+                'for_traffic' => 'required|boolean', // Ensure for_inventory is required and boolean
+            ]);
+
+            // Find the resource (row) to update
+            $traffic_role = User::findOrFail($id);
+
+            // Update the specific column (for_inventory)
+            $traffic_role->for_traffic = $request->input('for_traffic');
+            $traffic_role->save();
+
+            // Return updated resource
+            return response()->json(['message' => 'Role updated successfully', $traffic_role], 200);
+        } catch (\Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
+    }
+
     public function archive(Request $request, string $id)
     {
         //
@@ -191,7 +214,11 @@ class UserController extends Controller
             $inventory_role->save();
 
             // Return updated resource
-            return response()->json(['message' => 'User Access Control has been modified successfully', $inventory_role], 200);
+            if ($inventory_role->is_deleted === true) {
+                return response()->json(['message' => 'User has been archived and stripped of access control and privileges', $inventory_role], 200);
+            } else {
+                return response()->json(['message' => 'User has been unarchived and access control and privileges have been restored', $inventory_role], 200);
+            }
         } catch (\Exception $e) {
             return response()->json(['error' => $e->getMessage()], 500);
         }
