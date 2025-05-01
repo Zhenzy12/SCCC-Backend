@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
+use App\Http\Resources\UserResource;
 
 class UserController extends Controller
 {
@@ -16,8 +17,9 @@ class UserController extends Controller
     {
         //
         try {
-            $users = User::all(['id', 'firstName', 'middleName', 'lastName', 'email', 'email_verified_at', 'for_911', 'for_inventory', 'is_deleted']);
-            return response()->json($users, 200);
+            // $users = User::all(['id', 'firstName', 'middleName', 'lastName', 'email', 'email_verified_at', 'for_911', 'for_inventory', 'is_deleted']);
+            $users = UserResource::collection(User::all());
+            return response()->json([$users], 200);
         } catch (\Exception $e) {
             return response()->json(['error' => $e->getMessage()], 500);
         }
@@ -138,14 +140,22 @@ class UserController extends Controller
             ]);
 
             // Find the resource (row) to update
-            $resource = User::findOrFail($id);
+            $dashboard_role = User::findOrFail($id);
 
             // Update the specific column (for_911)
-            $resource->for_911 = $request->input('for_911');
-            $resource->save();
+            $dashboard_role->for_911 = $request->input('for_911');
+            $dashboard_role->save();
+
+            Tracking::create([
+                'category' => 'User',
+                'user_id' => Auth::id(),
+                'action' => 'Updated',
+                'data' => json_encode($dashboard_role),
+                'description' => 'A User was updated by ' . Auth::user()->firstName . ' ' . Auth::user()->lastName . '.',
+            ]);
 
             // Return updated resource
-            return response()->json(['message' => 'Role updated successfully', $resource], 200);
+            return response()->json(['message' => 'Role updated successfully', $dashboard_role], 200);
         } catch (\Exception $e) {
             return response()->json(['error' => $e->getMessage()], 500);
         }
@@ -167,8 +177,47 @@ class UserController extends Controller
             $inventory_role->for_inventory = $request->input('for_inventory');
             $inventory_role->save();
 
+            Tracking::create([
+                'category' => 'User',
+                'user_id' => Auth::id(),
+                'action' => 'Updated',
+                'data' => json_encode($inventory_role),
+                'description' => 'A User was updated by ' . Auth::user()->firstName . ' ' . Auth::user()->lastName . '.',
+            ]);
+
             // Return updated resource
             return response()->json(['message' => 'Role updated successfully', $inventory_role], 200);
+        } catch (\Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
+    }
+
+    public function traffic(Request $request, string $id)
+    {
+        //
+        try {
+            // Validate the incoming request
+            $request->validate([
+                'for_traffic' => 'required|boolean', // Ensure for_inventory is required and boolean
+            ]);
+
+            // Find the resource (row) to update
+            $traffic_role = User::findOrFail($id);
+
+            // Update the specific column (for_inventory)
+            $traffic_role->for_traffic = $request->input('for_traffic');
+            $traffic_role->save();
+
+            Tracking::create([
+                'category' => 'User',
+                'user_id' => Auth::id(),
+                'action' => 'Updated',
+                'data' => json_encode($traffic_role),
+                'description' => 'A User was updated by ' . Auth::user()->firstName . ' ' . Auth::user()->lastName . '.',
+            ]);
+
+            // Return updated resource
+            return response()->json(['message' => 'Role updated successfully', $traffic_role], 200);
         } catch (\Exception $e) {
             return response()->json(['error' => $e->getMessage()], 500);
         }
@@ -184,14 +233,18 @@ class UserController extends Controller
             ]);
 
             // Find the resource (row) to update
-            $inventory_role = User::findOrFail($id);
+            $user_is_deleted = User::findOrFail($id);
 
             // Update the specific column (for_inventory)
-            $inventory_role->is_deleted = $request->input('is_deleted');
-            $inventory_role->save();
+            $user_is_deleted->is_deleted = $request->input('is_deleted');
+            $user_is_deleted->save();
 
             // Return updated resource
-            return response()->json(['message' => 'User Access Control has been modified successfully', $inventory_role], 200);
+            if ($user_is_deleted->is_deleted === true) {
+                return response()->json(['message' => 'User has been archived thus disabled and stripped of all permissions'], 200);
+            } else {
+                return response()->json(['message' => 'User has been unarchived and enabled'], 200);
+            }
         } catch (\Exception $e) {
             return response()->json(['error' => $e->getMessage()], 500);
         }
