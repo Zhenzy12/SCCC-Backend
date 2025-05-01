@@ -62,6 +62,9 @@ class User extends Authenticatable implements MustVerifyEmail
             // Set default role for the first user
             if (User::count() === 0) {
                 $user->role = true;  // Set role to true for the first user
+                $user->for_911 = true;
+                $user->for_inventory = true;
+                $user->for_traffic = true;
             }
         });
     }
