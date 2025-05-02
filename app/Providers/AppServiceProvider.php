@@ -25,7 +25,7 @@ class AppServiceProvider extends ServiceProvider
         User::observe(UserObserver::class);
 
         ResetPassword::createUrlUsing(function ($user, string $token) {
-            return env('FRONTEND_URL') . '/forgotpassword?token=' . $token . '&email=' . $user->email;
+            return env('FRONTEND_URL') . '/password-reset?token=' . $token . '&email=' . $user->email;
         });
     }
 }

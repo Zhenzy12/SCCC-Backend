@@ -10,12 +10,14 @@ use App\Models\BorrowTransactions;
 use App\Models\Categories;
 use App\Models\Borrowers;
 use App\Models\Offices;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Auth\MustVerifyEmail as MustVerifyEmailTrait;
 
-class User extends Authenticatable
+class User extends Authenticatable implements MustVerifyEmail
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
-    use HasFactory, Notifiable, HasApiTokens;
+    use HasFactory, Notifiable, HasApiTokens, MustVerifyEmailTrait;
 
     /**
      * The attributes that are mass assignable.
@@ -30,7 +32,9 @@ class User extends Authenticatable
         'password',
         'for_911',
         'for_inventory',
-        'is_deleted'
+        'for_traffic',
+        'is_deleted',
+        'email_verified_at'
     ];
 
     /**
@@ -58,6 +62,9 @@ class User extends Authenticatable
             // Set default role for the first user
             if (User::count() === 0) {
                 $user->role = true;  // Set role to true for the first user
+                $user->for_911 = true;
+                $user->for_inventory = true;
+                $user->for_traffic = true;
             }
         });
     }

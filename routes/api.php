@@ -20,7 +20,8 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\TransactionHistoryController;
 use App\Http\Controllers\FileUploadController;
 use App\Http\Controllers\TrackingController;
-use App\Models\InventoryAccess;
+use App\Http\Controllers\Auth\VerifyEmailController;
+use App\Http\Controllers\Auth\EmailVerificationNotificationController;
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('/user', function (Request $request) {
@@ -43,6 +44,8 @@ Route::prefix('mobile')->controller(MobileAuthController::class)->group(function
 });
 
 Route::middleware(['api.key'])->group(function () {
+
+
     // user api
     Route::get('/users', [UserController::class, 'index']);
 
@@ -162,7 +165,7 @@ Route::middleware(['api.key'])->group(function () {
         Route::get('/recent', [DashboardController::class, 'recent']);
 
         Route::get('/total-reports', [DashboardController::class, 'total_reports']);
-
+ 
         # Barangay Controller Routes
         Route::get('/barangay', [BarangayController::class, 'index']);
 
@@ -171,7 +174,7 @@ Route::middleware(['api.key'])->group(function () {
         Route::get('/barangay-edit/{id}', [BarangayController::class, 'edit']);
 
         Route::put('/barangay-update/{id}', [BarangayController::class, 'update']);
-
+      
         Route::delete('/barangay-delete/{id}', [BarangayController::class, 'destroy']);
 
         Route::get('/barangay-reports/{id}', [BarangayController::class, 'show']);
@@ -201,6 +204,8 @@ Route::middleware(['api.key'])->group(function () {
         Route::patch('user-dashboard-role/{id}', [UserController::class, 'dashboard']);
 
         Route::patch('user-inventory-role/{id}', [UserController::class, 'inventory']);
+
+        Route::patch('user-traffic-role/{id}', [UserController::class, 'traffic']);
 
         Route::patch('user-archive/{id}', [UserController::class, 'archive']);
 

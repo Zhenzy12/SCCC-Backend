@@ -16,7 +16,7 @@ class UserController extends Controller
     {
         //
         try {
-            $users = User::all(['id', 'firstName', 'middleName', 'lastName', 'email', 'for_911', 'for_inventory', 'is_deleted']);
+            $users = User::all(['id', 'firstName', 'middleName', 'lastName', 'email', 'email_verified_at', 'for_911', 'for_inventory', 'for_traffic', 'is_deleted']);
             return response()->json($users, 200);
         } catch (\Exception $e) {
             return response()->json(['error' => $e->getMessage()], 500);
@@ -53,12 +53,16 @@ class UserController extends Controller
                 'lastName' => $request->input('lastName'),
                 'email' => $request->input('email'),
                 'password' => Hash::make($request->input('password')),
-                'is_deleted' => $request->input('is_deleted')
+                'is_deleted' => $request->input('is_deleted'),
+                'email_verified_at' => null
             ]);
+
+            // Send verification email
+            $users->sendEmailVerificationNotification();
 
             return response()->json(
                 [
-                    'message' => 'Successfully Created',
+                    'message' => 'User created successfully. Please check your email for verification.',
                     'data' => $users,
                 ],
                 201,
@@ -80,7 +84,7 @@ class UserController extends Controller
      * Show the form for editing the specified resource.
      */
 
-     public function update(Request $request, User $user)
+    public function update(Request $request, User $user)
     {
         //
         try {
@@ -90,14 +94,19 @@ class UserController extends Controller
                 'lastName' => 'sometimes|required|string|max:255',
                 'email' => 'sometimes|required|string|max:255',
                 'password' => 'sometimes|required|string',
-                'is_deleted' => 'sometimes|required|boolean'
+                'is_deleted' => 'sometimes|required|boolean',
+                'for_911' => 'sometimes|required|boolean',
+                'for_inventory' => 'sometimes|required|boolean',
+
             ]);
             $user->update([
                 'firstName' => $request->input('firstName'),
                 'middleName' => $request->input('middleName'),
                 'lastName' => $request->input('lastName'),
                 'email' => $request->input('email'),
-                'is_deleted' => $request->input('is_deleted')
+                'is_deleted' => $request->input('is_deleted'),
+                'for_911' => $request->input('for_911'),
+                'for_inventory' => $request->input('for_inventory'),
             ]);
 
             if ($request->filled('password')) {
@@ -129,14 +138,14 @@ class UserController extends Controller
             ]);
 
             // Find the resource (row) to update
-            $resource = User::findOrFail($id);
+            $dashboard_role = User::findOrFail($id);
 
             // Update the specific column (for_911)
-            $resource->for_911 = $request->input('for_911');
-            $resource->save();
+            $dashboard_role->for_911 = $request->input('for_911');
+            $dashboard_role->save();
 
             // Return updated resource
-            return response()->json(['message' => 'Role updated successfully', $resource], 200);
+            return response()->json(['message' => 'Role updated successfully', $dashboard_role], 200);
         } catch (\Exception $e) {
             return response()->json(['error' => $e->getMessage()], 500);
         }
@@ -165,6 +174,29 @@ class UserController extends Controller
         }
     }
 
+    public function traffic(Request $request, string $id)
+    {
+        //
+        try {
+            // Validate the incoming request
+            $request->validate([
+                'for_traffic' => 'required|boolean', // Ensure for_inventory is required and boolean
+            ]);
+
+            // Find the resource (row) to update
+            $traffic_role = User::findOrFail($id);
+
+            // Update the specific column (for_inventory)
+            $traffic_role->for_traffic = $request->input('for_traffic');
+            $traffic_role->save();
+
+            // Return updated resource
+            return response()->json(['message' => 'Role updated successfully', $traffic_role], 200);
+        } catch (\Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
+    }
+
     public function archive(Request $request, string $id)
     {
         //
@@ -182,7 +214,11 @@ class UserController extends Controller
             $inventory_role->save();
 
             // Return updated resource
-            return response()->json(['message' => 'User Access Control has been modified successfully', $inventory_role], 200);
+            if ($inventory_role->is_deleted === true) {
+                return response()->json(['message' => 'User has been archived and stripped of access control and privileges', $inventory_role], 200);
+            } else {
+                return response()->json(['message' => 'User has been unarchived and access control and privileges have been restored', $inventory_role], 200);
+            }
         } catch (\Exception $e) {
             return response()->json(['error' => $e->getMessage()], 500);
         }
@@ -190,45 +226,45 @@ class UserController extends Controller
 
     public function updateUserFor911(Request $request, User $user)
     {
-        // Log the incoming request data for debugging
-        \Log::info('Request Data:', $request->all());
-
         try {
             $validated = $request->validate([
-                'firstName' => 'sometimes|required|string|max:255',
-                'middleName' => 'sometimes|nullable|string|max:255',
-                'lastName' => 'sometimes|required|string|max:255',
-                'email' => 'sometimes|required|email|max:255|unique:users,email,' . $user->id,
-                'old_password' => 'sometimes|required_with:password|string',
-                'password' => 'sometimes|required|string|min:8|confirmed', // also require password_confirmation
-                'is_deleted' => 'sometimes|required|boolean'
+                'firstName' => 'required|string|max:255',
+                'middleName' => 'nullable|string|max:255',
+                'lastName' => 'required|string|max:255',
+                'email' => 'required|email|max:255|unique:users,email,' . $user->id,
+                'old_password' => 'nullable|string',
+                'password' => 'nullable|string|confirmed|min:8',
+                'password_confirmation' => 'nullable|string|min:8'
             ]);
 
-            // Basic info update
-            $user->update([
-                'firstName' => $request->input('firstName', $user->firstName),
-                'middleName' => $request->input('middleName', $user->middleName),
-                'lastName' => $request->input('lastName', $user->lastName),
-                'email' => $request->input('email', $user->email),
-                'is_deleted' => $request->input('is_deleted', $user->is_deleted)
-            ]);
+            // Update basic profile information
+            $user->firstName = $validated['firstName'];
+            $user->middleName = $validated['middleName'];
+            $user->lastName = $validated['lastName'];
+            $user->email = $validated['email'];
 
-            // Handle password update only if password is being changed
+            // Handle password update if provided
             if ($request->filled('password')) {
-                if (!Hash::check($request->input('old_password'), $user->password)) {
-                    return response()->json(['error' => 'Old password is incorrect.'], 403);
+                if (!Hash::check($validated['old_password'], $user->password)) {
+                    return response()->json([
+                        'error' => 'Old password is incorrect.'
+                    ], 403);
                 }
 
-                $user->password = Hash::make($request->input('password'));
-                $user->save();
+                $user->password = Hash::make($validated['password']);
             }
 
+            $user->save();
+
             return response()->json([
-                'message' => 'User successfully updated.',
+                'message' => 'Profile updated successfully',
                 'data' => $user
-            ]);
+            ], 200);
+
         } catch (\Exception $e) {
-            return response()->json(['error' => 'Update User Error: ' . $e->getMessage()], 500);
+            return response()->json([
+                'error' => 'Failed to update profile: ' . $e->getMessage()
+            ], 500);
         }
     }
 

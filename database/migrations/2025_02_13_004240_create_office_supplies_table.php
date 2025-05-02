@@ -15,7 +15,6 @@ return new class extends Migration
             $table->id();
             $table->string('supply_name');
             $table->string('supply_description');
-            $table->string('serial_number');
             $table->foreignId('category_id')->constrained('categories')->onDelete('cascade');
             $table->integer('supply_quantity');
             $table->string('image_path')->nullable();

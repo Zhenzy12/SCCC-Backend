@@ -13,7 +13,6 @@ class OfficeSupplies extends Model
     protected $fillable = [
         'supply_name',
         'supply_description',
-        'serial_number',
         'category_id',
         'supply_quantity',
         'image_path',

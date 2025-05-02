@@ -14,6 +14,7 @@ class EquipmentCopies extends Model
         'item_id',
         'is_available',
         'copy_num',
+        'serial_number',
     ];
 
     public function officeEquipments(){
