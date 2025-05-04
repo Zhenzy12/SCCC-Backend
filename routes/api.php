@@ -160,9 +160,9 @@ Route::middleware(['api.key'])->group(function () {
 
     Route::put('/transaction_history/{transactionHistory}', [TransactionHistoryController::class, 'update']);
 
-    Route::prefix('911')->group(function () {
 
-        Route::middleware(['auth:sanctum', 'api.key'])->put('/user/{user}', [UserController::class, 'updateUserFor911']);
+
+    Route::prefix('911')->group(function () {
 
         # Dashboard Controlller Routes
         Route::get('/dashboard', [DashboardController::class, 'index']);
@@ -268,6 +268,8 @@ Route::middleware(['api.key'])->group(function () {
         Route::patch('user-traffic-role/{id}', [UserController::class, 'traffic']);
 
         Route::patch('user-archive/{id}', [UserController::class, 'archive']);
+
+        Route::put('/user/{user}', [UserController::class, 'updateUserFor911']);
 
         # Upload Controller Routes
         Route::post('/import-excel-data', [FileUploadController::class, 'readAndUpload']);
