@@ -2,21 +2,19 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\Incident;
-use App\Models\TypeOfAssistance;
-use App\Models\Report;
 
-class IncidentController extends Controller
+class AssistanceController extends Controller
 {
-    //
+    /**
+     * Display a listing of the resource.
+     */
     public function index()
     {
         //
         try {
-            $classification = TypeOfAssistance::all();
-            return response()->json($classification, 200);
+            $assistance = Assistance::all();
+            return response()->json($assistance);
         } catch (Exception $e) {
             return response()->json([
                 'error' => $e->getMessage()
@@ -24,7 +22,10 @@ class IncidentController extends Controller
         }
     }
 
-    public function create(Request $request)
+    /**
+     * Show the form for creating a new resource.
+     */
+    public function create()
     {
         //
     }
@@ -37,23 +38,23 @@ class IncidentController extends Controller
         //
         try {
             $validated = $request->validate([
-                'type' => 'required'
+                'assistance' => 'required'
             ]);
-            $incident = Incident::create([
-                'type' => $validated['type']
+            $assistance = Assistance::create([
+                'assistance' => $validated['assistance']
             ]);
 
             Tracking::create([
-                'category' => 'Incident',
+                'category' => 'Assistance',
                 'user_id' => Auth::id(),
                 'action' => 'Created',
-                'data' => json_encode($incident->toArray()),
-                'description' => 'An Incident was created by ' . Auth::user()->firstName . ' ' . Auth::user()->lastName . '.',
+                'data' => json_encode($assistance->toArray()), // ✅ Important
+                'description' => 'An Assistance was created by ' . Auth::user()->firstName . ' ' . Auth::user()->lastName . '.',
             ]);
 
             return response()->json([
-                $incident,
-                'message' => 'Incident created successfully'
+                $assistance,
+                'message' => 'Assistance created successfully'
             ], 201);
         } catch (Exception $e) {
             return response()->json([
@@ -69,8 +70,8 @@ class IncidentController extends Controller
     {
         //
         try {
-            $incident = Incident::findOrFail($id);
-            return response()->json($incident, 200);
+            $assistance = Assistance::findOrFail($id);
+            return response()->json($assistance);
         } catch (Exception $e) {
             return response()->json([
                 'error' => $e->getMessage()
@@ -94,25 +95,25 @@ class IncidentController extends Controller
         //
         try {
             $validated = $request->validate([
-                'type' => 'required'
+                'assistance' => 'required'
             ]);
-            $incident = Incident::findOrFail($id);
-            $incident->update([
-                'type' => $validated['type']
+            $assistance = Assistance::findOrFail($id);
+            $assistance->update([
+                'assistance' => $validated['assistance']
             ]);
 
             Tracking::create([
-                'category' => 'Incident',
+                'category' => 'Assistance',
                 'user_id' => Auth::id(),
                 'action' => 'Updated',
-                'data' => json_encode($incident->toArray()),
-                'description' => 'An Incident was updated by ' . Auth::user()->firstName . ' ' . Auth::user()->lastName . '.',
+                'data' => json_encode($assistance->toArray()), // ✅ Important
+                'description' => 'An Assistance was updated by ' . Auth::user()->firstName . ' ' . Auth::user()->lastName . '.',
             ]);
 
             return response()->json([
-                $incident,
-                'message' => 'Incident updated successfully'
-            ], 200);
+                $assistance,
+                'message' => 'Assistance updated successfully'
+            ], 201);
         } catch (Exception $e) {
             return response()->json([
                 'error' => $e->getMessage()
@@ -127,21 +128,20 @@ class IncidentController extends Controller
     {
         //
         try {
-            $incident = Incident::findOrFail($id);
-            $incident->delete();
+            $assistance = Assistance::findOrFail($id);
+            $assistance->delete();
 
             Tracking::create([
-                'category' => 'Incident',
+                'category' => 'Assistance',
                 'user_id' => Auth::id(),
                 'action' => 'Deleted',
-                'data' => json_encode($incident->toArray()),
-                'description' => 'An Incident was deleted by ' . Auth::user()->firstName . ' ' . Auth::user()->lastName . '.',
+                'data' => json_encode($assistance->toArray()), // ✅ Important
+                'description' => 'An Assistance was deleted by ' . Auth::user()->firstName . ' ' . Auth::user()->lastName . '.',
             ]);
 
             return response()->json([
-                $incident,
-                'message' => 'Incident deleted successfully'
-            ], 200);
+                'message' => 'Assistance deleted successfully'
+            ], 201);
         } catch (Exception $e) {
             return response()->json([
                 'error' => $e->getMessage()

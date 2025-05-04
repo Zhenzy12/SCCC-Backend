@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Exception;
 use App\Models\Source;
+use App\Models\Tracking;
+use Illuminate\Support\Facades\Auth;
 
 class SourceController extends Controller
 {
@@ -44,8 +46,11 @@ class SourceController extends Controller
     {
         //
         try {
+            $validated = $request->validate([
+                'sources' => 'required'
+            ]);
             $source = Source::create([
-                'sources' => $request->sources
+                'sources' => $validated['sources']
             ]);
 
             Tracking::create([
@@ -55,6 +60,7 @@ class SourceController extends Controller
                 'data' => json_encode($source->toArray()), // ✅ Important
                 'description' => 'A Source was created by ' . Auth::user()->firstName . ' ' . Auth::user()->lastName . '.',
             ]);
+
             return response()->json([
                 $source,
                 'message' => 'Source created successfully'
@@ -98,8 +104,11 @@ class SourceController extends Controller
         //
         try {
             $source = Source::findOrFail($id);
+            $validated = $request->validate([
+                'sources' => 'required'
+            ]);
             $source->update([
-                'sources' => $request->sources
+                'sources' => $validated['sources']
             ]);
 
             Tracking::create([

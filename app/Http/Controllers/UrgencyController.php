@@ -2,21 +2,28 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\Incident;
-use App\Models\TypeOfAssistance;
-use App\Models\Report;
 
-class IncidentController extends Controller
+class UrgencyController extends Controller
 {
-    //
+    /**
+     * Display a listing of the resource.
+     */
     public function index()
     {
         //
         try {
-            $classification = TypeOfAssistance::all();
-            return response()->json($classification, 200);
+            $urgencies = Urgency::all();
+
+            Tracking::create([
+                'category' => 'Urgency',
+                'user_id' => Auth::id(),
+                'action' => 'Viewed',
+                'data' => json_encode($urgencies->toArray()), // ✅ Important
+                'description' => 'An Urgency was viewed by ' . Auth::user()->firstName . ' ' . Auth::user()->lastName . '.',
+            ]);
+
+            return response()->json($urgencies);
         } catch (Exception $e) {
             return response()->json([
                 'error' => $e->getMessage()
@@ -24,7 +31,10 @@ class IncidentController extends Controller
         }
     }
 
-    public function create(Request $request)
+    /**
+     * Show the form for creating a new resource.
+     */
+    public function create()
     {
         //
     }
@@ -37,23 +47,22 @@ class IncidentController extends Controller
         //
         try {
             $validated = $request->validate([
-                'type' => 'required'
+                'urgency' => 'required'
             ]);
-            $incident = Incident::create([
-                'type' => $validated['type']
+            $urgency = Urgency::create([
+                'urgency' => $validated['urgency']
             ]);
 
             Tracking::create([
-                'category' => 'Incident',
+                'category' => 'Urgency',
                 'user_id' => Auth::id(),
                 'action' => 'Created',
-                'data' => json_encode($incident->toArray()),
-                'description' => 'An Incident was created by ' . Auth::user()->firstName . ' ' . Auth::user()->lastName . '.',
+                'data' => json_encode($urgency->toArray()), // ✅ Important
+                'description' => 'An Urgency was created by ' . Auth::user()->firstName . ' ' . Auth::user()->lastName . '.',
             ]);
-
             return response()->json([
-                $incident,
-                'message' => 'Incident created successfully'
+                $urgency,
+                'message' => 'Urgency created successfully'
             ], 201);
         } catch (Exception $e) {
             return response()->json([
@@ -69,8 +78,8 @@ class IncidentController extends Controller
     {
         //
         try {
-            $incident = Incident::findOrFail($id);
-            return response()->json($incident, 200);
+            $urgency = Urgency::findOrFail($id);
+            return response()->json($urgency);
         } catch (Exception $e) {
             return response()->json([
                 'error' => $e->getMessage()
@@ -94,25 +103,25 @@ class IncidentController extends Controller
         //
         try {
             $validated = $request->validate([
-                'type' => 'required'
+                'urgency' => 'required'
             ]);
-            $incident = Incident::findOrFail($id);
-            $incident->update([
-                'type' => $validated['type']
+            $urgency = Urgency::findOrFail($id);
+            $urgency->update([
+                'urgency' => $validated['urgency']
             ]);
 
             Tracking::create([
-                'category' => 'Incident',
+                'category' => 'Urgency',
                 'user_id' => Auth::id(),
                 'action' => 'Updated',
-                'data' => json_encode($incident->toArray()),
-                'description' => 'An Incident was updated by ' . Auth::user()->firstName . ' ' . Auth::user()->lastName . '.',
+                'data' => json_encode($urgency->toArray()), // ✅ Important
+                'description' => 'An Urgency was updated by ' . Auth::user()->firstName . ' ' . Auth::user()->lastName . '.',
             ]);
-
+            
             return response()->json([
-                $incident,
-                'message' => 'Incident updated successfully'
-            ], 200);
+                $urgency,
+                'message' => 'Urgency updated successfully'
+            ], 201);
         } catch (Exception $e) {
             return response()->json([
                 'error' => $e->getMessage()
@@ -127,21 +136,21 @@ class IncidentController extends Controller
     {
         //
         try {
-            $incident = Incident::findOrFail($id);
-            $incident->delete();
+            $urgency = Urgency::findOrFail($id);
+            $urgency->delete();
 
             Tracking::create([
-                'category' => 'Incident',
+                'category' => 'Urgency',
                 'user_id' => Auth::id(),
                 'action' => 'Deleted',
-                'data' => json_encode($incident->toArray()),
-                'description' => 'An Incident was deleted by ' . Auth::user()->firstName . ' ' . Auth::user()->lastName . '.',
+                'data' => json_encode($urgency->toArray()), // ✅ Important
+                'description' => 'An Urgency was deleted by ' . Auth::user()->firstName . ' ' . Auth::user()->lastName . '.',
             ]);
-
+            
             return response()->json([
-                $incident,
-                'message' => 'Incident deleted successfully'
-            ], 200);
+                $urgency,
+                'message' => 'Urgency deleted successfully'
+            ], 201);
         } catch (Exception $e) {
             return response()->json([
                 'error' => $e->getMessage()

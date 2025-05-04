@@ -22,6 +22,11 @@ use App\Http\Controllers\FileUploadController;
 use App\Http\Controllers\TrackingController;
 use App\Http\Controllers\Auth\VerifyEmailController;
 use App\Http\Controllers\Auth\EmailVerificationNotificationController;
+use App\Http\Controllers\IncidentController;
+use App\Http\Controllers\TypeOfAssistanceController;
+use App\Http\Controllers\SourceController;
+use App\Http\Controllers\ActionsTakenController;
+use App\Http\Controllers\UrgencyController;
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('/user', function (Request $request) {
@@ -180,10 +185,37 @@ Route::middleware(['api.key'])->group(function () {
         Route::get('/barangay-reports/{id}', [BarangayController::class, 'show']);
 
         # Actions Taken Controller Routes
+        Route::get('/actions_taken', [ActionsTakenController::class, 'index']);
+
+        Route::post('/actions_taken', [ActionsTakenController::class, 'store']);
+
+        Route::get('/actions_taken-fetch/{actionsTaken}', [ActionsTakenController::class, 'show']);
+
+        Route::put('/actions_taken-update/{actionsTaken}', [ActionsTakenController::class, 'update']);
+
+        Route::delete('/actions_taken-delete/{actionsTaken}', [ActionsTakenController::class, 'destroy']);
 
         # Incident Controller Routes
+        Route::get('/incident', [IncidentController::class, 'index']);
+
+        Route::post('/incident', [IncidentController::class, 'store']);
+
+        Route::get('/incident-fetch/{incident}', [IncidentController::class, 'show']);
+
+        Route::put('/incident-update/{incident}', [IncidentController::class, 'update']);
+
+        Route::delete('/incident-delete/{incident}', [IncidentController::class, 'destroy']);
 
         # Type of Assistance Controller Routes
+        Route::get('/assistance', [AssistanceController::class, 'index']);
+
+        Route::post('/assistance', [AssistanceController::class, 'store']);
+
+        Route::get('/assistance-fetch/{assistance}', [AssistanceController::class, 'show']);
+
+        Route::put('/assistance-update/{assistance}', [AssistanceController::class, 'update']);
+
+        Route::delete('/assistance-delete/{assistance}', [AssistanceController::class, 'destroy']);
 
         # Source Controller Routes
         Route::get('/source', [SourceController::class, 'index']);
@@ -197,7 +229,15 @@ Route::middleware(['api.key'])->group(function () {
         Route::delete('/source-delete/{id}', [SourceController::class, 'destroy']);
 
         # Urgency Controller Routes
-        
+        Route::get('/urgency', [UrgencyController::class, 'index']);
+
+        Route::post('/urgency', [UrgencyController::class, 'store']);
+
+        Route::get('/urgency-fetch/{id}', [UrgencyController::class, 'show']);
+
+        Route::put('/urgency-update/{id}', [UrgencyController::class, 'update']);
+
+        Route::delete('/urgency-delete/{id}', [UrgencyController::class, 'destroy']);
 
         # Report Controller Routes
         Route::get('/report', [ReportController::class, 'index']);
@@ -236,18 +276,5 @@ Route::middleware(['api.key'])->group(function () {
 
         # Tracking Controller Routes
         Route::get('/tracking', [TrackingController::class, 'index']);
-
-        # Mail Controller Routes
-        // Route::get('/test-mail', function () {
-        //     Mail::to('ccandremarin@gmail.com')->send(new TestMail());
-        //     return response()->json(['message' => 'Mail sent successfully']);
-        // });
-        // Route::get('/test-mail', function () {
-        //     Mail::to(['vheebhee7@gmail.com', 'eehvyahj.prog@gmail.com'])->send(new TestMail());
-        //     return response()->json(['message' => 'Mail sent successfully']);
-        // });
-
-        # Forgot Password Controller Routes
-
     });
 });
