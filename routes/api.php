@@ -179,6 +179,26 @@ Route::middleware(['api.key'])->group(function () {
 
         Route::get('/barangay-reports/{id}', [BarangayController::class, 'show']);
 
+        # Actions Taken Controller Routes
+
+        # Incident Controller Routes
+
+        # Type of Assistance Controller Routes
+
+        # Source Controller Routes
+        Route::get('/source', [SourceController::class, 'index']);
+        
+        Route::post('/source', [SourceController::class, 'store']);
+
+        Route::get('/source/{id}', [SourceController::class, 'show']);
+
+        Route::put('/source-update/{id}', [SourceController::class, 'update']);
+
+        Route::delete('/source-delete/{id}', [SourceController::class, 'destroy']);
+
+        # Urgency Controller Routes
+        
+
         # Report Controller Routes
         Route::get('/report', [ReportController::class, 'index']);
 
