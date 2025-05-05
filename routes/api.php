@@ -28,6 +28,7 @@ use App\Http\Controllers\SourceController;
 use App\Http\Controllers\ActionsTakenController;
 use App\Http\Controllers\UrgencyController;
 
+
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('/user', function (Request $request) {
         return $request->user();
@@ -174,15 +175,15 @@ Route::middleware(['api.key'])->group(function () {
         # Barangay Controller Routes
         Route::get('/barangay', [BarangayController::class, 'index']);
 
-        Route::post('/barangay', [BarangayController::class, 'create']);
+        Route::post('/barangay', [BarangayController::class, 'store']);
 
-        Route::get('/barangay-edit/{id}', [BarangayController::class, 'edit']);
+        Route::get('/barangay-fetch/{id}', [BarangayController::class, 'show']);
 
         Route::put('/barangay-update/{id}', [BarangayController::class, 'update']);
       
         Route::delete('/barangay-delete/{id}', [BarangayController::class, 'destroy']);
 
-        Route::get('/barangay-reports/{id}', [BarangayController::class, 'show']);
+        // Route::get('/barangay-reports/{id}', [BarangayController::class, 'reports']);
 
         # Actions Taken Controller Routes
         Route::get('/actions_taken', [ActionsTakenController::class, 'index']);
@@ -207,15 +208,15 @@ Route::middleware(['api.key'])->group(function () {
         Route::delete('/incident-delete/{incident}', [IncidentController::class, 'destroy']);
 
         # Type of Assistance Controller Routes
-        Route::get('/assistance', [AssistanceController::class, 'index']);
+        Route::get('/assistance', [TypeOfAssistanceController::class, 'index']);
 
-        Route::post('/assistance', [AssistanceController::class, 'store']);
+        Route::post('/assistance', [TypeOfAssistanceController::class, 'store']);
 
-        Route::get('/assistance-fetch/{assistance}', [AssistanceController::class, 'show']);
+        Route::get('/assistance-fetch/{assistance}', [TypeOfAssistanceController::class, 'show']);
 
-        Route::put('/assistance-update/{assistance}', [AssistanceController::class, 'update']);
+        Route::put('/assistance-update/{assistance}', [TypeOfAssistanceController::class, 'update']);
 
-        Route::delete('/assistance-delete/{assistance}', [AssistanceController::class, 'destroy']);
+        Route::delete('/assistance-delete/{assistance}', [TypeOfAssistanceController::class, 'destroy']);
 
         # Source Controller Routes
         Route::get('/source', [SourceController::class, 'index']);

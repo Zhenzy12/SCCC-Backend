@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use App\Models\Incident;
 use App\Models\TypeOfAssistance;
 use App\Models\Report;
+use Exception;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class IncidentController extends Controller
 {
@@ -71,6 +73,10 @@ class IncidentController extends Controller
         try {
             $incident = Incident::findOrFail($id);
             return response()->json($incident, 200);
+        } catch (ModelNotFoundException $e) {
+            return response()->json([
+                'error' => $e->getMessage()
+            ], 404);
         } catch (Exception $e) {
             return response()->json([
                 'error' => $e->getMessage()
@@ -113,6 +119,10 @@ class IncidentController extends Controller
                 $incident,
                 'message' => 'Incident updated successfully'
             ], 200);
+        } catch (ModelNotFoundException $e) {
+            return response()->json([
+                'error' => $e->getMessage()
+            ], 404);
         } catch (Exception $e) {
             return response()->json([
                 'error' => $e->getMessage()
@@ -142,6 +152,10 @@ class IncidentController extends Controller
                 $incident,
                 'message' => 'Incident deleted successfully'
             ], 200);
+        } catch (ModelNotFoundException $e) {
+            return response()->json([
+                'error' => $e->getMessage()
+            ], 404);
         } catch (Exception $e) {
             return response()->json([
                 'error' => $e->getMessage()

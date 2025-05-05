@@ -15,6 +15,8 @@ use App\Models\TypeOfAssistance;
 use App\Models\Urgency;
 use App\Models\Tracking;
 use Illuminate\Support\Facades\Auth;
+use Exception;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class FileUploadController extends Controller
 {
@@ -74,7 +76,7 @@ class FileUploadController extends Controller
                     } else {
                         return false; // Invalid value that doesn't match any record
                     }
-                } catch (\Exception $e) {
+                } catch (Exception $e) {
                     return false; // Model class doesn't exist or other error
                 }
             }
@@ -130,7 +132,7 @@ class FileUploadController extends Controller
             return response()->json([
                 'message' => 'Data successfully imported into the database',
             ]);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return response()->json([
                 'message' => 'An error occurred during import: ' . $e->getMessage(),
             ], 500);
@@ -173,7 +175,7 @@ class FileUploadController extends Controller
                 'message' => 'Data successfully fetched from the file',
                 'data' => $formattedData,
             ]);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return response()->json([
                 'message' => 'An error occurred during import: ' . $e->getMessage(),
             ], 500);

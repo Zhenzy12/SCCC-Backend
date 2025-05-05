@@ -3,6 +3,11 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Exception;
+use App\Models\Urgency;
+use App\Models\Tracking;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class UrgencyController extends Controller
 {
@@ -24,6 +29,10 @@ class UrgencyController extends Controller
             ]);
 
             return response()->json($urgencies);
+        } catch (ModelNotFoundException $e) {
+            return response()->json([
+                'error' => $e->getMessage()
+            ], 404);
         } catch (Exception $e) {
             return response()->json([
                 'error' => $e->getMessage()
@@ -80,6 +89,10 @@ class UrgencyController extends Controller
         try {
             $urgency = Urgency::findOrFail($id);
             return response()->json($urgency);
+        } catch (ModelNotFoundException $e) {
+            return response()->json([
+                'error' => $e->getMessage()
+            ], 404);
         } catch (Exception $e) {
             return response()->json([
                 'error' => $e->getMessage()
@@ -122,6 +135,10 @@ class UrgencyController extends Controller
                 $urgency,
                 'message' => 'Urgency updated successfully'
             ], 201);
+        } catch (ModelNotFoundException $e) {
+            return response()->json([
+                'error' => $e->getMessage()
+            ], 404);
         } catch (Exception $e) {
             return response()->json([
                 'error' => $e->getMessage()
@@ -151,6 +168,10 @@ class UrgencyController extends Controller
                 $urgency,
                 'message' => 'Urgency deleted successfully'
             ], 201);
+        } catch (ModelNotFoundException $e) {
+            return response()->json([
+                'error' => $e->getMessage()
+            ], 404);
         } catch (Exception $e) {
             return response()->json([
                 'error' => $e->getMessage()

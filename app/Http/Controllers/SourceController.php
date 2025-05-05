@@ -8,6 +8,7 @@ use Exception;
 use App\Models\Source;
 use App\Models\Tracking;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class SourceController extends Controller
 {
@@ -80,7 +81,14 @@ class SourceController extends Controller
         //
         try {
             $source = Source::findOrFail($id);
-            return response()->json($source);
+            return response()->json([
+                $source,
+                'message' => 'Source retrieved successfully'
+            ], 200);
+        } catch (ModelNotFoundException $e) {
+            return response()->json([
+                'error' => $e->getMessage()
+            ], 404);
         } catch (Exception $e) {
             return response()->json([
                 'error' => $e->getMessage()
@@ -123,6 +131,10 @@ class SourceController extends Controller
                 $source,
                 'message' => 'Source updated successfully'
             ], 200);
+        } catch (ModelNotFoundException $e) {
+            return response()->json([
+                'error' => $e->getMessage()
+            ], 404);
         } catch (Exception $e) {
             return response()->json([
                 'error' => $e->getMessage()
@@ -151,6 +163,10 @@ class SourceController extends Controller
             return response()->json([
                 'message' => 'Source deleted successfully'
             ], 200);
+        } catch (ModelNotFoundException $e) {
+            return response()->json([
+                'error' => $e->getMessage()
+            ], 404);
         } catch (Exception $e) {
             return response()->json([
                 'error' => $e->getMessage()
