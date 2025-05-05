@@ -13,6 +13,8 @@ use App\Models\Barangay;
 use App\Models\ActionsTaken;
 use App\Models\TypeOfAssistance;
 use App\Models\Urgency;
+use App\Models\Tracking;
+use Illuminate\Support\Facades\Auth;
 
 class FileUploadController extends Controller
 {
@@ -116,6 +118,14 @@ class FileUploadController extends Controller
                     'updated_at' => now(),
                 ]);
             }
+
+            Tracking::create([
+                'category' => 'Report',
+                'user_id' => Auth::id(),
+                'action' => 'Imported',
+                'data' => json_encode($request->input('data')),
+                'description' => 'An Excel File was imported by ' . Auth::user()->firstName . ' ' . Auth::user()->lastName . '.',
+            ]);
     
             return response()->json([
                 'message' => 'Data successfully imported into the database',
