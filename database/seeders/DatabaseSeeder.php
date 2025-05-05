@@ -40,7 +40,11 @@ class DatabaseSeeder extends Seeder
             OfficeEquipmentsTableSeeder::class,
             OfficeSuppliesTableSeeder::class,
             EquipmentCopiesTableSeeder::class,
-            InventoryAccessesTableSeeder:: class
+            InventoryAccessesTableSeeder:: class,
+
+            //seeder for SCCC Traffic System
+            RoadTypeSeeder::class,
+            RoadSeeder::class,
         ]);
     }
 }
