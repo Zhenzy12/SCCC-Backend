@@ -46,6 +46,8 @@ class DatabaseSeeder extends Seeder
             StatusTrafficSeeder::class,
             RoadTypeSeeder::class,
             RoadSeeder::class,
+            InboundSeeder::class,
+            OutboundSeeder::class,
         ]);
     }
 }
