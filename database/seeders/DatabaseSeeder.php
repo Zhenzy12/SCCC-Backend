@@ -43,6 +43,7 @@ class DatabaseSeeder extends Seeder
             InventoryAccessesTableSeeder:: class,
 
             //seeder for SCCC Traffic System
+            StatusTrafficSeeder::class,
             RoadTypeSeeder::class,
             RoadSeeder::class,
         ]);
