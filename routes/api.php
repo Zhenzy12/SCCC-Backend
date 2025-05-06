@@ -207,15 +207,15 @@ Route::middleware(['api.key'])->group(function () {
         Route::delete('/incident-delete/{incident}', [IncidentController::class, 'destroy']);
 
         # Type of Assistance Controller Routes
-        Route::get('/assistance', [AssistanceController::class, 'index']);
+        Route::get('/assistance', [TypeOfAssistanceController::class, 'index']);
 
-        Route::post('/assistance', [AssistanceController::class, 'store']);
+        Route::post('/assistance', [TypeOfAssistanceController::class, 'store']);
 
-        Route::get('/assistance-fetch/{assistance}', [AssistanceController::class, 'show']);
+        Route::get('/assistance-fetch/{assistance}', [TypeOfAssistanceController::class, 'show']);
 
-        Route::put('/assistance-update/{assistance}', [AssistanceController::class, 'update']);
+        Route::put('/assistance-update/{assistance}', [TypeOfAssistanceController::class, 'update']);
 
-        Route::delete('/assistance-delete/{assistance}', [AssistanceController::class, 'destroy']);
+        Route::delete('/assistance-delete/{assistance}', [TypeOfAssistanceController::class, 'destroy']);
 
         # Source Controller Routes
         Route::get('/source', [SourceController::class, 'index']);
