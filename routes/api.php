@@ -253,7 +253,7 @@ Route::middleware(['api.key'])->group(function () {
         # Report Controller Routes
         Route::get('/report', [ReportController::class, 'index']);
 
-        Route::post('/report', [ReportController::class, 'create']);
+        Route::post('/report', [ReportController::class, 'store']);
 
         Route::post('/restore-report', [ReportController::class, 'restore']);
 
@@ -261,9 +261,9 @@ Route::middleware(['api.key'])->group(function () {
 
         Route::get('/report-display', [ReportController::class, 'display']);
 
-        Route::get('/report-view/{id}', [ReportController::class, 'show']);
+        Route::get('/report-fetch/{id}', [ReportController::class, 'show']);
 
-        Route::get('/report-edit/{id}', [ReportController::class, 'edit']);
+        // Route::get('/report-edit/{id}', [ReportController::class, 'edit']);
 
         Route::delete('/report-delete/{id}', [ReportController::class, 'destroy']);
 
