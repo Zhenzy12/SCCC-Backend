@@ -11,6 +11,7 @@ use App\Models\Report;
 use Illuminate\Support\Facades\DB;
 use App\Models\Tracking;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class BarangayController extends Controller
 {
@@ -25,8 +26,7 @@ class BarangayController extends Controller
                 ->select('barangay_id', DB::raw('COUNT(*) as total_reports'))
                 ->get();
 
-            $barangays = Barangay::orderBy('id', 'desc')
-                ->get(['id', 'name', 'longitude', 'latitude']);
+            $barangays = Barangay::all();
 
             return response()->json([
                 'barangays' => $barangays,
@@ -43,7 +43,15 @@ class BarangayController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create(Request $request, BarangayRequest $barangayRequest)
+    public function create(Request $request)
+    {
+        //
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     */
+    public function store(BarangayRequest $barangayRequest)
     {
         //
         try {
@@ -75,32 +83,18 @@ class BarangayController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
      * Display the specified resource.
      */
     public function show(string $id)
     {
         //
         try {
-            $report = Report::with([
-                'source:id,sources',
-                'incident:id,type',
-                'actions:id,actions',
-                'assistance:id,assistance',
-                'barangay:id,name,longitude,latitude'
-            ])
-                ->where('barangay_id', $id) // Use the route parameter
-                ->orderBy('id', 'desc')
-                ->get();
-
-            return response()->json($report);
+            $barangay = Barangay::findOrFail($id);
+            return response()->json($barangay, 200);
+        } catch (ModelNotFoundException $e) {
+            return response()->json([
+                'error' => $e->getMessage()
+            ], 404);
         } catch (Exception $e) {
             return response()->json([
                 'error' => $e->getMessage()
@@ -114,14 +108,6 @@ class BarangayController extends Controller
     public function edit(string $id)
     {
         //
-        try {
-            $barangay = Barangay::findOrFail($id);
-            return response()->json($barangay, 200);
-        } catch (Exception $e) {
-            return response()->json([
-                'error' => $e->getMessage()
-            ], 404);
-        }
     }
 
     /**
@@ -153,6 +139,10 @@ class BarangayController extends Controller
                 'message' => 'Barangay updated successfully!',
                 'barangay' => $barangay,
             ]);
+        } catch (ModelNotFoundException $e) {
+            return response()->json([
+                'error' => $e->getMessage()
+            ], 404);
         } catch (Exception $e) {
             return response()->json([
                 'error' => $e->getMessage()
@@ -182,10 +172,36 @@ class BarangayController extends Controller
                 'message' => 'Barangay deleted successfully!',
                 'barangay' => $barangay,
             ]);
+        } catch (ModelNotFoundException $e) {
+            return response()->json([
+                'error' => $e->getMessage()
+            ], 404);
         } catch (Exception $e) {
             return response()->json([
                 'error' => $e->getMessage()
             ], 500);
         }
     }
+
+    // public function reports(string $id)
+    // {
+    //     try {
+    //         $report = Report::with([
+    //             'source:id,sources',
+    //             'incident:id,type',
+    //             'actions:id,actions',
+    //             'assistance:id,assistance',
+    //             'barangay:id,name,longitude,latitude'
+    //         ])
+    //         ->where('barangay_id', $id) // Use the route parameter
+    //         ->orderBy('id', 'desc')
+    //         ->get();
+
+    //         return response()->json($report);
+    //     } catch (Exception $e) {
+    //         return response()->json([
+    //             'error' => $e->getMessage()
+    //         ], 500);
+    //     }
+    // }
 }

@@ -7,6 +7,10 @@ use Illuminate\Http\Request;
 use App\Models\Incident;
 use App\Models\TypeOfAssistance;
 use App\Models\Report;
+use Exception;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use App\Models\Tracking;
+use Illuminate\Support\Facades\Auth;
 
 class IncidentController extends Controller
 {
@@ -15,18 +19,13 @@ class IncidentController extends Controller
     {
         //
         try {
-            $classification = TypeOfAssistance::all();
-            return response()->json($classification, 200);
+            $incident = Incident::all();
+            return response()->json($incident, 200);
         } catch (Exception $e) {
             return response()->json([
                 'error' => $e->getMessage()
             ], 500);
         }
-    }
-
-    public function create(Request $request)
-    {
-        //
     }
 
     /**
@@ -71,19 +70,15 @@ class IncidentController extends Controller
         try {
             $incident = Incident::findOrFail($id);
             return response()->json($incident, 200);
+        } catch (ModelNotFoundException $e) {
+            return response()->json([
+                'error' => $e->getMessage()
+            ], 404);
         } catch (Exception $e) {
             return response()->json([
                 'error' => $e->getMessage()
             ], 500);
         }
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
     }
 
     /**
@@ -113,6 +108,10 @@ class IncidentController extends Controller
                 $incident,
                 'message' => 'Incident updated successfully'
             ], 200);
+        } catch (ModelNotFoundException $e) {
+            return response()->json([
+                'error' => $e->getMessage()
+            ], 404);
         } catch (Exception $e) {
             return response()->json([
                 'error' => $e->getMessage()
@@ -142,6 +141,10 @@ class IncidentController extends Controller
                 $incident,
                 'message' => 'Incident deleted successfully'
             ], 200);
+        } catch (ModelNotFoundException $e) {
+            return response()->json([
+                'error' => $e->getMessage()
+            ], 404);
         } catch (Exception $e) {
             return response()->json([
                 'error' => $e->getMessage()

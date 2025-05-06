@@ -49,7 +49,52 @@ class ReportController extends Controller
         }
     }
 
-    public function create(Request $request, ReportRequest $reportRequest)
+    // public function create(Request $request, ReportRequest $reportRequest)
+    // {
+    //     //
+    //     try {
+    //         $reportRequest->validated();
+
+    //         $report = Report::create([
+    //             'time' => $reportRequest->time,
+    //             'date_received' => $reportRequest->date_received,
+    //             'arrival_on_site' => $reportRequest->arrival_on_site,
+    //             'name' => $reportRequest->name,
+    //             'landmark' => $reportRequest->landmark,
+    //             'longitude' => $reportRequest->longitude,
+    //             'latitude' => $reportRequest->latitude,
+    //             'source_id' => $reportRequest->source_id,
+    //             'incident_id' => $reportRequest->incident_id,
+    //             'barangay_id' => $reportRequest->barangay_id,
+    //             'actions_id' => $reportRequest->actions_id,
+    //             'assistance_id' => $reportRequest->assistance_id,
+    //             'urgency_id' => $reportRequest->urgency_id,
+    //             'description' => $reportRequest->description,
+    //         ]);
+
+    //         Tracking::create([
+    //             'category' => 'Report',
+    //             'user_id' => Auth::id(),
+    //             'action' => 'Created',
+    //             'data' => json_encode($report->toArray()), // ✅ Important
+    //             'description' => 'A Report was created by ' . Auth::user()->firstName . ' ' . Auth::user()->lastName . '.',
+    //         ]);
+
+    //         return response()->json([
+    //             'message' => 'Report created successfully!',
+    //             'report' => $report,
+    //         ], 201);
+    //     } catch (Exception $e) {
+    //         return response()->json([
+    //             'error' => $e->getMessage()
+    //         ], 500);
+    //     }
+    // }
+
+    /**
+     * Store a newly created resource in storage.
+     */
+    public function store(ReportRequest $reportRequest)
     {
         //
         try {
@@ -91,30 +136,14 @@ class ReportController extends Controller
         }
     }
 
-    //Restore an item
+    /**
+     * Restore the specified resource.
+     */
     public function restore(ReportRequest $reportRequest)
     {
         //
         try {
             $reportRequest->validated();
-
-            // $report = Report::create([
-            //     'id' => $reportRequest->id,
-            //     'time' => $reportRequest->time,
-            //     'date_received' => $reportRequest->date_received,
-            //     'arrival_on_site' => $reportRequest->arrival_on_site,
-            //     'name' => $reportRequest->name,
-            //     'landmark' => $reportRequest->landmark,
-            //     'longitude' => $reportRequest->longitude,
-            //     'latitude' => $reportRequest->latitude,
-            //     'source_id' => $reportRequest->source_id,
-            //     'incident_id' => $reportRequest->incident_id,
-            //     'barangay_id' => $reportRequest->barangay_id,
-            //     'actions_id' => $reportRequest->actions_id,
-            //     'assistance_id' => $reportRequest->assistance_id,
-            //     'urgency_id' => $reportRequest->urgency_id,
-            //     'description' => $reportRequest->description,
-            // ]);
             $report = new Report($reportRequest->all());
             $report->id = $reportRequest->id;
             $report->exists = false; // force it to treat as insert
@@ -137,14 +166,6 @@ class ReportController extends Controller
                 'error' => $e->getMessage()
             ], 500);
         }
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
     }
 
     /**
@@ -208,30 +229,30 @@ class ReportController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
-    {
-        //
-        try {
+    // public function edit(string $id)
+    // {
+    //     //
+    //     try {
 
-            $report = Report::with([
-                'source:id,sources', 
-                'incident:id,type', 
-                'actions:id,actions', 
-                'assistance:id,assistance', 
-                'barangay:id,name,longitude,latitude',
-                'urgency:id,urgency'
-            ])->where('id', $id)->first();
+    //         $report = Report::with([
+    //             'source:id,sources', 
+    //             'incident:id,type', 
+    //             'actions:id,actions', 
+    //             'assistance:id,assistance', 
+    //             'barangay:id,name,longitude,latitude',
+    //             'urgency:id,urgency'
+    //         ])->where('id', $id)->first();
 
-            return response()->json($report, 200);
+    //         return response()->json($report, 200);
 
-        } catch (Exception $e) {
+    //     } catch (Exception $e) {
 
-            return response()->json([
-                'error' => $e->getMessage()
-            ], 404);
+    //         return response()->json([
+    //             'error' => $e->getMessage()
+    //         ], 404);
 
-        }
-    }
+    //     }
+    // }
 
     /**
      * Update the specified resource in storage.
@@ -299,7 +320,6 @@ class ReportController extends Controller
         try {
 
             $report = Report::find($id);
-
             if (!$report) {
                 return response()->json([
                     'error' => 'Report not found'
@@ -318,14 +338,10 @@ class ReportController extends Controller
             return response()->json([
                 'message' => 'Report deleted successfully'
             ]);
-
-
         } catch (Exception $e) {
-
             return response()->json([
                 'error' => $e->getMessage()
             ], 500);
-
         }
     }
 
@@ -360,12 +376,10 @@ class ReportController extends Controller
             return response()->json([
                 'message' => 'Reports deleted successfully'
             ]);
-
         } catch (Exception $e) {
             return response()->json([
                 'error' => $e->getMessage()
             ], 500);
         }
     }
-
 }
