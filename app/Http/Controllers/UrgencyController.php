@@ -53,6 +53,7 @@ class UrgencyController extends Controller
                 'data' => json_encode($urgency->toArray()), // ✅ Important
                 'description' => 'An Urgency was created by ' . Auth::user()->firstName . ' ' . Auth::user()->lastName . '.',
             ]);
+
             return response()->json([
                 $urgency,
                 'message' => 'Urgency created successfully'
@@ -72,7 +73,10 @@ class UrgencyController extends Controller
         //
         try {
             $urgency = Urgency::findOrFail($id);
-            return response()->json($urgency);
+            return response()->json([
+                $urgency,
+                'message' => 'Urgency retrieved successfully'
+            ], 200);
         } catch (ModelNotFoundException $e) {
             return response()->json([
                 'error' => $e->getMessage()

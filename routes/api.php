@@ -283,9 +283,9 @@ Route::middleware(['api.key'])->group(function () {
         Route::put('/user/{user}', [UserController::class, 'updateUserFor911']);
 
         # Upload Controller Routes
-        Route::post('/import-excel-data', [FileUploadController::class, 'readAndUpload']);
+        Route::post('/import-excel-data', [FileUploadController::class, 'store']);
 
-        Route::post('/import-excel', [FileUploadController::class, 'uploadFileView']);
+        Route::post('/import-excel', [FileUploadController::class, 'read']);
 
         # Tracking Controller Routes
         Route::get('/tracking', [TrackingController::class, 'index']);

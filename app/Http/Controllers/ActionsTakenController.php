@@ -25,11 +25,6 @@ class ActionsTakenController extends Controller
         }
     }
 
-    public function create(Request $request)
-    {
-        //
-    }
-
     /**
      * Store a newly created resource in storage.
      */
@@ -71,23 +66,10 @@ class ActionsTakenController extends Controller
         //
         try {
             $action = ActionsTaken::findOrFail($id);
-            return response()->json($action);
-        } catch (Exception $e) {
             return response()->json([
-                'error' => $e->getMessage()
-            ], 500);
-        }
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-        try {
-            $action = ActionsTaken::findOrFail($id);
-            return response()->json($action);
+                $action,
+                'message' => 'Actions Taken retrieved successfully'
+            ], 200);
         } catch (Exception $e) {
             return response()->json([
                 'error' => $e->getMessage()

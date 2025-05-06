@@ -21,16 +21,6 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 class FileUploadController extends Controller
 {
     //
-    public function index()
-    {
-        //
-    }
-
-    public function create(Request $request)
-    {
-        // 
-    }
-
     private function validateAndConvertFields(array $row): array|false
     {
         $requiredFields = [
@@ -85,8 +75,55 @@ class FileUploadController extends Controller
         return $validatedRow;
     }
 
-    public function readAndUpload(Request $request)
+    public function read(Request $request)
     {
+        try{
+            // Validate the uploaded file
+            $request->validate([
+                'file' => 'required|mimes:xlsx,xls|max:2048', // 2MB max file size and allowed file types
+            ]);
+
+            // Get the uploaded file
+            $file = $request->file('file');
+
+            // Load the uploaded file using PhpSpreadsheet
+            $spreadsheet = IOFactory::load($file);
+            $sheet = $spreadsheet->getActiveSheet();
+            $data = $sheet->toArray();
+
+            // Extract headers (first row)
+            $headers = $data[0]; 
+            $rows = array_slice($data, 1); // Get data rows
+
+            // Filter out empty rows (if all values are null or empty)
+            $filteredRows = array_filter($rows, function ($row) {
+                return array_filter($row); // Remove rows where all values are empty
+            });
+
+            // Format the data into an array of associative arrays
+            $formattedData = [];
+            foreach ($filteredRows as $row) {
+                $formattedData[] = array_combine($headers, $row);
+            }
+
+            // Return JSON response (data is not stored in the database)
+            return response()->json([
+                'message' => 'Data successfully fetched from the file',
+                'data' => $formattedData,
+            ]);
+        } catch (Exception $e) {
+            return response()->json([
+                'message' => 'An error occurred during import: ' . $e->getMessage(),
+            ], 500);
+        }
+    }
+    
+    /**
+     * Store a newly created resource in storage.
+     */
+    public function store(Request $request)
+    {
+        //
         try {
             // Validate the request to ensure 'data' is present and is an array
             $request->validate([
@@ -137,88 +174,5 @@ class FileUploadController extends Controller
                 'message' => 'An error occurred during import: ' . $e->getMessage(),
             ], 500);
         }
-    }
-
-    public function uploadFileView(Request $request)
-    {
-        try{
-            // Validate the uploaded file
-            $request->validate([
-                'file' => 'required|mimes:xlsx,xls|max:2048', // 2MB max file size and allowed file types
-            ]);
-
-            // Get the uploaded file
-            $file = $request->file('file');
-
-            // Load the uploaded file using PhpSpreadsheet
-            $spreadsheet = IOFactory::load($file);
-            $sheet = $spreadsheet->getActiveSheet();
-            $data = $sheet->toArray();
-
-            // Extract headers (first row)
-            $headers = $data[0]; 
-            $rows = array_slice($data, 1); // Get data rows
-
-            // Filter out empty rows (if all values are null or empty)
-            $filteredRows = array_filter($rows, function ($row) {
-                return array_filter($row); // Remove rows where all values are empty
-            });
-
-            // Format the data into an array of associative arrays
-            $formattedData = [];
-            foreach ($filteredRows as $row) {
-                $formattedData[] = array_combine($headers, $row);
-            }
-
-            // Return JSON response (data is not stored in the database)
-            return response()->json([
-                'message' => 'Data successfully fetched from the file',
-                'data' => $formattedData,
-            ]);
-        } catch (Exception $e) {
-            return response()->json([
-                'message' => 'An error occurred during import: ' . $e->getMessage(),
-            ], 500);
-        }
-    }
-    
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
     }
 }
