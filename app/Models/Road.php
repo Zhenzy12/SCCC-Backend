@@ -3,7 +3,9 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-
+use App\Models\RoadType;
+use App\Models\Inbound;
+use App\Models\Outbound;
 
 class Road extends Model
 {
@@ -17,5 +19,20 @@ class Road extends Model
     public function roadType()
     {
         return $this->belongsTo(RoadType::class, 'road_type_id');
-    }   
+    } 
+    
+    public function inbound()
+    {
+        return $this->hasMany(Inbound::class);
+    }
+
+    public function outbound()
+    {
+        return $this->hasMany(Outbound::class);
+    }
+
+    public function statusTraffic()
+    {
+        return $this->hasMany(StatusTraffic::class);
+    }
 }
