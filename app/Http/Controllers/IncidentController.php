@@ -9,6 +9,8 @@ use App\Models\TypeOfAssistance;
 use App\Models\Report;
 use Exception;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use App\Models\Tracking;
+use Illuminate\Support\Facades\Auth;
 
 class IncidentController extends Controller
 {
@@ -17,18 +19,13 @@ class IncidentController extends Controller
     {
         //
         try {
-            $classification = TypeOfAssistance::all();
-            return response()->json($classification, 200);
+            $incident = Incident::all();
+            return response()->json($incident, 200);
         } catch (Exception $e) {
             return response()->json([
                 'error' => $e->getMessage()
             ], 500);
         }
-    }
-
-    public function create(Request $request)
-    {
-        //
     }
 
     /**
@@ -82,14 +79,6 @@ class IncidentController extends Controller
                 'error' => $e->getMessage()
             ], 500);
         }
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
     }
 
     /**
