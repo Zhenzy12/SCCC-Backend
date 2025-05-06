@@ -28,6 +28,7 @@ use App\Http\Controllers\SourceController;
 use App\Http\Controllers\ActionsTakenController;
 use App\Http\Controllers\UrgencyController;
 
+
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('/user', function (Request $request) {
         return $request->user();
@@ -174,15 +175,15 @@ Route::middleware(['api.key'])->group(function () {
         # Barangay Controller Routes
         Route::get('/barangay', [BarangayController::class, 'index']);
 
-        Route::post('/barangay', [BarangayController::class, 'create']);
+        Route::post('/barangay', [BarangayController::class, 'store']);
 
-        Route::get('/barangay-edit/{id}', [BarangayController::class, 'edit']);
+        Route::get('/barangay-fetch/{id}', [BarangayController::class, 'show']);
 
         Route::put('/barangay-update/{id}', [BarangayController::class, 'update']);
       
         Route::delete('/barangay-delete/{id}', [BarangayController::class, 'destroy']);
 
-        Route::get('/barangay-reports/{id}', [BarangayController::class, 'show']);
+        // Route::get('/barangay-reports/{id}', [BarangayController::class, 'reports']);
 
         # Actions Taken Controller Routes
         Route::get('/actions_taken', [ActionsTakenController::class, 'index']);

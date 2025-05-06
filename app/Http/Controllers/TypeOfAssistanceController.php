@@ -2,19 +2,35 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Exception;
+use App\Models\TypeOfAssistance;
+use App\Models\Tracking;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class TypeOfAssistanceController extends Controller
 {
-    //
+    /**
+     * Display a listing of the resource.
+     */
     public function index()
     {
         //
-        
+        try {
+            $assistance = TypeOfAssistance::all();
+            return response()->json($assistance);
+        } catch (Exception $e) {
+            return response()->json([
+                'error' => $e->getMessage()
+            ], 500);
+        }
     }
 
-    public function create(Request $request)
+    /**
+     * Show the form for creating a new resource.
+     */
+    public function create()
     {
         //
     }
@@ -25,6 +41,31 @@ class TypeOfAssistanceController extends Controller
     public function store(Request $request)
     {
         //
+        try {
+            $validated = $request->validate([
+                'assistance' => 'required'
+            ]);
+            $assistance = TypeOfAssistance::create([
+                'assistance' => $validated['assistance']
+            ]);
+
+            Tracking::create([
+                'category' => 'Assistance',
+                'user_id' => Auth::id(),
+                'action' => 'Created',
+                'data' => json_encode($assistance->toArray()), // ✅ Important
+                'description' => 'An Assistance was created by ' . Auth::user()->firstName . ' ' . Auth::user()->lastName . '.',
+            ]);
+
+            return response()->json([
+                $assistance,
+                'message' => 'Assistance created successfully'
+            ], 201);
+        } catch (Exception $e) {
+            return response()->json([
+                'error' => $e->getMessage()
+            ], 500);
+        }
     }
 
     /**
@@ -33,6 +74,18 @@ class TypeOfAssistanceController extends Controller
     public function show(string $id)
     {
         //
+        try {
+            $assistance = TypeOfAssistance::findOrFail($id);
+            return response()->json($assistance);
+        } catch (ModelNotFoundException $e) {
+            return response()->json([
+                'error' => $e->getMessage()
+            ], 404);
+        } catch (Exception $e) {
+            return response()->json([
+                'error' => $e->getMessage()
+            ], 500);
+        }
     }
 
     /**
@@ -49,6 +102,36 @@ class TypeOfAssistanceController extends Controller
     public function update(Request $request, string $id)
     {
         //
+        try {
+            $validated = $request->validate([
+                'assistance' => 'required'
+            ]);
+            $assistance = TypeOfAssistance::findOrFail($id);
+            $assistance->update([
+                'assistance' => $validated['assistance']
+            ]);
+
+            Tracking::create([
+                'category' => 'Assistance',
+                'user_id' => Auth::id(),
+                'action' => 'Updated',
+                'data' => json_encode($assistance->toArray()), // ✅ Important
+                'description' => 'An Assistance was updated by ' . Auth::user()->firstName . ' ' . Auth::user()->lastName . '.',
+            ]);
+
+            return response()->json([
+                $assistance,
+                'message' => 'Assistance updated successfully'
+            ], 201);
+        } catch (ModelNotFoundException $e) {
+            return response()->json([
+                'error' => $e->getMessage()
+            ], 404);
+        } catch (Exception $e) {
+            return response()->json([
+                'error' => $e->getMessage()
+            ], 500);
+        }
     }
 
     /**
@@ -57,5 +140,29 @@ class TypeOfAssistanceController extends Controller
     public function destroy(string $id)
     {
         //
+        try {
+            $assistance = TypeOfAssistance::findOrFail($id);
+            $assistance->delete();
+
+            Tracking::create([
+                'category' => 'Assistance',
+                'user_id' => Auth::id(),
+                'action' => 'Deleted',
+                'data' => json_encode($assistance->toArray()), // ✅ Important
+                'description' => 'An Assistance was deleted by ' . Auth::user()->firstName . ' ' . Auth::user()->lastName . '.',
+            ]);
+
+            return response()->json([
+                'message' => 'Assistance deleted successfully'
+            ], 201);
+        } catch (ModelNotFoundException $e) {
+            return response()->json([
+                'error' => $e->getMessage()
+            ], 404);
+        } catch (Exception $e) {
+            return response()->json([
+                'error' => $e->getMessage()
+            ], 500);
+        }
     }
 }

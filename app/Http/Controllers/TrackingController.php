@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Tracking;
+use Exception;
 
 class TrackingController extends Controller
 {
@@ -13,8 +14,14 @@ class TrackingController extends Controller
      */
     public function index()
     {
-        $logs = Tracking::orderBy('id', 'desc')->get();
-        return response()->json($logs);
+        try {
+            $logs = Tracking::orderBy('id', 'desc')->get();
+            return response()->json($logs);
+        } catch (Exception $e) {
+            return response()->json([
+                'error' => $e->getMessage()
+            ], 500);
+        }
     }
     
     /**
