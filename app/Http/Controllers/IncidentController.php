@@ -69,7 +69,10 @@ class IncidentController extends Controller
         //
         try {
             $incident = Incident::findOrFail($id);
-            return response()->json($incident, 200);
+            return response()->json([
+                $incident,
+                'message' => 'Incident retrieved successfully'
+            ], 200);
         } catch (ModelNotFoundException $e) {
             return response()->json([
                 'error' => $e->getMessage()

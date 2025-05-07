@@ -41,14 +41,6 @@ class BarangayController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     */
-    public function create(Request $request)
-    {
-        //
-    }
-
-    /**
      * Store a newly created resource in storage.
      */
     public function store(BarangayRequest $barangayRequest)
@@ -100,14 +92,6 @@ class BarangayController extends Controller
                 'error' => $e->getMessage()
             ], 500);
         }
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
     }
 
     /**
@@ -182,26 +166,4 @@ class BarangayController extends Controller
             ], 500);
         }
     }
-
-    // public function reports(string $id)
-    // {
-    //     try {
-    //         $report = Report::with([
-    //             'source:id,sources',
-    //             'incident:id,type',
-    //             'actions:id,actions',
-    //             'assistance:id,assistance',
-    //             'barangay:id,name,longitude,latitude'
-    //         ])
-    //         ->where('barangay_id', $id) // Use the route parameter
-    //         ->orderBy('id', 'desc')
-    //         ->get();
-
-    //         return response()->json($report);
-    //     } catch (Exception $e) {
-    //         return response()->json([
-    //             'error' => $e->getMessage()
-    //         ], 500);
-    //     }
-    // }
 }
