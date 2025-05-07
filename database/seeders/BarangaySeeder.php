@@ -37,13 +37,13 @@ class BarangaySeeder extends Seeder
             ['name' => 'BALSIGAN', 'latitude' => 16.3990, 'longitude' => 120.5937],
             ['name' => 'BAYAN PARK EAST', 'latitude' => 16.4271, 'longitude' => 120.6083],
             ['name' => 'BAYAN PARK VILLAGE', 'latitude' => 16.4274, 'longitude' => 120.6059],
-            ['name' => 'WEST BAYAN PARK', 'latitude' => 16.4285, 'longitude' => 120.6025],
+            ['name' => 'WEST BAYAN PARK (LEONILA HILL)', 'latitude' => 16.4285, 'longitude' => 120.6025],
             ['name' => 'BGH COMPOUND', 'latitude' => 16.3997, 'longitude' => 120.5975],
             ['name' => 'BROOKSIDE', 'latitude' => 16.4210, 'longitude' => 120.6018],
             ['name' => 'BROOKSPOINT', 'latitude' => 16.4251, 'longitude' => 120.6091],
 
             // // C Barangays === 10 Barangays
-            ['name' => 'CABINET HIIL T. CAMP', 'latitude' => 16.4110, 'longitude' => 120.6071],
+            ['name' => 'CABINET HILL - TEACHERS CAMP', 'latitude' => 16.4110, 'longitude' => 120.6071],
             ['name' => 'CAMDAS SUBDIVISION', 'latitude' => 16.4273, 'longitude' => 120.5927],
             ['name' => 'CAMP 7', 'latitude' => 16.3796, 'longitude' => 120.6024],
             ['name' => 'CAMP 8', 'latitude' => 16.3978, 'longitude' => 120.6016],
@@ -67,7 +67,7 @@ class BarangaySeeder extends Seeder
 
             // // F Barangays === 3 Barangays
             ['name' => 'FAIRVIEW', 'latitude' => 16.4176, 'longitude' => 120.5808],
-            ['name' => 'FERDINAND', 'latitude' => 16.4027, 'longitude' => 120.5915],
+            ['name' => 'FERDINAND (CAMPO SIOCO)', 'latitude' => 16.4027, 'longitude' => 120.5915],
             ['name' => 'FORT DEL PILAR', 'latitude' => 16.3653, 'longitude' => 120.6177],
 
             // // G Barangays === 8 Barangays

@@ -24,21 +24,35 @@ class ReportController extends Controller
     {
         //
         try {
-            $sources = Source::all();
-            $incidents = Incident::all();
-            $barangays = Barangay::all();
-            $actions = ActionsTaken::all();
-            $assistance = TypeOfAssistance::all();
-            $urgencies = Urgency::all();
+            // $sources = Source::all();
+            // $incidents = Incident::all();
+            // $barangays = Barangay::all();
+            // $actions = ActionsTaken::all();
+            // $assistance = TypeOfAssistance::all();
+            // $urgencies = Urgency::all();
 
-            return response()->json([
-                'sources' => $sources,
-                'actions' => $actions,
-                'incidents' => $incidents,
-                'assistance' => $assistance,
-                'barangays' => $barangays,
-                'urgencies' => $urgencies,
-            ], 200);
+            // return response()->json([
+            //     'sources' => $sources,
+            //     'actions' => $actions,
+            //     'incidents' => $incidents,
+            //     'assistance' => $assistance,
+            //     'barangays' => $barangays,
+            //     'urgencies' => $urgencies,
+            // ], 200);
+            $report = Report::with([
+                'source:id,sources', 
+                'incident:id,type', 
+                'actions:id,actions', 
+                'assistance:id,assistance', 
+                'barangay:id,name,longitude,latitude',
+                'urgency:id,urgency'
+            ])->orderBy('id', 'desc')->get();
+
+            // if ($report->isEmpty()) {
+            //     return response()->json(['message' => 'No reports found'], 404);
+            // } else {
+                return response()->json($report, 200); 
+            // }
 
         } catch (Exception $e) {
 
@@ -194,65 +208,6 @@ class ReportController extends Controller
 
         }
     }
-
-    public function display()
-    {
-        //
-        try {
-            $actions = ActionsTaken::all();
-            $urgencies = Urgency::all();
-            $classification = TypeOfAssistance::all();
-            $report = Report::with([
-                'source:id,sources', 
-                'incident:id,type', 
-                'actions:id,actions', 
-                'assistance:id,assistance', 
-                'barangay:id,name,longitude,latitude',
-                'urgency:id,urgency'
-            ])->orderBy('id', 'desc')->get();
-
-            if ($report->isEmpty()) {
-                return response()->json(['message' => 'No reports found'], 404);
-            } else {
-                return response()->json([$report, $classification, $urgencies, $actions], 200); 
-            }
-
-        } catch (Exception $e) {
-
-            return response()->json([
-                'error' => $e->getMessage()
-            ], 500);
-            
-        }
-    } 
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    // public function edit(string $id)
-    // {
-    //     //
-    //     try {
-
-    //         $report = Report::with([
-    //             'source:id,sources', 
-    //             'incident:id,type', 
-    //             'actions:id,actions', 
-    //             'assistance:id,assistance', 
-    //             'barangay:id,name,longitude,latitude',
-    //             'urgency:id,urgency'
-    //         ])->where('id', $id)->first();
-
-    //         return response()->json($report, 200);
-
-    //     } catch (Exception $e) {
-
-    //         return response()->json([
-    //             'error' => $e->getMessage()
-    //         ], 404);
-
-    //     }
-    // }
 
     /**
      * Update the specified resource in storage.

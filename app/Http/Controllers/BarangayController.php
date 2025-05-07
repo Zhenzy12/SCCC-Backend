@@ -22,16 +22,8 @@ class BarangayController extends Controller
     {
         //
         try {
-            $reportsPerBarangay = Report::groupBy('barangay_id')
-                ->select('barangay_id', DB::raw('COUNT(*) as total_reports'))
-                ->get();
-
             $barangays = Barangay::all();
-
-            return response()->json([
-                'barangays' => $barangays,
-                'reportsPerBarangay' => $reportsPerBarangay
-            ], 200);
+            return response()->json($barangays, 200);
         } catch (Exception $e) {
 
             return response()->json([

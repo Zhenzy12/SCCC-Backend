@@ -27,6 +27,7 @@ use App\Http\Controllers\TypeOfAssistanceController;
 use App\Http\Controllers\SourceController;
 use App\Http\Controllers\ActionsTakenController;
 use App\Http\Controllers\UrgencyController;
+use App\Http\Controllers\HotlineController;
 
 
 Route::middleware('auth:sanctum')->group(function () {
@@ -259,11 +260,7 @@ Route::middleware(['api.key'])->group(function () {
 
         Route::put('/report/{id}', [ReportController::class, 'update']);
 
-        Route::get('/report-display', [ReportController::class, 'display']);
-
         Route::get('/report-fetch/{id}', [ReportController::class, 'show']);
-
-        // Route::get('/report-edit/{id}', [ReportController::class, 'edit']);
 
         Route::delete('/report-delete/{id}', [ReportController::class, 'destroy']);
 
@@ -289,5 +286,8 @@ Route::middleware(['api.key'])->group(function () {
 
         # Tracking Controller Routes
         Route::get('/tracking', [TrackingController::class, 'index']);
+
+        # Hotline Controller Routes
+        Route::apiResource('/emergency-contacts', HotlineController::class);
     });
 });
