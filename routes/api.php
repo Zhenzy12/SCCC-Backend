@@ -260,11 +260,7 @@ Route::middleware(['api.key'])->group(function () {
 
         Route::put('/report/{id}', [ReportController::class, 'update']);
 
-        Route::get('/report-display', [ReportController::class, 'display']);
-
         Route::get('/report-fetch/{id}', [ReportController::class, 'show']);
-
-        // Route::get('/report-edit/{id}', [ReportController::class, 'edit']);
 
         Route::delete('/report-delete/{id}', [ReportController::class, 'destroy']);
 
@@ -292,6 +288,6 @@ Route::middleware(['api.key'])->group(function () {
         Route::get('/tracking', [TrackingController::class, 'index']);
 
         # Hotline Controller Routes
-        Route::apiResource('/hotline', HotlineController::class);
+        Route::apiResource('/emergency-contacts', HotlineController::class);
     });
 });

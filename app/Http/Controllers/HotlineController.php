@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Hotline;
+use App\Models\Tracking;
+use Illuminate\Support\Facades\Auth;
+use Exception;
 
 class HotlineController extends Controller
 {
@@ -37,20 +40,21 @@ class HotlineController extends Controller
                 'image_path' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             ]);
 
-            // Handle image upload
-            // if ($request->hasFile('image_path')) {
-            //     $image = $request->file('image_path');
-            //     $imageName = time() . '_' . $image->getClientOriginalName();
-            //     $image->move(public_path('storage'), $imageName);
-            //     $validated['image_path'] = $imageName; // Store just the filename
-            // }
-
             if ($request->hasFile('image_path')) {
                 $path = $request->file('image_path')->store('hotlines', 'public');
                 $validated['image_path'] = $path;
             }
 
             $hotline = Hotline::create($validated);
+
+            Tracking::create([
+                'category' => 'Emergency Contact',
+                'user_id' => Auth::id(),
+                'action' => 'Created',
+                'data' => json_encode($hotline->toArray()),
+                'description' => 'A Hotline was created by ' . Auth::user()->firstName . ' ' . Auth::user()->lastName . '.',
+            ]);
+
             return response()->json([
                 'hotline' => $hotline,
                 'message' => 'Hotline created successfully'
@@ -87,12 +91,21 @@ class HotlineController extends Controller
         try {
             $validated = $request->validate([
                 'name' => 'required|string|max:255',
-                'number' => 'required|string|max:255',
-                'email' => 'required|string|max:255',
-                'image_path' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+                'number' => 'nullable|string|max:255',
+                'email' => 'nullable|string|max:255',
+                'image_path' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             ]);
             $hotline = Hotline::findOrFail($id);
             $hotline->update($validated);
+
+            Tracking::create([
+                'category' => 'Emergency Contact',
+                'user_id' => Auth::id(),
+                'action' => 'Updated',
+                'data' => json_encode($hotline->toArray()),
+                'description' => 'A Hotline was updated by ' . Auth::user()->firstName . ' ' . Auth::user()->lastName . '.',
+            ]);
+
             return response()->json([
                 'hotline' => $hotline,
                 'message' => 'Hotline updated successfully'
@@ -113,6 +126,15 @@ class HotlineController extends Controller
         try {
             $hotline = Hotline::findOrFail($id);
             $hotline->delete();
+
+            Tracking::create([
+                'category' => 'Emergency Contact',
+                'user_id' => Auth::id(),
+                'action' => 'Deleted',
+                'data' => json_encode($hotline->toArray()),
+                'description' => 'A Hotline was deleted by ' . Auth::user()->firstName . ' ' . Auth::user()->lastName . '.',
+            ]);
+
             return response()->json([
                 'message' => 'Hotline deleted successfully'
             ], 200);
