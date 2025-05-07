@@ -234,5 +234,9 @@ Route::middleware(['api.key'])->group(function () {
     Route::prefix('traffic-tracking')->group(function () {
         # Traffic Road Controller Routes
         Route::get('/roads', [RoadController::class, 'index']);
+        
+        # Add these new routes
+        Route::put('/inbound/{road}', [RoadController::class, 'updateInbound']);
+        Route::put('/outbound/{road}', [RoadController::class, 'updateOutbound']);
     });
 });
