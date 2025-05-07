@@ -167,8 +167,6 @@ Route::middleware(['api.key'])->group(function () {
     Route::prefix('911')->group(function () {
 
         # Dashboard Controlller Routes
-        Route::get('/dashboard', [DashboardController::class, 'index']);
-
         Route::get('/recent', [DashboardController::class, 'recent']);
 
         Route::get('/total-reports', [DashboardController::class, 'total_reports']);

@@ -16,19 +16,7 @@ class DashboardController extends Controller
     //
     public function index()
     {
-        $incidents = Incident::all();
-        $assistance = TypeOfAssistance::all();
-        $source = Source::all();
-        $report = Report::all();
-        $urgencies = Urgency::all();
-
-        return response()->json([
-            'incidents' => $incidents, 
-            'assistance' => $assistance,
-            'source' => $source,
-            'report' => $report,
-            'urgencies' => $urgencies
-        ], 200);
+        //
     }
 
     public function recent()
