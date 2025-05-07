@@ -20,14 +20,6 @@ class UrgencyController extends Controller
         try {
             $urgencies = Urgency::all();
 
-            Tracking::create([
-                'category' => 'Urgency',
-                'user_id' => Auth::id(),
-                'action' => 'Viewed',
-                'data' => json_encode($urgencies->toArray()), // ✅ Important
-                'description' => 'An Urgency was viewed by ' . Auth::user()->firstName . ' ' . Auth::user()->lastName . '.',
-            ]);
-
             return response()->json($urgencies);
         } catch (ModelNotFoundException $e) {
             return response()->json([
@@ -38,14 +30,6 @@ class UrgencyController extends Controller
                 'error' => $e->getMessage()
             ], 500);
         }
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
     }
 
     /**
@@ -69,6 +53,7 @@ class UrgencyController extends Controller
                 'data' => json_encode($urgency->toArray()), // ✅ Important
                 'description' => 'An Urgency was created by ' . Auth::user()->firstName . ' ' . Auth::user()->lastName . '.',
             ]);
+
             return response()->json([
                 $urgency,
                 'message' => 'Urgency created successfully'
@@ -88,7 +73,10 @@ class UrgencyController extends Controller
         //
         try {
             $urgency = Urgency::findOrFail($id);
-            return response()->json($urgency);
+            return response()->json([
+                $urgency,
+                'message' => 'Urgency retrieved successfully'
+            ], 200);
         } catch (ModelNotFoundException $e) {
             return response()->json([
                 'error' => $e->getMessage()
@@ -98,14 +86,6 @@ class UrgencyController extends Controller
                 'error' => $e->getMessage()
             ], 500);
         }
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
     }
 
     /**

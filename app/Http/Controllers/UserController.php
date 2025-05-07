@@ -78,6 +78,14 @@ class UserController extends Controller
     public function show(string $id)
     {
         //
+        try {
+            $user = User::findOrFail($id);
+            return response()->json($user);
+        } catch (Exception $e) {
+            return response()->json([
+                'error' => $e->getMessage()
+            ], 500);
+        }
     }
 
     /**
@@ -136,14 +144,11 @@ class UserController extends Controller
             $request->validate([
                 'for_911' => 'required|boolean', // Ensure for_911 is required and boolean
             ]);
-
             // Find the resource (row) to update
             $dashboard_role = User::findOrFail($id);
-
             // Update the specific column (for_911)
             $dashboard_role->for_911 = $request->input('for_911');
             $dashboard_role->save();
-
             // Return updated resource
             return response()->json(['message' => 'Role updated successfully', $dashboard_role], 200);
         } catch (\Exception $e) {
@@ -159,14 +164,11 @@ class UserController extends Controller
             $request->validate([
                 'for_inventory' => 'required|boolean', // Ensure for_inventory is required and boolean
             ]);
-
             // Find the resource (row) to update
             $inventory_role = User::findOrFail($id);
-
             // Update the specific column (for_inventory)
             $inventory_role->for_inventory = $request->input('for_inventory');
             $inventory_role->save();
-
             // Return updated resource
             return response()->json(['message' => 'Role updated successfully', $inventory_role], 200);
         } catch (\Exception $e) {
@@ -182,14 +184,11 @@ class UserController extends Controller
             $request->validate([
                 'for_traffic' => 'required|boolean', // Ensure for_inventory is required and boolean
             ]);
-
             // Find the resource (row) to update
             $traffic_role = User::findOrFail($id);
-
             // Update the specific column (for_inventory)
             $traffic_role->for_traffic = $request->input('for_traffic');
             $traffic_role->save();
-
             // Return updated resource
             return response()->json(['message' => 'Role updated successfully', $traffic_role], 200);
         } catch (\Exception $e) {
@@ -205,14 +204,11 @@ class UserController extends Controller
             $request->validate([
                 'is_deleted' => 'required|boolean', // Ensure for_911 is required and boolean
             ]);
-
             // Find the resource (row) to update
             $inventory_role = User::findOrFail($id);
-
             // Update the specific column (for_inventory)
             $inventory_role->is_deleted = $request->input('is_deleted');
             $inventory_role->save();
-
             // Return updated resource
             if ($inventory_role->is_deleted === true) {
                 return response()->json(['message' => 'User has been archived and stripped of access control and privileges', $inventory_role], 200);

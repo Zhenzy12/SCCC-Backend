@@ -187,64 +187,74 @@ Route::middleware(['api.key'])->group(function () {
         // Route::get('/barangay-reports/{id}', [BarangayController::class, 'reports']);
 
         # Actions Taken Controller Routes
-        Route::get('/actions_taken', [ActionsTakenController::class, 'index']);
+        // Route::get('/actions_taken', [ActionsTakenController::class, 'index']);
 
-        Route::post('/actions_taken', [ActionsTakenController::class, 'store']);
+        // Route::post('/actions_taken', [ActionsTakenController::class, 'store']);
 
-        Route::get('/actions_taken-fetch/{actionsTaken}', [ActionsTakenController::class, 'show']);
+        // Route::get('/actions_taken-fetch/{actionsTaken}', [ActionsTakenController::class, 'show']);
 
-        Route::put('/actions_taken-update/{actionsTaken}', [ActionsTakenController::class, 'update']);
+        // Route::put('/actions_taken-update/{actionsTaken}', [ActionsTakenController::class, 'update']);
 
-        Route::delete('/actions_taken-delete/{actionsTaken}', [ActionsTakenController::class, 'destroy']);
+        // Route::delete('/actions_taken-delete/{actionsTaken}', [ActionsTakenController::class, 'destroy']);
+
+        Route::apiResource('/action_taken', ActionsTakenController::class);
 
         # Incident Controller Routes
-        Route::get('/incident', [IncidentController::class, 'index']);
+        // Route::get('/incident', [IncidentController::class, 'index']);
 
-        Route::post('/incident', [IncidentController::class, 'store']);
+        // Route::post('/incident', [IncidentController::class, 'store']);
 
-        Route::get('/incident-fetch/{incident}', [IncidentController::class, 'show']);
+        // Route::get('/incident-fetch/{incident}', [IncidentController::class, 'show']);
 
-        Route::put('/incident-update/{incident}', [IncidentController::class, 'update']);
+        // Route::put('/incident-update/{incident}', [IncidentController::class, 'update']);
 
-        Route::delete('/incident-delete/{incident}', [IncidentController::class, 'destroy']);
+        // Route::delete('/incident-delete/{incident}', [IncidentController::class, 'destroy']);
+
+        Route::apiResource('/incident', IncidentController::class);
 
         # Type of Assistance Controller Routes
-        Route::get('/assistance', [TypeOfAssistanceController::class, 'index']);
+        // Route::get('/assistance', [TypeOfAssistanceController::class, 'index']);
 
-        Route::post('/assistance', [TypeOfAssistanceController::class, 'store']);
+        // Route::post('/assistance', [TypeOfAssistanceController::class, 'store']);
 
-        Route::get('/assistance-fetch/{assistance}', [TypeOfAssistanceController::class, 'show']);
+        // Route::get('/assistance-fetch/{assistance}', [TypeOfAssistanceController::class, 'show']);
 
-        Route::put('/assistance-update/{assistance}', [TypeOfAssistanceController::class, 'update']);
+        // Route::put('/assistance-update/{assistance}', [TypeOfAssistanceController::class, 'update']);
 
-        Route::delete('/assistance-delete/{assistance}', [TypeOfAssistanceController::class, 'destroy']);
+        // Route::delete('/assistance-delete/{assistance}', [TypeOfAssistanceController::class, 'destroy']);
+
+        Route::apiResource('/assistance', TypeOfAssistanceController::class);
 
         # Source Controller Routes
-        Route::get('/source', [SourceController::class, 'index']);
+        // Route::get('/source', [SourceController::class, 'index']);
         
-        Route::post('/source', [SourceController::class, 'store']);
+        // Route::post('/source', [SourceController::class, 'store']);
 
-        Route::get('/source/{id}', [SourceController::class, 'show']);
+        // Route::get('/source/{id}', [SourceController::class, 'show']);
 
-        Route::put('/source-update/{id}', [SourceController::class, 'update']);
+        // Route::put('/source-update/{id}', [SourceController::class, 'update']);
 
-        Route::delete('/source-delete/{id}', [SourceController::class, 'destroy']);
+        // Route::delete('/source-delete/{id}', [SourceController::class, 'destroy']);
+
+        Route::apiResource('/source', SourceController::class);
 
         # Urgency Controller Routes
-        Route::get('/urgency', [UrgencyController::class, 'index']);
+        // Route::get('/urgency', [UrgencyController::class, 'index']);
 
-        Route::post('/urgency', [UrgencyController::class, 'store']);
+        // Route::post('/urgency', [UrgencyController::class, 'store']);
 
-        Route::get('/urgency-fetch/{id}', [UrgencyController::class, 'show']);
+        // Route::get('/urgency-fetch/{id}', [UrgencyController::class, 'show']);
 
-        Route::put('/urgency-update/{id}', [UrgencyController::class, 'update']);
+        // Route::put('/urgency-update/{id}', [UrgencyController::class, 'update']);
 
-        Route::delete('/urgency-delete/{id}', [UrgencyController::class, 'destroy']);
+        // Route::delete('/urgency-delete/{id}', [UrgencyController::class, 'destroy']);
+
+        Route::apiResource('/urgency', UrgencyController::class);
 
         # Report Controller Routes
         Route::get('/report', [ReportController::class, 'index']);
 
-        Route::post('/report', [ReportController::class, 'create']);
+        Route::post('/report', [ReportController::class, 'store']);
 
         Route::post('/restore-report', [ReportController::class, 'restore']);
 
@@ -252,9 +262,9 @@ Route::middleware(['api.key'])->group(function () {
 
         Route::get('/report-display', [ReportController::class, 'display']);
 
-        Route::get('/report-view/{id}', [ReportController::class, 'show']);
+        Route::get('/report-fetch/{id}', [ReportController::class, 'show']);
 
-        Route::get('/report-edit/{id}', [ReportController::class, 'edit']);
+        // Route::get('/report-edit/{id}', [ReportController::class, 'edit']);
 
         Route::delete('/report-delete/{id}', [ReportController::class, 'destroy']);
 
@@ -274,9 +284,9 @@ Route::middleware(['api.key'])->group(function () {
         Route::put('/user/{user}', [UserController::class, 'updateUserFor911']);
 
         # Upload Controller Routes
-        Route::post('/import-excel-data', [FileUploadController::class, 'readAndUpload']);
+        Route::post('/import-excel-data', [FileUploadController::class, 'store']);
 
-        Route::post('/import-excel', [FileUploadController::class, 'uploadFileView']);
+        Route::post('/import-excel', [FileUploadController::class, 'read']);
 
         # Tracking Controller Routes
         Route::get('/tracking', [TrackingController::class, 'index']);

@@ -19,25 +19,12 @@ class SourceController extends Controller
         try {
             $sources = Source::all();
 
-            Tracking::create([
-                'category' => 'Source',
-                'user_id' => Auth::id(),
-                'action' => 'Viewed',
-                'data' => json_encode($sources->toArray()), // ✅ Important
-                'description' => 'A Source was viewed by ' . Auth::user()->firstName . ' ' . Auth::user()->lastName . '.',
-            ]);
-
             return response()->json($sources);
         } catch (Exception $e) {
             return response()->json([
                 'error' => $e->getMessage()
             ], 500);
         }
-    }
-
-    public function create(Request $request)
-    {
-        //
     }
 
     /**
@@ -94,14 +81,6 @@ class SourceController extends Controller
                 'error' => $e->getMessage()
             ], 500);
         }
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
     }
 
     /**

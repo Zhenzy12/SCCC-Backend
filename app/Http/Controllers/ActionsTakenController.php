@@ -4,6 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Models\ActionsTaken;
+use Exception;
+use Illuminate\Support\Facades\Auth;
+use App\Models\Tracking;
 
 class ActionsTakenController extends Controller
 {
@@ -19,11 +23,6 @@ class ActionsTakenController extends Controller
                 'error' => $e->getMessage()
             ], 500);
         }
-    }
-
-    public function create(Request $request)
-    {
-        //
     }
 
     /**
@@ -67,23 +66,10 @@ class ActionsTakenController extends Controller
         //
         try {
             $action = ActionsTaken::findOrFail($id);
-            return response()->json($action);
-        } catch (Exception $e) {
             return response()->json([
-                'error' => $e->getMessage()
-            ], 500);
-        }
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-        try {
-            $action = ActionsTaken::findOrFail($id);
-            return response()->json($action);
+                $action,
+                'message' => 'Actions Taken retrieved successfully'
+            ], 200);
         } catch (Exception $e) {
             return response()->json([
                 'error' => $e->getMessage()
