@@ -27,6 +27,7 @@ use App\Http\Controllers\TypeOfAssistanceController;
 use App\Http\Controllers\SourceController;
 use App\Http\Controllers\ActionsTakenController;
 use App\Http\Controllers\UrgencyController;
+use App\Http\Controllers\HotlineController;
 
 
 Route::middleware('auth:sanctum')->group(function () {
@@ -279,5 +280,8 @@ Route::middleware(['api.key'])->group(function () {
 
         # Tracking Controller Routes
         Route::get('/tracking', [TrackingController::class, 'index']);
+
+        # Hotline Controller Routes
+        Route::apiResource('/hotline', HotlineController::class);
     });
 });
