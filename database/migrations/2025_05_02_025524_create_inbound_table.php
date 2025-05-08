@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('road_id')->constrained('roads')->onDelete('restrict');
             $table->foreignId('status_id')->constrained('status_traffic')->onDelete('restrict');
+            $table->json('coordinates')->nullable();
             $table->timestamps();
         });
     }
