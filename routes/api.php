@@ -22,6 +22,7 @@ use App\Http\Controllers\FileUploadController;
 use App\Http\Controllers\TrackingController;
 use App\Http\Controllers\Auth\VerifyEmailController;
 use App\Http\Controllers\Auth\EmailVerificationNotificationController;
+use App\Http\Controllers\RoadController;
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('/user', function (Request $request) {
@@ -228,6 +229,14 @@ Route::middleware(['api.key'])->group(function () {
         // });
 
         # Forgot Password Controller Routes
+    });
 
+    Route::prefix('traffic-tracking')->group(function () {
+        # Traffic Road Controller Routes
+        Route::get('/roads', [RoadController::class, 'index']);
+        
+        # Add these new routes
+        Route::put('/inbound/{road}', [RoadController::class, 'updateInbound']);
+        Route::put('/outbound/{road}', [RoadController::class, 'updateOutbound']);
     });
 });

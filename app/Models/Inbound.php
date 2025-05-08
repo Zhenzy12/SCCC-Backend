@@ -3,6 +3,8 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Road;
+use App\Models\StatusTraffic;
 
 class Inbound extends Model
 {
