@@ -24,21 +24,7 @@ class ReportController extends Controller
     {
         //
         try {
-            // $sources = Source::all();
-            // $incidents = Incident::all();
-            // $barangays = Barangay::all();
-            // $actions = ActionsTaken::all();
-            // $assistance = TypeOfAssistance::all();
-            // $urgencies = Urgency::all();
-
-            // return response()->json([
-            //     'sources' => $sources,
-            //     'actions' => $actions,
-            //     'incidents' => $incidents,
-            //     'assistance' => $assistance,
-            //     'barangays' => $barangays,
-            //     'urgencies' => $urgencies,
-            // ], 200);
+            $search = request('search');
             $report = Report::with([
                 'source:id,sources', 
                 'incident:id,type', 
@@ -46,13 +32,28 @@ class ReportController extends Controller
                 'assistance:id,assistance', 
                 'barangay:id,name,longitude,latitude',
                 'urgency:id,urgency'
-            ])->orderBy('id', 'desc')->get();
+            ])->orderBy('id', 'desc')->when($search, function ($query) use ($search) {
+                $query->whereHas('source', function ($query) use ($search) {
+                    $query->where('sources', 'like', "%{$search}%");
+                })
+                ->orWhereHas('incident', function ($query) use ($search) {
+                    $query->where('type', 'like', "%{$search}%");
+                })
+                ->orWhereHas('actions', function ($query) use ($search) {
+                    $query->where('actions', 'like', "%{$search}%");
+                })
+                ->orWhereHas('assistance', function ($query) use ($search) {
+                    $query->where('assistance', 'like', "%{$search}%");
+                })
+                ->orWhereHas('barangay', function ($query) use ($search) {
+                    $query->where('name', 'like', "%{$search}%");
+                })
+                ->orWhereHas('urgency', function ($query) use ($search) {
+                    $query->where('urgency', 'like', "%{$search}%");
+                });
+            })->paginate(10);
 
-            // if ($report->isEmpty()) {
-            //     return response()->json(['message' => 'No reports found'], 404);
-            // } else {
-                return response()->json($report, 200); 
-            // }
+            return response()->json($report, 200); 
 
         } catch (Exception $e) {
 
@@ -62,48 +63,6 @@ class ReportController extends Controller
 
         }
     }
-
-    // public function create(Request $request, ReportRequest $reportRequest)
-    // {
-    //     //
-    //     try {
-    //         $reportRequest->validated();
-
-    //         $report = Report::create([
-    //             'time' => $reportRequest->time,
-    //             'date_received' => $reportRequest->date_received,
-    //             'arrival_on_site' => $reportRequest->arrival_on_site,
-    //             'name' => $reportRequest->name,
-    //             'landmark' => $reportRequest->landmark,
-    //             'longitude' => $reportRequest->longitude,
-    //             'latitude' => $reportRequest->latitude,
-    //             'source_id' => $reportRequest->source_id,
-    //             'incident_id' => $reportRequest->incident_id,
-    //             'barangay_id' => $reportRequest->barangay_id,
-    //             'actions_id' => $reportRequest->actions_id,
-    //             'assistance_id' => $reportRequest->assistance_id,
-    //             'urgency_id' => $reportRequest->urgency_id,
-    //             'description' => $reportRequest->description,
-    //         ]);
-
-    //         Tracking::create([
-    //             'category' => 'Report',
-    //             'user_id' => Auth::id(),
-    //             'action' => 'Created',
-    //             'data' => json_encode($report->toArray()), // ✅ Important
-    //             'description' => 'A Report was created by ' . Auth::user()->firstName . ' ' . Auth::user()->lastName . '.',
-    //         ]);
-
-    //         return response()->json([
-    //             'message' => 'Report created successfully!',
-    //             'report' => $report,
-    //         ], 201);
-    //     } catch (Exception $e) {
-    //         return response()->json([
-    //             'error' => $e->getMessage()
-    //         ], 500);
-    //     }
-    // }
 
     /**
      * Store a newly created resource in storage.
