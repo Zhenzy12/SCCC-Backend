@@ -24,7 +24,35 @@ class ReportController extends Controller
     {
         //
         try {
-            $search = request('search');
+            // $search = request('search');
+            // $report = Report::with([
+            //     'source:id,sources', 
+            //     'incident:id,type', 
+            //     'actions:id,actions', 
+            //     'assistance:id,assistance', 
+            //     'barangay:id,name,longitude,latitude',
+            //     'urgency:id,urgency'
+            // ])->orderBy('id', 'desc')->when($search, function ($query) use ($search) {
+            //     $query->whereHas('source', function ($query) use ($search) {
+            //         $query->where('sources', 'like', "%{$search}%");
+            //     })
+            //     ->orWhereHas('incident', function ($query) use ($search) {
+            //         $query->where('type', 'like', "%{$search}%");
+            //     })
+            //     ->orWhereHas('actions', function ($query) use ($search) {
+            //         $query->where('actions', 'like', "%{$search}%");
+            //     })
+            //     ->orWhereHas('assistance', function ($query) use ($search) {
+            //         $query->where('assistance', 'like', "%{$search}%");
+            //     })
+            //     ->orWhereHas('barangay', function ($query) use ($search) {
+            //         $query->where('name', 'like', "%{$search}%");
+            //     })
+            //     ->orWhereHas('urgency', function ($query) use ($search) {
+            //         $query->where('urgency', 'like', "%{$search}%");
+            //     });
+            // })->paginate(10);
+
             $report = Report::with([
                 'source:id,sources', 
                 'incident:id,type', 
@@ -32,26 +60,7 @@ class ReportController extends Controller
                 'assistance:id,assistance', 
                 'barangay:id,name,longitude,latitude',
                 'urgency:id,urgency'
-            ])->orderBy('id', 'desc')->when($search, function ($query) use ($search) {
-                $query->whereHas('source', function ($query) use ($search) {
-                    $query->where('sources', 'like', "%{$search}%");
-                })
-                ->orWhereHas('incident', function ($query) use ($search) {
-                    $query->where('type', 'like', "%{$search}%");
-                })
-                ->orWhereHas('actions', function ($query) use ($search) {
-                    $query->where('actions', 'like', "%{$search}%");
-                })
-                ->orWhereHas('assistance', function ($query) use ($search) {
-                    $query->where('assistance', 'like', "%{$search}%");
-                })
-                ->orWhereHas('barangay', function ($query) use ($search) {
-                    $query->where('name', 'like', "%{$search}%");
-                })
-                ->orWhereHas('urgency', function ($query) use ($search) {
-                    $query->where('urgency', 'like', "%{$search}%");
-                });
-            })->paginate(10);
+            ])->get();
 
             return response()->json($report, 200); 
 
